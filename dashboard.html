@@ -80,7 +80,7 @@
   @media print {
     #section-eopr.active { position: static !important; display: block !important; height: auto !important; min-height: 0 !important; overflow: visible !important; }
     #section-eopr.active main { display: block !important; height: auto !important; overflow: visible !important; }
-    #section-eopr.active main > section:not(.no-print) { display: block !important; height: auto !important; overflow: visible !important; width: 100% !important; }
+    #section-eopr.active main > section:not(.no-print) { display: block !important; height: auto !important; overflow: visible !important; width: 100% !important; padding: 0 !important; margin: 0 !important; }
     @page opr-page { size: A4 portrait; margin: 0mm; }
     .print-container {
       page: opr-page;
@@ -93,17 +93,17 @@
     body { background: white !important; color: black !important; padding: 0 !important; margin: 0 !important; }
     .no-print { display: none !important; }
     .print-area { display: block !important; width: 100% !important; margin: 0 !important; padding: 0 !important; }
-    #print-area-monthly { border: none !important; box-shadow: none !important; padding: 0 !important; margin: 0 !important; width: 100% !important; max-width: 100% !important; }
-    .school-header { margin-bottom: 8px !important; padding-bottom: 6px !important; }
-    .school-logo { height: 50px !important; width: 50px !important; }
-    .school-title { font-size: 13px !important; line-height: 1.2 !important; }
-    .school-subtitle { font-size: 9px !important; }
-    .report-title-section { margin-bottom: 10px !important; }
-    .report-title-text { font-size: 11px !important; }
-    table { width: 100% !important; border-collapse: collapse !important; margin-top: 4px !important; page-break-inside: avoid !important; }
-    th, td { padding: 3px 5px !important; font-size: 8.5px !important; line-height: 1.1 !important; border: 1px solid black !important; }
-    .signature-block { margin-top: 12px !important; }
-    .signature-space { height: 35px !important; }
+    #print-area-monthly { border: none !important; box-shadow: none !important; border-radius: 0 !important; padding: 0 !important; margin: 0 !important; width: 100% !important; max-width: 100% !important; height: 280mm !important; display: flex !important; flex-direction: column !important; }
+    .school-header { margin-bottom: 14px !important; padding-bottom: 10px !important; }
+    .school-logo { height: 62px !important; width: 62px !important; }
+    .school-title { font-size: 16px !important; line-height: 1.25 !important; }
+    .school-subtitle { font-size: 10.5px !important; }
+    .report-title-section { margin-bottom: 16px !important; }
+    .report-title-text { font-size: 13px !important; }
+    table { width: 100% !important; border-collapse: collapse !important; margin-top: 6px !important; page-break-inside: avoid !important; }
+    th, td { padding: 6px 8px !important; font-size: 10.5px !important; line-height: 1.3 !important; border: 1px solid black !important; }
+    .signature-block { margin-top: auto !important; padding-top: 20px !important; }
+    .signature-space { height: 45px !important; }
     @page { size: A4 portrait; margin: 8mm 10mm 8mm 10mm; }
   }
   .vertical-text-upright{ display:flex; flex-direction:column; align-items:center; line-height:1.05; }
@@ -429,10 +429,10 @@
   <!-- ============ MODUL: EOPR (disisipkan) ============ -->
   <div id="section-eopr" class="tab-content fixed inset-0 z-[60] bg-slate-50 text-slate-800 font-sans overflow-hidden">
 
-  <header class="no-print flex-shrink-0 bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 text-white shadow-md px-6 py-4 flex flex-col md:flex-row justify-between items-center gap-4 z-20 relative">
+  <header class="no-print flex-shrink-0 bg-slate-900 border-b-4 border-indigo-600 text-white shadow-md px-6 py-4 flex flex-col md:flex-row justify-between items-center gap-4 z-20 relative">
     <div class="flex items-center gap-3">
       <div class="bg-white p-2 rounded-xl shadow-inner flex items-center justify-center">
-        <svg class="w-7 h-7 text-teal-600" viewBox="0 0 24 24" fill="currentColor">
+        <svg class="w-7 h-7 text-indigo-600" viewBox="0 0 24 24" fill="currentColor">
           <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
         </svg>
       </div>
@@ -440,14 +440,14 @@
         <h1 class="font-montserrat font-extrabold text-xl tracking-wide flex items-center gap-2">
           SISTEM OPR DIGITAL <span class="bg-yellow-400 text-slate-900 text-[10px] font-bold px-2 py-0.5 rounded-full shadow-sm">PRO</span>
         </h1>
-        <p class="text-xs text-teal-100 font-medium">Auto-A4 Layout Engine</p>
+        <p class="text-xs text-indigo-200 font-medium">Auto-A4 Layout Engine</p>
       </div>
     </div>
     <div class="flex items-center gap-3">
       <button onclick="showModule('picker')" class="bg-rose-600 hover:bg-rose-700 text-white text-sm font-semibold px-4 py-2 rounded-lg transition-all flex items-center gap-2 shadow-sm" title="Kembali ke Papan Pemuka">
         <i data-lucide="arrow-left" class="w-4 h-4"></i> Kembali
       </button>
-      <button onclick="loadTemplate()" class="bg-teal-500/30 hover:bg-teal-500/50 border border-teal-300/40 text-white text-sm font-semibold px-4 py-2 rounded-lg transition-all flex items-center gap-2">
+      <button onclick="loadTemplate()" class="bg-indigo-600/30 hover:bg-indigo-600/50 border border-indigo-400/40 text-white text-sm font-semibold px-4 py-2 rounded-lg transition-all flex items-center gap-2">
         <i data-lucide="rotate-ccw" class="w-4 h-4"></i> Templat Asal
       </button>
       <button onclick="triggerClearForm()" class="bg-slate-700/30 hover:bg-slate-700/50 border border-slate-500/40 text-slate-200 text-sm font-semibold px-3 py-2 rounded-lg transition-all" title="Kosongkan Borang">
@@ -461,7 +461,7 @@
     <!-- LEFT PANEL: FORM -->
     <section class="no-print w-full lg:w-[45%] bg-white border-r border-slate-200 h-full overflow-y-auto p-6 pb-32 z-10 custom-scrollbar relative">
       <div class="flex items-center justify-between mb-6 pb-4 border-b border-slate-100 sticky top-0 bg-white/95 backdrop-blur z-10">
-        <div class="flex items-center gap-2 text-teal-600">
+        <div class="flex items-center gap-2 text-indigo-600">
           <i data-lucide="edit-3" class="w-5 h-5"></i>
           <h2 class="font-bold text-lg">Maklumat Laporan</h2>
         </div>
@@ -471,35 +471,35 @@
         <div class="grid grid-cols-2 gap-4">
           <div>
             <label class="block text-xs font-bold text-slate-600 uppercase mb-1">Nama Sekolah</label>
-            <input type="text" id="input-school" oninput="updatePreview()" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-teal-500 focus:outline-none" placeholder="Contoh: SK KRANGAN">
+            <input type="text" id="input-school" oninput="updatePreview()" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none" placeholder="Contoh: SK KRANGAN">
           </div>
           <div>
             <label class="block text-xs font-bold text-slate-600 uppercase mb-1">Tahun Laporan</label>
-            <input type="text" id="input-year" oninput="updatePreview()" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-teal-500 focus:outline-none" value="2026">
+            <input type="text" id="input-year" oninput="updatePreview()" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none" value="2026">
           </div>
         </div>
 
         <div>
           <label class="block text-xs font-bold text-slate-600 uppercase mb-1">Tajuk / Nama Program</label>
-          <textarea id="input-title" oninput="updatePreview()" rows="2" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-teal-500 focus:outline-none" placeholder="Contoh: Pertandingan Projek Mini Buku..."></textarea>
+          <textarea id="input-title" oninput="updatePreview()" rows="2" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none" placeholder="Contoh: Pertandingan Projek Mini Buku..."></textarea>
         </div>
 
         <div>
           <label class="block text-xs font-bold text-slate-600 uppercase mb-1 flex justify-between items-center">
             <span>Tarikh / Masa / Tempat</span>
-            <input type="date" id="input-date-picker" onchange="autoFillDate(event)" class="text-[10px] border border-slate-300 rounded px-1.5 py-0.5 text-teal-700 focus:outline-none bg-teal-50 cursor-pointer" title="Pilih Tarikh">
+            <input type="date" id="input-date-picker" onchange="autoFillDate(event)" class="text-[10px] border border-slate-300 rounded px-1.5 py-0.5 text-indigo-700 focus:outline-none bg-indigo-50 cursor-pointer" title="Pilih Tarikh">
           </label>
-          <textarea id="input-datetime" oninput="updatePreview()" rows="3" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-teal-500 focus:outline-none" placeholder="Contoh: 2 Februari 2026&#10;Isnin&#10;Prasekolah Imaginative SK Krangan"></textarea>
+          <textarea id="input-datetime" oninput="updatePreview()" rows="3" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none" placeholder="Contoh: 2 Februari 2026&#10;Isnin&#10;Prasekolah Imaginative SK Krangan"></textarea>
         </div>
 
         <div class="grid grid-cols-2 gap-4">
           <div>
             <label class="block text-xs font-bold text-slate-600 uppercase mb-1">Sasaran Program</label>
-            <textarea id="input-target" oninput="updatePreview()" rows="2" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-teal-500 focus:outline-none" placeholder="Contoh: Semua Murid Prasekolah"></textarea>
+            <textarea id="input-target" oninput="updatePreview()" rows="2" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none" placeholder="Contoh: Semua Murid Prasekolah"></textarea>
           </div>
           <div>
             <label class="block text-xs font-bold text-slate-600 uppercase mb-1">Label Unit</label>
-            <select id="input-side" onchange="updatePreview()" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-teal-500 focus:outline-none bg-white font-bold text-slate-700 cursor-pointer">
+            <select id="input-side" onchange="updatePreview()" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none bg-white font-bold text-slate-700 cursor-pointer">
               <option value="PRASEKOLAH">PRASEKOLAH</option>
               <option value="HAL EHWAL MURID">HAL EHWAL MURID</option>
               <option value="KOKURIKULUM">KOKURIKULUM</option>
@@ -512,7 +512,7 @@
         <div id="section-kra">
           <label class="block text-xs font-bold text-slate-600 uppercase mb-1 flex justify-between items-center">
             <span>KRA (Kawasan Hasil Utama)</span>
-            <select onchange="addKRA(event)" class="text-[10px] border border-slate-300 rounded px-1.5 py-0.5 text-teal-700 bg-teal-50 focus:outline-none max-w-[140px] cursor-pointer">
+            <select onchange="addKRA(event)" class="text-[10px] border border-slate-300 rounded px-1.5 py-0.5 text-indigo-700 bg-indigo-50 focus:outline-none max-w-[140px] cursor-pointer">
               <option value="">+ Tambah KRA...</option>
               <option value="Kemenjadian Murid">Kemenjadian Murid</option>
               <option value="Pembelajaran Bermakna">Pembelajaran Bermakna</option>
@@ -523,13 +523,13 @@
               <option value="Sokongan PIBG / Komuniti">Sokongan PIBG / Komuniti</option>
             </select>
           </label>
-          <textarea id="input-kra" oninput="updatePreview()" rows="3" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-teal-500 focus:outline-none" placeholder="Pilih KRA dari menu dropdown atau taip manual..."></textarea>
+          <textarea id="input-kra" oninput="updatePreview()" rows="3" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none" placeholder="Pilih KRA dari menu dropdown atau taip manual..."></textarea>
         </div>
 
         <div>
           <div class="flex justify-between items-center mb-2">
             <label class="block text-xs font-bold text-slate-600 uppercase">Objektif / Butiran Program</label>
-            <button onclick="addObjectiveField()" class="text-[10px] bg-teal-50 text-teal-600 hover:bg-teal-100 border border-teal-200 rounded px-2 py-1 font-semibold flex items-center gap-1 transition-all">
+            <button onclick="addObjectiveField()" class="text-[10px] bg-indigo-50 text-indigo-600 hover:bg-indigo-100 border border-indigo-200 rounded px-2 py-1 font-semibold flex items-center gap-1 transition-all">
               <i data-lucide="plus" class="w-3 h-3"></i> Tambah Objektif
             </button>
           </div>
@@ -545,7 +545,7 @@
 
         <div>
           <label class="block text-xs font-bold text-slate-600 uppercase mb-1">Disediakan Oleh</label>
-          <input type="text" id="input-author" oninput="updatePreview()" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-teal-500 focus:outline-none uppercase" placeholder="Contoh: NAMA GURU">
+          <input type="text" id="input-author" oninput="updatePreview()" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none uppercase" placeholder="Contoh: NAMA GURU">
         </div>
       </div>
     </section>
@@ -997,10 +997,10 @@ window.onload = function(){
       let html = '';
       for(let i = 0; i < 5; i++) {
           html += `
-              <div class="relative group aspect-square border-2 border-dashed border-slate-300 hover:border-teal-500 rounded-lg overflow-hidden transition-all bg-slate-50 flex flex-col justify-center items-center cursor-pointer">
+              <div class="relative group aspect-square border-2 border-dashed border-slate-300 hover:border-indigo-500 rounded-lg overflow-hidden transition-all bg-slate-50 flex flex-col justify-center items-center cursor-pointer">
                 <input type="file" id="file-input-${i}" accept="image/*" class="absolute inset-0 opacity-0 cursor-pointer z-10" onchange="handleImageUpload(event, ${i})">
                 <div id="img-placeholder-${i}" class="flex flex-col items-center justify-center p-1 text-center absolute inset-0 z-0">
-                  <svg class="w-5 h-5 text-slate-300 group-hover:text-teal-500 mb-0.5" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>
+                  <svg class="w-5 h-5 text-slate-300 group-hover:text-indigo-500 mb-0.5" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>
                   <span class="text-[9px] text-slate-400 font-bold">Foto ${i+1}</span>
                 </div>
                 <img id="img-preview-${i}" class="hidden w-full h-full object-cover relative z-0">
@@ -1694,7 +1694,7 @@ window.onload = function(){
         container.innerHTML += `
           <div class="flex items-center gap-2">
             <span class="text-xs font-bold text-slate-400">${idx + 1}.</span>
-            <input type="text" value="${obj.replace(/"/g, '&quot;')}" oninput="updateObjective(${idx}, this.value)" class="flex-1 border border-slate-300 rounded-lg px-3 py-1.5 text-xs focus:ring-2 focus:ring-teal-500 focus:outline-none" placeholder="Objektif ${idx + 1}">
+            <input type="text" value="${obj.replace(/"/g, '&quot;')}" oninput="updateObjective(${idx}, this.value)" class="flex-1 border border-slate-300 rounded-lg px-3 py-1.5 text-xs focus:ring-2 focus:ring-indigo-500 focus:outline-none" placeholder="Objektif ${idx + 1}">
             <button onclick="removeObjectiveField(${idx})" class="text-red-500 p-1 hover:bg-red-50 rounded"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
           </div>
         `;
