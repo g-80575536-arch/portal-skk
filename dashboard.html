@@ -78,9 +78,9 @@
   .btn-shine:hover::after{ left:130%; }
 
   @media print {
-    #section-eopr { position: static !important; display: block !important; height: auto !important; min-height: 0 !important; overflow: visible !important; }
-    #section-eopr main { display: block !important; height: auto !important; overflow: visible !important; }
-    #section-eopr main > section { display: block !important; height: auto !important; overflow: visible !important; width: 100% !important; }
+    #section-eopr.active { position: static !important; display: block !important; height: auto !important; min-height: 0 !important; overflow: visible !important; }
+    #section-eopr.active main { display: block !important; height: auto !important; overflow: visible !important; }
+    #section-eopr.active main > section:not(.no-print) { display: block !important; height: auto !important; overflow: visible !important; width: 100% !important; }
     @page opr-page { size: A4 portrait; margin: 0mm; }
     .print-container {
       page: opr-page;
@@ -106,7 +106,8 @@
     .signature-space { height: 35px !important; }
     @page { size: A4 portrait; margin: 8mm 10mm 8mm 10mm; }
   }
-  .vertical-text-upright{ writing-mode:vertical-rl; transform:rotate(180deg); white-space:nowrap; letter-spacing:1px; }
+  .vertical-text-upright{ display:flex; flex-direction:column; align-items:center; line-height:1.05; }
+  .vertical-text-upright span{ display:block; }
   .clip-roof-up{ clip-path: polygon(50% 0%, 100% 20%, 100% 100%, 0 100%, 0 20%); }
   .image-crop-center{ width:100%; height:100%; object-fit:cover; object-position:center; }
 </style>
@@ -1797,7 +1798,7 @@ window.onload = function(){
       }
     }
 
-    // FUNGSI RENDER GRID GAMBAR DENGAN CROP PINTAR (image-crop-center)
+    // FUNGSI RENDER GRID GAMBAR DENGAN CROP PINTAR (guna background-image, serasi penuh dengan html2canvas)
     function renderPhotoGrid() {
       const grid = document.getElementById('view-photo-grid');
       if(!grid) return;
@@ -1812,42 +1813,43 @@ window.onload = function(){
       let html = '';
       const total = activePhotos.length;
       
-      // Kelas penting di sini: image-crop-center akan fokus automatik ke tengah gambar dan tutup ruang
-      const imgClass = "image-crop-center block";
+      // photoDiv: background-image + background-size:cover mengekalkan nisbah asal & serasi eksport html2canvas
+      // (elak <img object-fit>, yang sering "pecah"/teregang semasa eksport JPG)
+      const photoDiv = (src) => `<div class="w-full h-full bg-slate-100" style="background-image:url('${src}'); background-size:cover; background-position:center;"></div>`;
       const wrapClass = "overflow-hidden w-full h-full bg-slate-100";
 
       if (total === 1) {
-        html = `<div class="${wrapClass}"><img src="${activePhotos[0]}" class="${imgClass}"></div>`;
+        html = `<div class="${wrapClass}">${photoDiv(activePhotos[0])}</div>`;
       } 
       else if (total === 2) {
         html = `<div class="w-full h-full grid grid-cols-2 gap-1 bg-white border border-slate-100">
-                  <div class="${wrapClass}"><img src="${activePhotos[0]}" class="${imgClass}"></div>
-                  <div class="${wrapClass}"><img src="${activePhotos[1]}" class="${imgClass}"></div>
+                  <div class="${wrapClass}">${photoDiv(activePhotos[0])}</div>
+                  <div class="${wrapClass}">${photoDiv(activePhotos[1])}</div>
                 </div>`;
       } 
       else if (total === 3) {
         html = `<div class="w-full h-full grid grid-cols-3 gap-1 bg-white border border-slate-100">
-                  <div class="${wrapClass}"><img src="${activePhotos[0]}" class="${imgClass}"></div>
-                  <div class="${wrapClass}"><img src="${activePhotos[1]}" class="${imgClass}"></div>
-                  <div class="${wrapClass}"><img src="${activePhotos[2]}" class="${imgClass}"></div>
+                  <div class="${wrapClass}">${photoDiv(activePhotos[0])}</div>
+                  <div class="${wrapClass}">${photoDiv(activePhotos[1])}</div>
+                  <div class="${wrapClass}">${photoDiv(activePhotos[2])}</div>
                 </div>`;
       } 
       else if (total === 4) {
         html = `<div class="w-full h-full grid grid-cols-2 grid-rows-2 gap-1 bg-white border border-slate-100">
-                  <div class="${wrapClass}"><img src="${activePhotos[0]}" class="${imgClass}"></div>
-                  <div class="${wrapClass}"><img src="${activePhotos[1]}" class="${imgClass}"></div>
-                  <div class="${wrapClass}"><img src="${activePhotos[2]}" class="${imgClass}"></div>
-                  <div class="${wrapClass}"><img src="${activePhotos[3]}" class="${imgClass}"></div>
+                  <div class="${wrapClass}">${photoDiv(activePhotos[0])}</div>
+                  <div class="${wrapClass}">${photoDiv(activePhotos[1])}</div>
+                  <div class="${wrapClass}">${photoDiv(activePhotos[2])}</div>
+                  <div class="${wrapClass}">${photoDiv(activePhotos[3])}</div>
                 </div>`;
       } 
       else if (total === 5) {
         html = `
           <div class="w-full h-full grid grid-cols-6 grid-rows-2 gap-1 bg-white border border-slate-100">
-             <div class="col-span-3 ${wrapClass}"><img src="${activePhotos[0]}" class="${imgClass}"></div>
-             <div class="col-span-3 ${wrapClass}"><img src="${activePhotos[1]}" class="${imgClass}"></div>
-             <div class="col-span-2 ${wrapClass}"><img src="${activePhotos[2]}" class="${imgClass}"></div>
-             <div class="col-span-2 ${wrapClass}"><img src="${activePhotos[3]}" class="${imgClass}"></div>
-             <div class="col-span-2 ${wrapClass}"><img src="${activePhotos[4]}" class="${imgClass}"></div>
+             <div class="col-span-3 ${wrapClass}">${photoDiv(activePhotos[0])}</div>
+             <div class="col-span-3 ${wrapClass}">${photoDiv(activePhotos[1])}</div>
+             <div class="col-span-2 ${wrapClass}">${photoDiv(activePhotos[2])}</div>
+             <div class="col-span-2 ${wrapClass}">${photoDiv(activePhotos[3])}</div>
+             <div class="col-span-2 ${wrapClass}">${photoDiv(activePhotos[4])}</div>
           </div>
         `;
       }
@@ -1888,7 +1890,7 @@ window.onload = function(){
       if(viewTitle) viewTitle.innerText = state.title || '-';
       if(viewDatetime) viewDatetime.innerHTML = state.datetime.replace(/\n/g, '<br>') || '-';
       if(viewTarget) viewTarget.innerText = state.target || '-';
-      if(viewSideText) viewSideText.innerText = state.sideText || '';
+      if(viewSideText) viewSideText.innerHTML = (state.sideText || '').split('').map(ch => `<span>${ch === ' ' ? '&nbsp;' : ch}</span>`).join('');
       if(viewKra) viewKra.innerHTML = state.kra.replace(/\n/g, '<br>') || '-';
       if(viewAuthor) viewAuthor.innerText = state.author || '-';
 
