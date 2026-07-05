@@ -93,16 +93,16 @@
     body { background: white !important; color: black !important; padding: 0 !important; margin: 0 !important; }
     .no-print { display: none !important; }
     .print-area { display: block !important; width: 100% !important; margin: 0 !important; padding: 0 !important; }
-    #print-area-monthly { border: none !important; box-shadow: none !important; border-radius: 0 !important; padding: 0 !important; margin: 0 !important; width: 100% !important; max-width: 100% !important; height: 272mm !important; display: flex !important; flex-direction: column !important; }
-    .school-header { margin-bottom: 8px !important; padding-bottom: 6px !important; }
-    .school-logo { height: 52px !important; width: 52px !important; }
-    .school-title { font-size: 13.5px !important; line-height: 1.2 !important; }
-    .school-subtitle { font-size: 9px !important; }
-    .report-title-section { margin-bottom: 8px !important; }
-    .report-title-text { font-size: 11px !important; }
-    table { width: 100% !important; border-collapse: collapse !important; margin-top: 4px !important; page-break-inside: avoid !important; }
-    th, td { padding: 3.5px 6px !important; font-size: 9px !important; line-height: 1.15 !important; border: 1px solid black !important; }
-    .signature-block { margin-top: auto !important; padding-top: 12px !important; }
+    #print-area-monthly { border: none !important; box-shadow: none !important; border-radius: 0 !important; padding: 0 !important; margin: 0 !important; width: 100% !important; max-width: 100% !important; height: 258mm !important; display: flex !important; flex-direction: column !important; }
+    .school-header { margin-bottom: 5px !important; padding-bottom: 4px !important; }
+    .school-logo { height: 44px !important; width: 44px !important; }
+    .school-title { font-size: 12px !important; line-height: 1.15 !important; }
+    .school-subtitle { font-size: 8px !important; }
+    .report-title-section { margin-bottom: 5px !important; }
+    .report-title-text { font-size: 10px !important; }
+    table { width: 100% !important; border-collapse: collapse !important; margin-top: 2px !important; page-break-inside: avoid !important; }
+    th, td { padding: 2px 5px !important; font-size: 8px !important; line-height: 1.05 !important; border: 1px solid black !important; }
+    .signature-block { margin-top: auto !important; padding-top: 6px !important; }
     .signature-space { height: 45px !important; }
     @page { size: A4 portrait; margin: 8mm 10mm 8mm 10mm; }
   }
@@ -119,8 +119,8 @@
 <!-- ===================================================================== -->
 <!-- ============ SKRIN PEMUATAN ============ -->
 <div id="loading-screen" class="no-print">
-  <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue to-cyan flex items-center justify-center shadow-lg shadow-blue/40 overflow-hidden">
-    <img src="logo.png" alt="Logo" class="w-full h-full object-cover" onerror="this.style.display='none'">
+  <div class="w-16 h-16 flex items-center justify-center">
+    <img src="logo.png" alt="Logo" class="w-full h-full object-contain" onerror="this.style.display='none'">
   </div>
   <div class="loader-ring"></div>
   <p class="font-display font-bold text-sm tracking-widest text-sky uppercase">SK Krangan</p>
@@ -138,8 +138,8 @@
   <div class="relative w-full max-w-md glass rounded-[2rem] shadow-2xl shadow-blue/10 p-9 text-center pop-in">
     <a href="index.html" class="inline-flex items-center gap-2 text-xs font-bold text-white/40 hover:text-white mb-6"><i data-lucide="arrow-left" class="w-3.5 h-3.5"></i> Kembali ke laman awam</a>
     <div class="relative w-16 h-16 mx-auto mb-5">
-      <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue to-cyan flex items-center justify-center shadow-lg shadow-blue/40 overflow-hidden">
-        <img src="logo.png" alt="Logo" class="w-full h-full object-cover" onerror="this.style.display='none'; this.insertAdjacentHTML('afterend','<i data-lucide=school class=\'w-7 h-7 text-white\'></i>'); lucide.createIcons();">
+      <div class="w-16 h-16 flex items-center justify-center">
+        <img src="logo.png" alt="Logo" class="w-full h-full object-contain" onerror="this.style.display='none'; this.insertAdjacentHTML('afterend','<i data-lucide=school class=\'w-7 h-7 text-sky\'></i>'); lucide.createIcons();">
       </div>
     </div>
     <h1 class="font-display font-bold text-2xl text-white mb-2">Papan Pemuka Staf</h1>
