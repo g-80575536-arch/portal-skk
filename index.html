@@ -427,7 +427,9 @@
       </div>
       <button onclick="closeUnitModal()" class="w-9 h-9 rounded-full hover:bg-white/10 flex items-center justify-center shrink-0"><i data-lucide="x" class="w-5 h-5 text-white/60"></i></button>
     </div>
-    <div id="unit-modal-content" class="px-8 py-6 text-white/70 leading-relaxed"></div>
+    <div id="unit-modal-content" class="px-8 pt-6 text-white/70 leading-relaxed"></div>
+    <div id="unit-modal-images" class="px-8"></div>
+    <div id="unit-modal-reports" class="px-8 pb-8"></div>
   </div>
 </div>
 
@@ -570,7 +572,9 @@
   }, { threshold: 0.4 });
   counters.forEach(c => counterObserver.observe(c));
 
-  // ---- Kandungan Unit (serasi dengan Modul CMS dashboard.html) ----
+  // ---- Kandungan Unit (Fasa 2: tarik dari storan DIKONGSI, sandaran localStorage/lalai) ----
+  const CMS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycby5d1TeOXpnrfSHsjzrMiQ3F2Ja5UTG_uEEzzks5xn89GNNlGhXl1z_Md778GhR_Og/exec";
+
   const defaultDb = {
     'Pengurusan':      { icon:'briefcase',    desc:'Carta organisasi, dasar & peraturan sekolah.',       content:'Sila rujuk pihak pentadbiran sekolah untuk maklumat lanjut mengenai carta organisasi dan dasar sekolah.' },
     'Kurikulum':       { icon:'book-open',    desc:'Pengurusan akademik & peningkatan mutu pengajaran.', content:'Unit Kurikulum bertanggungjawab menyelaraskan pengajaran dan pembelajaran di seluruh sekolah.' },
@@ -578,7 +582,9 @@
     'Hal Ehwal Murid': { icon:'shield-check', desc:'Kebajikan, disiplin & keselamatan murid.',           content:'Unit Hal Ehwal Murid (HEM) menguruskan kebajikan, disiplin dan keselamatan murid di sekolah.' },
     'Prasekolah':      { icon:'baby',         desc:'Pendidikan awal kanak-kanak sebelum darjah satu.',   content:'Kelas Prasekolah SK Krangan menyediakan asuhan dan pembelajaran awal yang menyeronokkan untuk murid.' }
   };
+  let cmsRemoteCache = null;
   function loadDb(){
+    if(cmsRemoteCache) return cmsRemoteCache;
     try{ const saved = JSON.parse(localStorage.getItem('skk_db')); if(saved && typeof saved==='object') return saved; }catch(e){}
     return {};
   }
@@ -587,6 +593,32 @@
     if(typeof db[name] === 'string' && db[name].trim() !== '') return db[name];
     return defaultDb[name].content;
   }
+  async function syncCmsFromBackend(){
+    if(!CMS_SCRIPT_URL || CMS_SCRIPT_URL.includes('PLACEHOLDER')) return;
+    try{
+      const res = await fetch(CMS_SCRIPT_URL);
+      if(!res.ok) throw new Error('rangkaian gagal');
+      const remote = await res.json();
+      cmsRemoteCache = remote;
+      localStorage.setItem('skk_db', JSON.stringify(remote));
+      renderUnitGrid(); // bina semula kad dgn kandungan terkini (huraian kad sendiri tetap tak berubah, cuma isi modal yang disegerakkan)
+    }catch(e){ /* senyap - kekal guna salinan tempatan/lalai sedia ada */ }
+  }
+
+  let unitImagesCache = [];
+  let unitReportsCache = [];
+  async function syncMediaFromBackend(){
+    if(!CMS_SCRIPT_URL || CMS_SCRIPT_URL.includes('PLACEHOLDER')) return;
+    try{
+      const [imgRes, repRes] = await Promise.all([
+        fetch(CMS_SCRIPT_URL + '?action=images'),
+        fetch(CMS_SCRIPT_URL + '?action=reports')
+      ]);
+      if(imgRes.ok) unitImagesCache = await imgRes.json();
+      if(repRes.ok) unitReportsCache = await repRes.json();
+    }catch(e){ /* senyap - galeri kekal kosong jika rangkaian gagal */ }
+  }
+
   function renderUnitGrid(){
     document.getElementById('unit-grid').innerHTML = Object.keys(defaultDb).map(name => {
       const meta = defaultDb[name];
@@ -606,12 +638,34 @@
     document.getElementById('unit-modal-eyebrow').innerText = 'Unit Sekolah';
     document.getElementById('unit-modal-title').innerText = name;
     document.getElementById('unit-modal-content').innerHTML = getUnitContent(name).replace(/\n/g,'<br>');
+
+    const images = unitImagesCache.filter(i => i.unit === name);
+    const imgBox = document.getElementById('unit-modal-images');
+    imgBox.innerHTML = images.length ? `
+      <div class="grid grid-cols-3 gap-2 mt-2">
+        ${images.map(i => `<a href="${i.imageUrl}" target="_blank" rel="noopener" class="block aspect-square rounded-xl overflow-hidden border border-white/10" style="background-image:url('${i.imageUrl}'); background-size:cover; background-position:center;"></a>`).join('')}
+      </div>` : '';
+
+    const reports = unitReportsCache.filter(r => r.unit === name);
+    const repBox = document.getElementById('unit-modal-reports');
+    repBox.innerHTML = reports.length ? `
+      <h4 class="font-display font-bold text-sm text-cyan uppercase tracking-wider mt-6 mb-3">Laporan Aktiviti</h4>
+      <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+        ${reports.map(r => `
+          <a href="${r.imageUrl}" target="_blank" rel="noopener" class="group block">
+            <div class="aspect-[210/297] rounded-lg overflow-hidden border border-white/10 group-hover:border-cyan transition-all" style="background-image:url('${r.imageUrl}'); background-size:cover; background-position:top;"></div>
+            <p class="text-[11px] text-white/50 mt-1.5 truncate">${r.title || 'Laporan'}</p>
+          </a>`).join('')}
+      </div>` : '';
+
     const modal = document.getElementById('unit-modal'); modal.classList.remove('hidden'); modal.classList.add('flex');
   }
   function closeUnitModal(){ const modal = document.getElementById('unit-modal'); modal.classList.add('hidden'); modal.classList.remove('flex'); }
 
   renderUnitGrid();
   renderOrgChart();
+  syncCmsFromBackend();
+  syncMediaFromBackend();
 </script>
 </body>
 </html>

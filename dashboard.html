@@ -189,7 +189,7 @@
   <div id="section-picker" class="tab-content active max-w-6xl mx-auto px-5 sm:px-8 py-14">
     <div class="mb-10 pop-in">
       <h2 class="font-display font-bold text-3xl text-white">Selamat kembali, <span id="welcome-name" class="text-cyan">Staf</span> 👋</h2>
-      <p class="text-white/50 mt-1">Pilih sistem anda</p>
+      <p class="text-white/50 mt-1">Sila pilih sistem anda di bawah.</p>
     </div>
     <div id="module-grid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
   </div>
@@ -203,8 +203,20 @@
       <div class="grid md:grid-cols-4 gap-8">
         <div class="md:col-span-1 flex md:flex-col gap-2 overflow-x-auto" id="cms-unit-tabs"></div>
         <div class="md:col-span-3">
-          <textarea id="cms-editor" rows="12" class="w-full bg-white/5 border border-white/15 rounded-2xl p-5 text-sm leading-relaxed text-white focus:ring-2 focus:ring-sky focus:outline-none"></textarea>
-          <div class="flex items-center justify-between mt-4">
+          <textarea id="cms-editor" rows="10" class="w-full bg-white/5 border border-white/15 rounded-2xl p-5 text-sm leading-relaxed text-white focus:ring-2 focus:ring-sky focus:outline-none"></textarea>
+
+          <div class="mt-6">
+            <div class="flex items-center justify-between mb-3">
+              <label class="text-xs font-bold uppercase tracking-wider text-white/50">Gambar Unit (pilihan)</label>
+              <label class="cursor-pointer inline-flex items-center gap-1.5 text-xs font-bold text-sky hover:text-white bg-white/5 hover:bg-white/10 px-3 py-1.5 rounded-lg transition-all">
+                <i data-lucide="upload" class="w-3.5 h-3.5"></i> Muat Naik Gambar
+                <input type="file" accept="image/*" class="hidden" onchange="uploadCmsImage(event)">
+              </label>
+            </div>
+            <div id="cms-image-grid" class="grid grid-cols-3 sm:grid-cols-4 gap-3"></div>
+          </div>
+
+          <div class="flex items-center justify-between mt-6">
             <span id="cms-save-status" class="text-xs text-white/40"></span>
             <button onclick="saveCmsContent()" class="btn-glow btn-shine inline-flex items-center gap-2 bg-gradient-to-r from-blue to-cyan text-white font-bold px-6 py-3 rounded-full transition-all">
               <i data-lucide="save" class="w-4 h-4"></i> Simpan &amp; Terbitkan
@@ -560,6 +572,9 @@
           <span class="text-xs font-bold text-slate-700">Previu Langsung (A4)</span>
         </div>
         <div class="flex items-center gap-2">
+          <button onclick="saveReportToPortal()" id="btn-save-portal" class="bg-cyan-600 hover:bg-cyan-700 text-white text-[11px] font-bold px-3 py-2 rounded-lg transition-all flex items-center gap-1.5 shadow-sm">
+            <i data-lucide="cloud-upload" class="w-3.5 h-3.5"></i> Simpan ke Portal
+          </button>
           <button onclick="downloadAsJPG()" class="bg-indigo-600 hover:bg-indigo-700 text-white text-[11px] font-bold px-3 py-2 rounded-lg transition-all flex items-center gap-1.5 shadow-sm">
             <i data-lucide="image" class="w-3.5 h-3.5"></i> Eksport JPG
           </button>
@@ -935,9 +950,14 @@ function showModule(id){
 }
 
 /* =====================================================================
-   MODUL CMS - simpan sebagai peta rata { "Nama Unit": "teks..." } dalam
-   localStorage key 'skk_db' - format SAMA yang dibaca index.html
+   MODUL CMS - Fasa 2: disambungkan ke storan DIKONGSI (Google Sheets)
+   supaya kandungan terbit untuk SEMUA pelawat, bukan cuma peranti staf.
+   Sandaran automatik ke localStorage jika CMS_SCRIPT_URL belum ditetapkan
+   atau rangkaian gagal - sistem tetap berfungsi (macam sebelum ini) dalam
+   keadaan tersebut, cuma tidak berkongsi merentasi peranti.
    ===================================================================== */
+const CMS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycby5d1TeOXpnrfSHsjzrMiQ3F2Ja5UTG_uEEzzks5xn89GNNlGhXl1z_Md778GhR_Og/exec";
+
 const cmsUnitMeta = {
   'Pengurusan':      'Sila edit kandungan carta organisasi, dasar dan peraturan sekolah di sini.',
   'Kurikulum':       'Unit Kurikulum bertanggungjawab menyelaraskan pengajaran dan pembelajaran di seluruh sekolah.',
@@ -947,12 +967,25 @@ const cmsUnitMeta = {
 };
 let cmsActiveUnit = null;
 
+function isCmsBackendConfigured(){
+  return CMS_SCRIPT_URL && !CMS_SCRIPT_URL.includes('PLACEHOLDER');
+}
+
 function loadCmsDb(){
   try{
     const saved = JSON.parse(localStorage.getItem('skk_db'));
     if(saved && typeof saved === 'object') return saved;
   }catch(e){}
   return {};
+}
+
+async function fetchCmsDbRemote(){
+  if(!isCmsBackendConfigured()) return null;
+  try{
+    const res = await fetch(CMS_SCRIPT_URL);
+    if(!res.ok) throw new Error('rangkaian gagal');
+    return await res.json();
+  }catch(e){ return null; }
 }
 
 function renderCmsTabs(){
@@ -963,26 +996,116 @@ function renderCmsTabs(){
   if(currentUser.cmsUnits.length) selectCmsUnit(currentUser.cmsUnits[0]);
 }
 
-function selectCmsUnit(unit){
+async function selectCmsUnit(unit){
   cmsActiveUnit = unit;
   currentUser.cmsUnits.forEach(u => {
     const tab = document.getElementById('cms-tab-' + u.replace(/\s+/g,''));
     if(!tab) return;
     tab.className = 'text-left px-4 py-3 rounded-xl text-sm font-bold whitespace-nowrap md:whitespace-normal transition-all ' + (u===unit ? 'bg-gradient-to-r from-blue to-cyan text-white' : 'bg-white/5 text-white/60 hover:bg-white/10');
   });
-  const db = loadCmsDb();
-  document.getElementById('cms-editor').value = (typeof db[unit] === 'string' && db[unit].trim()!=='') ? db[unit] : cmsUnitMeta[unit];
-  document.getElementById('cms-save-status').innerText = '';
+  const statusEl = document.getElementById('cms-save-status');
+  const editorEl = document.getElementById('cms-editor');
+
+  // Papar dahulu apa yang ada (tempatan/lalai) supaya editor tak nampak kosong semasa tunggu rangkaian
+  let db = loadCmsDb();
+  editorEl.value = (typeof db[unit] === 'string' && db[unit].trim()!=='') ? db[unit] : cmsUnitMeta[unit];
+  statusEl.innerText = isCmsBackendConfigured() ? 'Menyemak kandungan terkini...' : 'Mod tempatan sahaja (storan dikongsi belum disediakan)';
+  renderCmsImageGrid([]); // kosongkan dahulu semasa tukar tab
+
+  if(isCmsBackendConfigured()){
+    const remote = await fetchCmsDbRemote();
+    if(remote){
+      localStorage.setItem('skk_db', JSON.stringify(remote));
+      if(cmsActiveUnit === unit){ // elak timpa jika staf dah tukar tab semasa tunggu
+        editorEl.value = (typeof remote[unit] === 'string' && remote[unit].trim()!=='') ? remote[unit] : cmsUnitMeta[unit];
+        statusEl.innerText = '';
+      }
+    } else {
+      statusEl.innerText = 'Gagal sambung ke storan dikongsi - memapar salinan tempatan';
+    }
+    loadCmsImages(unit);
+  }
 }
 
-function saveCmsContent(){
+function renderCmsImageGrid(images){
+  const grid = document.getElementById('cms-image-grid');
+  if(!grid) return;
+  if(!images.length){
+    grid.innerHTML = `<p class="col-span-full text-xs text-white/30 italic">Tiada gambar dimuat naik lagi untuk unit ini.</p>`;
+    return;
+  }
+  grid.innerHTML = images.map(img => `
+    <a href="${img.imageUrl}" target="_blank" rel="noopener" class="block aspect-square rounded-xl overflow-hidden border border-white/10 hover:border-sky transition-all bg-white/5" style="background-image:url('${img.imageUrl}'); background-size:cover; background-position:center;" title="Buka saiz penuh"></a>
+  `).join('');
+}
+
+async function loadCmsImages(unit){
+  try{
+    const res = await fetch(CMS_SCRIPT_URL + '?action=images');
+    if(!res.ok) throw new Error();
+    const all = await res.json();
+    if(cmsActiveUnit === unit){
+      renderCmsImageGrid(all.filter(img => img.unit === unit));
+    }
+  }catch(e){ /* senyap - gambar sedia ada takkan papar jika rangkaian gagal */ }
+}
+
+async function uploadCmsImage(event){
+  const file = event.target.files[0];
+  if(!file || !cmsActiveUnit) return;
+  if(!isCmsBackendConfigured()){
+    showToast('Storan dikongsi belum disediakan lagi. Sila hubungi Penyelaras Digital.', 'error');
+    event.target.value = '';
+    return;
+  }
+  showToast('Memuat naik gambar...', 'info');
+  const reader = new FileReader();
+  reader.onload = async () => {
+    try{
+      await fetch(CMS_SCRIPT_URL, {
+        method: 'POST', mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'uploadImage', unit: cmsActiveUnit, imageBase64: reader.result, editor: currentUser.name })
+      });
+      showToast('Gambar berjaya dimuat naik!', 'success');
+      setTimeout(() => loadCmsImages(cmsActiveUnit), 1200);
+    }catch(e){
+      showToast('Gagal muat naik gambar. Sila cuba semula.', 'error');
+    }
+  };
+  reader.readAsDataURL(file);
+  event.target.value = '';
+}
+
+async function saveCmsContent(){
   if(!cmsActiveUnit) return;
+  const content = document.getElementById('cms-editor').value;
   const db = loadCmsDb();
-  db[cmsActiveUnit] = document.getElementById('cms-editor').value;
+  db[cmsActiveUnit] = content;
   localStorage.setItem('skk_db', JSON.stringify(db));
+
   const status = document.getElementById('cms-save-status');
-  status.innerText = 'Disimpan & terbit ' + new Date().toLocaleTimeString('ms-MY');
-  showToast(`Kandungan "${cmsActiveUnit}" berjaya dikemas kini!`, 'success');
+
+  if(!isCmsBackendConfigured()){
+    status.innerText = 'Disimpan tempatan sahaja (storan dikongsi belum disediakan)';
+    showToast(`Kandungan "${cmsActiveUnit}" disimpan tempatan sahaja.`, 'info');
+    return;
+  }
+
+  status.innerText = 'Menerbitkan...';
+  try{
+    await fetch(CMS_SCRIPT_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ unit: cmsActiveUnit, content: content, editor: currentUser.name })
+    });
+    status.innerText = 'Disimpan & terbit ' + new Date().toLocaleTimeString('ms-MY');
+    showToast(`Kandungan "${cmsActiveUnit}" berjaya diterbitkan untuk semua pelawat!`, 'success');
+  }catch(e){
+    status.innerText = 'Disimpan tempatan sahaja (rangkaian gagal)';
+    showToast('Gagal sambung ke storan dikongsi. Disimpan tempatan sahaja buat masa ini.', 'error');
+  }
 }
 
 /* =====================================================================
@@ -2086,6 +2209,47 @@ window.onload = function(){
       } catch(err) {
         console.error(err);
         showToastOPR('Ralat Keselamatan (CORS). Guna butang Simpan PDF untuk lebih stabil.', 'bg-red-500');
+      }
+    }
+
+    async function saveReportToPortal() {
+      if(!isCmsBackendConfigured()){
+        showToastOPR('Storan dikongsi belum disediakan. Sila hubungi Penyelaras Digital.', 'bg-amber-500');
+        return;
+      }
+      const btn = document.getElementById('btn-save-portal');
+      const originalHtml = btn.innerHTML;
+      btn.disabled = true;
+      btn.innerHTML = `<i data-lucide="loader-2" class="w-3.5 h-3.5 animate-spin"></i> Menyimpan...`;
+      lucide.createIcons();
+      showToastOPR('Menjana & memuat naik laporan ke portal...', 'bg-cyan-600');
+      try {
+        const canvas = await getCanvas();
+        if (!canvas) throw new Error('Gagal menjana Canvas');
+        const imageBase64 = canvas.toDataURL('image/jpeg', 0.92);
+        await fetch(CMS_SCRIPT_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            action: 'saveReport',
+            unit: state.sideText,
+            title: state.title,
+            programDate: (state.datetime || '').split('\n')[0] || '',
+            imageBase64: imageBase64,
+            editor: (typeof currentUser !== 'undefined' && currentUser) ? currentUser.name : ''
+          })
+        });
+        showToastOPR(`Laporan berjaya disimpan ke unit "${state.sideText}"!`, 'bg-emerald-600');
+        btn.innerHTML = `<i data-lucide="check" class="w-3.5 h-3.5"></i> Tersimpan!`;
+        lucide.createIcons();
+      } catch(err) {
+        console.error(err);
+        showToastOPR('Gagal simpan ke portal. Sila cuba semula.', 'bg-red-500');
+        btn.innerHTML = originalHtml;
+        lucide.createIcons();
+      } finally {
+        setTimeout(() => { btn.disabled = false; btn.innerHTML = originalHtml; lucide.createIcons(); }, 2500);
       }
     }
 
