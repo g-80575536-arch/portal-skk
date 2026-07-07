@@ -216,6 +216,42 @@
             <div id="cms-image-grid" class="grid grid-cols-3 sm:grid-cols-4 gap-3"></div>
           </div>
 
+          <!-- ===== Carta Organisasi Unit ===== -->
+          <div class="mt-8 pt-6 border-t border-white/10">
+            <div class="flex items-center justify-between mb-3">
+              <label class="text-xs font-bold uppercase tracking-wider text-white/50">Carta Organisasi Unit</label>
+              <button onclick="addCartaRow()" class="inline-flex items-center gap-1.5 text-xs font-bold text-sky hover:text-white bg-white/5 hover:bg-white/10 px-3 py-1.5 rounded-lg transition-all">
+                <i data-lucide="user-plus" class="w-3.5 h-3.5"></i> Tambah Ahli
+              </button>
+            </div>
+            <div id="cms-carta-rows" class="space-y-2 mb-3"></div>
+            <button onclick="saveCartaUnit()" class="text-xs font-bold text-white/60 hover:text-white bg-white/5 hover:bg-white/10 px-4 py-2 rounded-lg transition-all inline-flex items-center gap-1.5">
+              <i data-lucide="save" class="w-3.5 h-3.5"></i> Simpan Carta Organisasi
+            </button>
+            <span id="cms-carta-status" class="text-xs text-white/40 ml-2"></span>
+          </div>
+
+          <!-- ===== Minit Mesyuarat ===== -->
+          <div class="mt-8 pt-6 border-t border-white/10">
+            <label class="text-xs font-bold uppercase tracking-wider text-white/50 block mb-3">Minit Mesyuarat</label>
+            <div class="grid sm:grid-cols-2 gap-3 mb-3">
+              <input id="minit-title" type="text" placeholder="Tajuk mesyuarat (cth. Mesyuarat Panitia Bil.1)" class="w-full bg-white/5 border border-white/15 rounded-xl px-4 py-2.5 text-sm text-white placeholder-white/30 focus:ring-2 focus:ring-sky focus:outline-none">
+              <input id="minit-date" type="date" class="w-full bg-white/5 border border-white/15 rounded-xl px-4 py-2.5 text-sm text-white focus:ring-2 focus:ring-sky focus:outline-none">
+            </div>
+            <div class="flex items-center gap-3 mb-4">
+              <label class="cursor-pointer inline-flex items-center gap-1.5 text-xs font-bold text-sky hover:text-white bg-white/5 hover:bg-white/10 px-3 py-2 rounded-lg transition-all">
+                <i data-lucide="file-up" class="w-3.5 h-3.5"></i> Pilih Fail PDF
+                <input id="minit-file-input" type="file" accept="application/pdf" class="hidden" onchange="handleMinitFileChosen(event)">
+              </label>
+              <span id="minit-file-label" class="text-xs text-white/40">Tiada fail dipilih</span>
+              <button onclick="uploadMinit()" class="ml-auto text-xs font-bold bg-gradient-to-r from-blue to-cyan text-white px-4 py-2 rounded-lg transition-all inline-flex items-center gap-1.5">
+                <i data-lucide="upload" class="w-3.5 h-3.5"></i> Muat Naik
+              </button>
+            </div>
+            <span id="cms-minit-status" class="text-xs text-white/40 block mb-3"></span>
+            <div id="cms-minit-list" class="space-y-2"></div>
+          </div>
+
           <div class="flex items-center justify-between mt-6">
             <span id="cms-save-status" class="text-xs text-white/40"></span>
             <button onclick="saveCmsContent()" class="btn-glow btn-shine inline-flex items-center gap-2 bg-gradient-to-r from-blue to-cyan text-white font-bold px-6 py-3 rounded-full transition-all">
@@ -516,7 +552,7 @@
               <option value="HAL EHWAL MURID">HAL EHWAL MURID</option>
               <option value="KOKURIKULUM">KOKURIKULUM</option>
               <option value="KURIKULUM">KURIKULUM</option>
-              <option value="PENTADBIRAN">PENTADBIRAN</option>
+              <option value="PENGURUSAN">PENGURUSAN</option>
             </select>
           </div>
         </div>
@@ -956,7 +992,7 @@ function showModule(id){
    atau rangkaian gagal - sistem tetap berfungsi (macam sebelum ini) dalam
    keadaan tersebut, cuma tidak berkongsi merentasi peranti.
    ===================================================================== */
-const CMS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycby5d1TeOXpnrfSHsjzrMiQ3F2Ja5UTG_uEEzzks5xn89GNNlGhXl1z_Md778GhR_Og/exec";
+const CMS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzq6TdbomBgCOdL2pxPtEY6finPdJ5vPmZ4BhQWUqoyiOGyzgldhpHjcyrsmO9mnDOu/exec";
 
 const cmsUnitMeta = {
   'Pengurusan':      'Sila edit kandungan carta organisasi, dasar dan peraturan sekolah di sini.',
@@ -1011,6 +1047,8 @@ async function selectCmsUnit(unit){
   editorEl.value = (typeof db[unit] === 'string' && db[unit].trim()!=='') ? db[unit] : cmsUnitMeta[unit];
   statusEl.innerText = isCmsBackendConfigured() ? 'Menyemak kandungan terkini...' : 'Mod tempatan sahaja (storan dikongsi belum disediakan)';
   renderCmsImageGrid([]); // kosongkan dahulu semasa tukar tab
+  renderCartaRows([]);
+  renderMinitList([]);
 
   if(isCmsBackendConfigured()){
     const remote = await fetchCmsDbRemote();
@@ -1024,6 +1062,8 @@ async function selectCmsUnit(unit){
       statusEl.innerText = 'Gagal sambung ke storan dikongsi - memapar salinan tempatan';
     }
     loadCmsImages(unit);
+    loadCartaForUnit(unit);
+    loadMinitForUnit(unit);
   }
 }
 
@@ -1075,6 +1115,134 @@ async function uploadCmsImage(event){
   };
   reader.readAsDataURL(file);
   event.target.value = '';
+}
+
+/* ===== Carta Organisasi Unit ===== */
+let cartaState = [];
+
+function renderCartaRows(){
+  const box = document.getElementById('cms-carta-rows');
+  if(!box) return;
+  if(!cartaState.length){
+    box.innerHTML = `<p class="text-xs text-white/30 italic">Tiada ahli lagi. Klik "Tambah Ahli" untuk mula.</p>`;
+    return;
+  }
+  box.innerHTML = cartaState.map((m, idx) => `
+    <div class="flex gap-2 items-center">
+      <input type="text" value="${(m.nama||'').replace(/"/g,'&quot;')}" oninput="cartaState[${idx}].nama=this.value" placeholder="Nama" class="flex-1 bg-white/5 border border-white/15 rounded-lg px-3 py-2 text-xs text-white placeholder-white/30 focus:ring-2 focus:ring-sky focus:outline-none">
+      <input type="text" value="${(m.jawatan||'').replace(/"/g,'&quot;')}" oninput="cartaState[${idx}].jawatan=this.value" placeholder="Jawatan" class="flex-1 bg-white/5 border border-white/15 rounded-lg px-3 py-2 text-xs text-white placeholder-white/30 focus:ring-2 focus:ring-sky focus:outline-none">
+      <button onclick="removeCartaRow(${idx})" class="text-rose-400 hover:text-rose-300 p-1.5"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i></button>
+    </div>
+  `).join('');
+  lucide.createIcons();
+}
+function addCartaRow(){
+  cartaState.push({ nama:'', jawatan:'' });
+  renderCartaRows();
+}
+function removeCartaRow(idx){
+  cartaState.splice(idx,1);
+  renderCartaRows();
+}
+async function loadCartaForUnit(unit){
+  try{
+    const res = await fetch(CMS_SCRIPT_URL + '?action=carta');
+    if(!res.ok) throw new Error();
+    const all = await res.json();
+    if(cmsActiveUnit === unit){
+      cartaState = all.filter(m => m.unit === unit).map(m => ({ nama:m.nama, jawatan:m.jawatan }));
+      renderCartaRows();
+    }
+  }catch(e){ /* senyap - kekal senarai kosong jika rangkaian gagal */ }
+}
+async function saveCartaUnit(){
+  if(!cmsActiveUnit) return;
+  if(!isCmsBackendConfigured()){
+    showToast('Storan dikongsi belum disediakan lagi.', 'error');
+    return;
+  }
+  const status = document.getElementById('cms-carta-status');
+  status.innerText = 'Menyimpan...';
+  try{
+    await fetch(CMS_SCRIPT_URL, {
+      method:'POST', mode:'no-cors',
+      headers: { 'Content-Type':'application/json' },
+      body: JSON.stringify({ action:'saveCarta', unit: cmsActiveUnit, members: cartaState.filter(m=>m.nama && m.nama.trim()!==''), editor: currentUser.name })
+    });
+    status.innerText = 'Disimpan ' + new Date().toLocaleTimeString('ms-MY');
+    showToast('Carta Organisasi berjaya dikemas kini!', 'success');
+  }catch(e){
+    status.innerText = 'Gagal simpan';
+    showToast('Gagal simpan Carta Organisasi.', 'error');
+  }
+}
+
+/* ===== Minit Mesyuarat ===== */
+let minitSelectedFile = null;
+function handleMinitFileChosen(event){
+  minitSelectedFile = event.target.files[0] || null;
+  document.getElementById('minit-file-label').innerText = minitSelectedFile ? minitSelectedFile.name : 'Tiada fail dipilih';
+}
+function renderMinitList(items){
+  const box = document.getElementById('cms-minit-list');
+  if(!box) return;
+  if(!items.length){
+    box.innerHTML = `<p class="text-xs text-white/30 italic">Tiada minit mesyuarat dimuat naik lagi untuk unit ini.</p>`;
+    return;
+  }
+  box.innerHTML = items.map(m => `
+    <a href="${m.fileUrl}" target="_blank" rel="noopener" class="flex items-center gap-3 bg-white/5 hover:bg-white/10 rounded-xl px-4 py-3 transition-all">
+      <i data-lucide="file-text" class="w-4 h-4 text-sky shrink-0"></i>
+      <span class="flex-1 text-sm text-white font-semibold truncate">${m.title || 'Minit Mesyuarat'}</span>
+      <span class="text-xs text-white/40 shrink-0">${m.meetingDate || ''}</span>
+    </a>
+  `).join('');
+  lucide.createIcons();
+}
+async function loadMinitForUnit(unit){
+  try{
+    const res = await fetch(CMS_SCRIPT_URL + '?action=minit');
+    if(!res.ok) throw new Error();
+    const all = await res.json();
+    if(cmsActiveUnit === unit) renderMinitList(all.filter(m => m.unit === unit));
+  }catch(e){ /* senyap */ }
+}
+async function uploadMinit(){
+  if(!cmsActiveUnit) return;
+  if(!isCmsBackendConfigured()){
+    showToast('Storan dikongsi belum disediakan lagi.', 'error');
+    return;
+  }
+  if(!minitSelectedFile){
+    showToast('Sila pilih fail PDF dahulu.', 'error');
+    return;
+  }
+  const title = document.getElementById('minit-title').value.trim();
+  const meetingDate = document.getElementById('minit-date').value;
+  const status = document.getElementById('cms-minit-status');
+  status.innerText = 'Memuat naik...';
+  const reader = new FileReader();
+  reader.onload = async () => {
+    try{
+      await fetch(CMS_SCRIPT_URL, {
+        method:'POST', mode:'no-cors',
+        headers: { 'Content-Type':'application/json' },
+        body: JSON.stringify({ action:'uploadMinit', unit: cmsActiveUnit, title: title, meetingDate: meetingDate, fileBase64: reader.result, editor: currentUser.name })
+      });
+      status.innerText = '';
+      showToast('Minit Mesyuarat berjaya dimuat naik!', 'success');
+      document.getElementById('minit-title').value = '';
+      document.getElementById('minit-date').value = '';
+      document.getElementById('minit-file-input').value = '';
+      document.getElementById('minit-file-label').innerText = 'Tiada fail dipilih';
+      minitSelectedFile = null;
+      setTimeout(() => loadMinitForUnit(cmsActiveUnit), 1200);
+    }catch(e){
+      status.innerText = '';
+      showToast('Gagal muat naik minit mesyuarat.', 'error');
+    }
+  };
+  reader.readAsDataURL(minitSelectedFile);
 }
 
 async function saveCmsContent(){
@@ -1839,7 +2007,7 @@ window.onload = function(){
       'HAL EHWAL MURID': { badgeBg: 'bg-sky-500', blockBg: 'bg-sky-50', blockBorder: 'border-sky-500', ribbonBg: 'bg-sky-100/95', ribbonBorder: 'border-sky-200', textAccent: 'text-sky-600', artGlow1: 'bg-sky-300', artGlow2: 'bg-blue-200', artFloral: 'text-sky-400' },
       'KOKURIKULUM': { badgeBg: 'bg-emerald-500', blockBg: 'bg-emerald-50', blockBorder: 'border-emerald-500', ribbonBg: 'bg-emerald-100/95', ribbonBorder: 'border-emerald-200', textAccent: 'text-emerald-600', artGlow1: 'bg-emerald-300', artGlow2: 'bg-teal-200', artFloral: 'text-emerald-400' },
       'KURIKULUM': { badgeBg: 'bg-purple-500', blockBg: 'bg-purple-50', blockBorder: 'border-purple-500', ribbonBg: 'bg-purple-100/95', ribbonBorder: 'border-purple-200', textAccent: 'text-purple-600', artGlow1: 'bg-purple-300', artGlow2: 'bg-fuchsia-200', artFloral: 'text-purple-400' },
-      'PENTADBIRAN': { badgeBg: 'bg-amber-500', blockBg: 'bg-amber-50', blockBorder: 'border-amber-500', ribbonBg: 'bg-amber-100/95', ribbonBorder: 'border-amber-200', textAccent: 'text-amber-600', artGlow1: 'bg-amber-300', artGlow2: 'bg-yellow-200', artFloral: 'text-amber-400' }
+      'PENGURUSAN': { badgeBg: 'bg-amber-500', blockBg: 'bg-amber-50', blockBorder: 'border-amber-500', ribbonBg: 'bg-amber-100/95', ribbonBorder: 'border-amber-200', textAccent: 'text-amber-600', artGlow1: 'bg-amber-300', artGlow2: 'bg-yellow-200', artFloral: 'text-amber-400' }
     };
 
 
