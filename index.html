@@ -16,10 +16,10 @@
         },
         colors: {
           navy:  { DEFAULT:'#154D8F', deep:'#0D2C54', deepest:'#071B34' },
-          blue:  '#1D6FEA',
-          sky:   '#4DA3FF',
+          blue:  { DEFAULT:'#1D6FEA', 50:'#eff6ff', 100:'#dbeafe', 200:'#bfdbfe', 300:'#93c5fd', 400:'#60a5fa', 500:'#3b82f6', 600:'#2563eb', 700:'#1d4ed8', 800:'#1e40af', 900:'#1e3a8a', 950:'#172554' },
+          sky:   { DEFAULT:'#4DA3FF', 50:'#f0f9ff', 100:'#e0f2fe', 200:'#bae6fd', 300:'#7dd3fc', 400:'#38bdf8', 500:'#0ea5e9', 600:'#0284c7', 700:'#0369a1', 800:'#075985', 900:'#0c4a6e', 950:'#082f49' },
+          cyan:  { DEFAULT:'#22D3EE', 50:'#ecfeff', 100:'#cffafe', 200:'#a5f3fc', 300:'#67e8f9', 400:'#22d3ee', 500:'#06b6d4', 600:'#0891b2', 700:'#0e7490', 800:'#155e75', 900:'#164e63', 950:'#083344' },
           ice:   '#EAF4FF',
-          cyan:  '#22D3EE',
           gold:  '#F2B705'
         }
       }
@@ -204,8 +204,21 @@
 </div>
 
 <!-- ============ HERO SKRIN PENUH ============ -->
-<section id="utama" class="min-h-[92vh] flex items-center relative px-5 sm:px-8">
-  <div class="max-w-4xl mx-auto text-center reveal">
+<section id="utama" class="min-h-[92vh] flex items-center relative px-5 sm:px-8 pt-10 pb-16">
+  <div class="max-w-4xl mx-auto text-center reveal w-full">
+    <div class="relative w-full max-w-3xl mx-auto rounded-[2rem] overflow-hidden shadow-2xl shadow-blue/20 border border-white/10 mb-10 h-[220px] sm:h-[320px] md:h-[380px]">
+      <div id="hero-slideshow" class="relative w-full h-full bg-navy-deep">
+        <div class="hero-slide absolute inset-0 opacity-100 transition-opacity duration-1000" style="background-image:url('sekolah-1.jpg'); background-size:cover; background-position:center;"></div>
+        <div class="hero-slide absolute inset-0 opacity-0 transition-opacity duration-1000" style="background-image:url('sekolah-2.jpg'); background-size:cover; background-position:center;"></div>
+        <div class="hero-slide absolute inset-0 opacity-0 transition-opacity duration-1000" style="background-image:url('sekolah-3.jpg'); background-size:cover; background-position:center;"></div>
+        <div class="hero-slide absolute inset-0 opacity-0 transition-opacity duration-1000" style="background-image:url('sekolah-4.jpg'); background-size:cover; background-position:center;"></div>
+        <div class="hero-slide absolute inset-0 opacity-0 transition-opacity duration-1000" style="background-image:url('sekolah-5.jpg'); background-size:cover; background-position:center;"></div>
+        <div class="hero-slide absolute inset-0 opacity-0 transition-opacity duration-1000" style="background-image:url('sekolah-6.jpg'); background-size:cover; background-position:center;"></div>
+      </div>
+      <div class="absolute inset-0 bg-gradient-to-t from-navy-deepest/70 via-transparent to-transparent pointer-events-none"></div>
+      <div class="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5" id="hero-slide-dots"></div>
+    </div>
+
     <span class="inline-flex items-center gap-2 glass text-sky text-xs font-bold uppercase tracking-widest px-4 py-2 rounded-full mb-8">
       <i data-lucide="sparkles" class="w-3.5 h-3.5"></i> Selamat Datang
     </span>
@@ -429,12 +442,32 @@
     </div>
     <div id="unit-modal-content" class="px-8 pt-6 text-white/70 leading-relaxed"></div>
     <div id="unit-modal-images" class="px-8"></div>
+    <div id="unit-modal-carta" class="px-8"></div>
+    <div id="unit-modal-minit" class="px-8"></div>
     <div id="unit-modal-reports" class="px-8 pb-8"></div>
   </div>
 </div>
 
 <script>
   lucide.createIcons();
+
+  // ---- Slaid gambar sekolah (hero) ----
+  let heroSlideIndex = 0;
+  const heroSlides = document.querySelectorAll('.hero-slide');
+  const heroDotsBox = document.getElementById('hero-slide-dots');
+  if(heroDotsBox && heroSlides.length){
+    heroDotsBox.innerHTML = Array.from(heroSlides).map((_,i) => `<span class="hero-dot w-1.5 h-1.5 rounded-full transition-all ${i===0 ? 'bg-white w-5' : 'bg-white/40'}"></span>`).join('');
+  }
+  function goToHeroSlide(next){
+    if(!heroSlides.length) return;
+    heroSlides[heroSlideIndex].style.opacity = '0';
+    const dots = document.querySelectorAll('.hero-dot');
+    if(dots[heroSlideIndex]) dots[heroSlideIndex].className = 'hero-dot w-1.5 h-1.5 rounded-full transition-all bg-white/40';
+    heroSlideIndex = next;
+    heroSlides[heroSlideIndex].style.opacity = '1';
+    if(dots[heroSlideIndex]) dots[heroSlideIndex].className = 'hero-dot w-1.5 h-1.5 rounded-full transition-all bg-white w-5';
+  }
+  setInterval(() => { goToHeroSlide((heroSlideIndex + 1) % heroSlides.length); }, 4500);
 
   // ---- Skrin pemuatan ----
   window.addEventListener('load', () => {
@@ -518,11 +551,19 @@
   // ---- Carta organisasi (subset selamat untuk paparan awam - tiada PIN/emel peribadi) ----
   const orgChart = [
     { name:'Stanley anak Ngawah', role:'Guru Besar' },
-    { name:'Dick Lester anak Bakir', role:'GPK Kurikulum' },
-    { name:'Amir bin Ngatiman', role:'GPK Hal Ehwal Murid' },
-    { name:'Mohammad Fadzly bin Noor Azman', role:'GPK Kokurikulum' },
-    { name:'Aimuni Athirah binti Latif', role:'Penyelaras Digital' },
-    { name:'Ajek anak Sumping', role:'Penyelaras Prasekolah' },
+    { name:'Dick Lester anak Bakir', role:'Guru Penolong Kanan Kurikulum' },
+    { name:'Amir bin Ngatiman', role:'Guru Penolong Kanan Hal Ehwal Murid' },
+    { name:'Mohammad Fadzly bin Noor Azman', role:'Guru Penolong Kanan Kokurikulum' },
+    { name:'Angeline anak Michael Jawa', role:'Setiausaha PIBG' },
+    { name:'Marina anak Luat', role:'Guru Data' },
+    { name:'Jeanica May anak Kuyah', role:'Setiausaha Kurikulum' },
+    { name:'Hadijah anak Ambun', role:'Guru Pemulihan' },
+    { name:'Noor Izzati Abdullah', role:'Guru Prasekolah' },
+    { name:'Siti Norhafizah binti Daud', role:'Guru NILAM' },
+    { name:'Mohd Arfiq Rahimi bin Abdul Rahman', role:'Guru STEM' },
+    { name:'Elnisia anak Guwel', role:'Guru Bimbingan dan Kaunseling' },
+    { name:'Aimuni Athirah binti Latif', role:'Guru ICT' },
+    { name:'Nur Syuhada binti Abdul Razak', role:'Guru Pendidikan Islam' },
   ];
   function renderOrgChart(){
     document.getElementById('org-grid').innerHTML = orgChart.map(p => `
@@ -573,7 +614,7 @@
   counters.forEach(c => counterObserver.observe(c));
 
   // ---- Kandungan Unit (Fasa 2: tarik dari storan DIKONGSI, sandaran localStorage/lalai) ----
-  const CMS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycby5d1TeOXpnrfSHsjzrMiQ3F2Ja5UTG_uEEzzks5xn89GNNlGhXl1z_Md778GhR_Og/exec";
+  const CMS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzq6TdbomBgCOdL2pxPtEY6finPdJ5vPmZ4BhQWUqoyiOGyzgldhpHjcyrsmO9mnDOu/exec";
 
   const defaultDb = {
     'Pengurusan':      { icon:'briefcase',    desc:'Carta organisasi, dasar & peraturan sekolah.',       content:'Sila rujuk pihak pentadbiran sekolah untuk maklumat lanjut mengenai carta organisasi dan dasar sekolah.' },
@@ -607,15 +648,22 @@
 
   let unitImagesCache = [];
   let unitReportsCache = [];
+  let unitCartaCache = [];
+  let unitMinitCache = [];
   async function syncMediaFromBackend(){
     if(!CMS_SCRIPT_URL || CMS_SCRIPT_URL.includes('PLACEHOLDER')) return;
     try{
-      const [imgRes, repRes] = await Promise.all([
+      const [imgRes, repRes, cartaRes, minitRes] = await Promise.all([
         fetch(CMS_SCRIPT_URL + '?action=images'),
-        fetch(CMS_SCRIPT_URL + '?action=reports')
+        fetch(CMS_SCRIPT_URL + '?action=reports'),
+        fetch(CMS_SCRIPT_URL + '?action=carta'),
+        fetch(CMS_SCRIPT_URL + '?action=minit')
       ]);
-      if(imgRes.ok) unitImagesCache = await imgRes.json();
-      if(repRes.ok) unitReportsCache = await repRes.json();
+      if(imgRes.ok){ const d = await imgRes.json(); unitImagesCache = Array.isArray(d) ? d : []; }
+      if(repRes.ok){ const d = await repRes.json(); unitReportsCache = Array.isArray(d) ? d : []; }
+      if(cartaRes.ok){ const d = await cartaRes.json(); unitCartaCache = Array.isArray(d) ? d : []; }
+      if(minitRes.ok){ const d = await minitRes.json(); unitMinitCache = Array.isArray(d) ? d : []; }
+      if(currentOpenUnit) renderUnitModalContent(currentOpenUnit); // segarkan modal jika ia sedang terbuka semasa data tiba
     }catch(e){ /* senyap - galeri kekal kosong jika rangkaian gagal */ }
   }
 
@@ -634,7 +682,8 @@
     lucide.createIcons();
     attachTilt('#unit-grid .premium-card');
   }
-  function openUnitModal(name){
+  let currentOpenUnit = null;
+  function renderUnitModalContent(name){
     document.getElementById('unit-modal-eyebrow').innerText = 'Unit Sekolah';
     document.getElementById('unit-modal-title').innerText = name;
     document.getElementById('unit-modal-content').innerHTML = getUnitContent(name).replace(/\n/g,'<br>');
@@ -658,9 +707,40 @@
           </a>`).join('')}
       </div>` : '';
 
+    const carta = unitCartaCache.filter(m => m.unit === name);
+    const cartaBox = document.getElementById('unit-modal-carta');
+    cartaBox.innerHTML = carta.length ? `
+      <h4 class="font-display font-bold text-sm text-cyan uppercase tracking-wider mt-6 mb-3">Carta Organisasi</h4>
+      <div class="grid sm:grid-cols-2 gap-2">
+        ${carta.map(m => `
+          <div class="flex items-center gap-3 bg-white/5 rounded-xl px-4 py-2.5">
+            <div class="w-8 h-8 rounded-full bg-gradient-to-br from-blue to-cyan flex items-center justify-center shrink-0"><i data-lucide="user" class="w-3.5 h-3.5 text-white"></i></div>
+            <div class="min-w-0"><p class="text-sm text-white font-semibold truncate">${m.nama}</p><p class="text-xs text-white/40 truncate">${m.jawatan || ''}</p></div>
+          </div>`).join('')}
+      </div>` : '';
+
+    const minit = unitMinitCache.filter(m => m.unit === name);
+    const minitBox = document.getElementById('unit-modal-minit');
+    minitBox.innerHTML = minit.length ? `
+      <h4 class="font-display font-bold text-sm text-cyan uppercase tracking-wider mt-6 mb-3">Minit Mesyuarat</h4>
+      <div class="space-y-2">
+        ${minit.map(m => `
+          <a href="${m.fileUrl}" target="_blank" rel="noopener" class="flex items-center gap-3 bg-white/5 hover:bg-white/10 rounded-xl px-4 py-3 transition-all">
+            <i data-lucide="file-text" class="w-4 h-4 text-cyan shrink-0"></i>
+            <span class="flex-1 text-sm text-white font-semibold truncate">${m.title || 'Minit Mesyuarat'}</span>
+            <span class="text-xs text-white/40 shrink-0">${m.meetingDate || ''}</span>
+          </a>`).join('')}
+      </div>` : '';
+
+    lucide.createIcons();
+  }
+  function openUnitModal(name){
+    currentOpenUnit = name;
+    renderUnitModalContent(name);
     const modal = document.getElementById('unit-modal'); modal.classList.remove('hidden'); modal.classList.add('flex');
   }
-  function closeUnitModal(){ const modal = document.getElementById('unit-modal'); modal.classList.add('hidden'); modal.classList.remove('flex'); }
+  function closeUnitModal(){ currentOpenUnit = null; const modal = document.getElementById('unit-modal'); modal.classList.add('hidden'); modal.classList.remove('flex'); }
+
 
   renderUnitGrid();
   renderOrgChart();
