@@ -340,7 +340,7 @@
 <div id="org-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-navy-deepest/70 backdrop-blur-sm">
   <div class="glass rounded-3xl max-w-sm w-full p-8 text-center relative">
     <button onclick="closeOrgModal()" class="absolute top-4 right-4 w-8 h-8 rounded-full hover:bg-white/10 flex items-center justify-center"><i data-lucide="x" class="w-4 h-4 text-white/60"></i></button>
-    <div class="w-20 h-20 rounded-full bg-gradient-to-br from-blue to-cyan mx-auto mb-4 flex items-center justify-center"><i data-lucide="user" class="w-9 h-9 text-white"></i></div>
+    <div id="org-modal-avatar" class="w-20 h-20 rounded-full bg-gradient-to-br from-blue to-cyan mx-auto mb-4 flex items-center justify-center overflow-hidden"><i data-lucide="user" class="w-9 h-9 text-white"></i></div>
     <h3 id="org-modal-name" class="font-display font-bold text-xl text-white mb-1">Nama</h3>
     <p id="org-modal-role" class="text-sky text-sm font-semibold mb-4">Jawatan</p>
     <p class="text-white/65 text-sm">Hubungi melalui pejabat SK Krangan untuk urusan rasmi.</p>
@@ -579,33 +579,38 @@
 
   // ---- Carta organisasi (subset selamat untuk paparan awam - tiada PIN/emel peribadi) ----
   const orgChart = [
-    { name:'Stanley anak Ngawah', role:'Guru Besar' },
-    { name:'Dick Lester anak Bakir', role:'Guru Penolong Kanan Kurikulum' },
-    { name:'Amir bin Ngatiman', role:'Guru Penolong Kanan Hal Ehwal Murid' },
-    { name:'Mohammad Fadzly bin Noor Azman', role:'Guru Penolong Kanan Kokurikulum' },
-    { name:'Angeline anak Michael Jawa', role:'Setiausaha PIBG' },
-    { name:'Marina anak Luat', role:'Guru Data' },
-    { name:'Jeanica May anak Kuyah', role:'Setiausaha Kurikulum' },
-    { name:'Hadijah anak Ambun', role:'Guru Pemulihan' },
+    { name:'Stanley anak Ngawah', role:'Guru Besar', photo:'staf-stanley.jpg' },
+    { name:'Dick Lester anak Bakir', role:'Guru Penolong Kanan Kurikulum', photo:'staf-dick.jpg' },
+    { name:'Amir bin Ngatiman', role:'Guru Penolong Kanan Hal Ehwal Murid', photo:'staf-amir.jpg' },
+    { name:'Mohammad Fadzly bin Noor Azman', role:'Guru Penolong Kanan Kokurikulum', photo:'staf-fadzly.jpg' },
+    { name:'Angeline anak Michael Jawa', role:'Setiausaha PIBG', photo:'staf-angeline.jpg' },
+    { name:'Marina anak Luat', role:'Guru Data', photo:'staf-marina.jpg' },
+    { name:'Jeanica May anak Kuyah', role:'Setiausaha Kurikulum', photo:'staf-jeanica.jpg' },
+    { name:'Hadijah anak Ambun', role:'Guru Pemulihan', photo:'staf-hadijah.jpg' },
     { name:'Noor Izzati Abdullah', role:'Guru Prasekolah' },
-    { name:'Siti Norhafizah binti Daud', role:'Guru NILAM' },
-    { name:'Mohd Arfiq Rahimi bin Abdul Rahman', role:'Guru STEM' },
-    { name:'Elnisia anak Guwel', role:'Guru Bimbingan dan Kaunseling' },
-    { name:'Aimuni Athirah binti Latif', role:'Guru ICT' },
+    { name:'Siti Norhafizah binti Daud', role:'Guru NILAM', photo:'staf-siti.jpg' },
+    { name:'Mohd Arfiq Rahimi bin Abdul Rahman', role:'Guru STEM', photo:'staf-arfiq.jpg' },
+    { name:'Elnisia anak Guwel', role:'Guru Bimbingan dan Kaunseling', photo:'staf-elnisia.jpg' },
+    { name:'Aimuni Athirah binti Latif', role:'Guru ICT', photo:'staf-aimuni.jpg' },
     { name:'Nur Syuhada binti Abdul Razak', role:'Guru Pendidikan Islam' },
   ];
   function renderOrgChart(){
     document.getElementById('org-grid').innerHTML = orgChart.map(p => `
-      <button onclick="openOrgModal('${p.name}','${p.role}')" class="premium-card glass rounded-2xl p-6 text-left flex items-center gap-4">
-        <div class="w-12 h-12 rounded-full bg-gradient-to-br from-blue to-cyan flex items-center justify-center shrink-0"><i data-lucide="user" class="w-5 h-5 text-white"></i></div>
+      <button onclick="openOrgModal('${p.name}','${p.role}','${p.photo || ''}')" class="premium-card glass rounded-2xl p-6 text-left flex items-center gap-4">
+        <div class="w-12 h-12 rounded-full bg-gradient-to-br from-blue to-cyan flex items-center justify-center shrink-0 overflow-hidden">
+          ${p.photo ? `<img src="${p.photo}" alt="${p.name}" class="w-full h-full object-cover">` : `<i data-lucide="user" class="w-5 h-5 text-white"></i>`}
+        </div>
         <div><p class="font-display font-bold text-white text-sm">${p.name}</p><p class="text-xs text-sky">${p.role}</p></div>
       </button>`).join('');
     lucide.createIcons();
     attachTilt('#org-grid .premium-card');
   }
-  function openOrgModal(name, role){
+  function openOrgModal(name, role, photo){
     document.getElementById('org-modal-name').innerText = name;
     document.getElementById('org-modal-role').innerText = role;
+    const avatarBox = document.getElementById('org-modal-avatar');
+    avatarBox.innerHTML = photo ? `<img src="${photo}" alt="${name}" class="w-full h-full object-cover">` : `<i data-lucide="user" class="w-8 h-8 text-white"></i>`;
+    lucide.createIcons();
     const m = document.getElementById('org-modal'); m.classList.remove('hidden'); m.classList.add('flex');
   }
   function closeOrgModal(){ const m = document.getElementById('org-modal'); m.classList.add('hidden'); m.classList.remove('flex'); }
