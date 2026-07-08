@@ -720,9 +720,12 @@
   let currentUnitTab = 'content';
   const UNIT_TABS = ['content', 'carta', 'minit', 'reports'];
 
+  function unitMatches(a, b){
+    return (a || '').trim().toLowerCase() === (b || '').trim().toLowerCase();
+  }
   function renderUnitPageContent(name){
     // ---- Tab: Kandungan (teks + gambar unit) ----
-    const images = unitImagesCache.filter(i => i.unit === name);
+    const images = unitImagesCache.filter(i => unitMatches(i.unit, name));
     document.getElementById('unit-tab-content').innerHTML = `
       <div class="text-white/80 leading-relaxed text-base">${getUnitContent(name).replace(/\n/g,'<br>')}</div>
       ${images.length ? `
@@ -736,7 +739,7 @@
     `;
 
     // ---- Tab: Carta Organisasi ----
-    const carta = unitCartaCache.filter(m => m.unit === name);
+    const carta = unitCartaCache.filter(m => unitMatches(m.unit, name));
     document.getElementById('unit-tab-carta').innerHTML = carta.length ? `
       <div class="grid sm:grid-cols-2 gap-3">
         ${carta.map(m => `
@@ -747,7 +750,7 @@
       </div>` : `<p class="text-center text-white/40 text-sm py-16">Carta organisasi bagi unit ini belum tersedia.</p>`;
 
     // ---- Tab: Minit Mesyuarat ----
-    const minit = unitMinitCache.filter(m => m.unit === name);
+    const minit = unitMinitCache.filter(m => unitMatches(m.unit, name));
     document.getElementById('unit-tab-minit').innerHTML = minit.length ? `
       <div class="space-y-2.5">
         ${minit.map(m => `
@@ -760,7 +763,7 @@
       </div>` : `<p class="text-center text-white/40 text-sm py-16">Tiada minit mesyuarat dimuat naik bagi unit ini.</p>`;
 
     // ---- Tab: Laporan Aktiviti ----
-    const reports = unitReportsCache.filter(r => r.unit === name);
+    const reports = unitReportsCache.filter(r => unitMatches(r.unit, name));
     document.getElementById('unit-tab-reports').innerHTML = reports.length ? `
       <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
         ${reports.map(r => `

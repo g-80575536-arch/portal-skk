@@ -2489,6 +2489,17 @@ window.onload = function(){
       }
     }
 
+    // Petakan label unit eOPR (HURUF BESAR) kepada format Huruf Besar-Kecil yang digunakan
+    // di laman awam & CMS (cth. "PENGURUSAN" -> "Pengurusan"), supaya Laporan Aktiviti
+    // betul-betul padan bila ditapis ikut unit di laman awam.
+    const OPR_UNIT_TO_TITLECASE = {
+      'PRASEKOLAH': 'Prasekolah',
+      'HAL EHWAL MURID': 'Hal Ehwal Murid',
+      'KOKURIKULUM': 'Kokurikulum',
+      'KURIKULUM': 'Kurikulum',
+      'PENGURUSAN': 'Pengurusan'
+    };
+
     async function saveReportToPortal() {
       if(!isCmsBackendConfigured()){
         showToastOPR('Storan dikongsi belum disediakan. Sila hubungi Penyelaras Digital.', 'bg-amber-500');
@@ -2500,6 +2511,7 @@ window.onload = function(){
       btn.innerHTML = `<i data-lucide="loader-2" class="w-3.5 h-3.5 animate-spin"></i> Menyimpan...`;
       lucide.createIcons();
       showToastOPR('Menjana & memuat naik laporan ke portal...', 'bg-cyan-600');
+      const unitForPortal = OPR_UNIT_TO_TITLECASE[state.sideText] || state.sideText;
       try {
         const canvas = await getCanvas();
         if (!canvas) throw new Error('Gagal menjana Canvas');
@@ -2510,14 +2522,14 @@ window.onload = function(){
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             action: 'saveReport',
-            unit: state.sideText,
+            unit: unitForPortal,
             title: state.title,
             programDate: (state.datetime || '').split('\n')[0] || '',
             imageBase64: imageBase64,
             editor: (typeof currentUser !== 'undefined' && currentUser) ? currentUser.name : ''
           })
         });
-        showToastOPR(`Laporan berjaya disimpan ke unit "${state.sideText}"!`, 'bg-emerald-600');
+        showToastOPR(`Laporan berjaya disimpan ke unit "${unitForPortal}"!`, 'bg-emerald-600');
         btn.innerHTML = `<i data-lucide="check" class="w-3.5 h-3.5"></i> Tersimpan!`;
         lucide.createIcons();
       } catch(err) {
