@@ -310,20 +310,12 @@
             <div class="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8 flex-1 w-full">
 
                 <div id="tab-dashboard" class="ehadir-tab active space-y-8 no-print">
-                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm">
-                        <div>
-                            <h2 class="text-xl font-extrabold text-slate-900 dark:text-white">Keberadaan Staf Hari Ini</h2>
-                            <p class="text-xs text-slate-500 dark:text-slate-400">Pilih status harian anda dan klik butang hantar.</p>
-                        </div>
-                        <div class="flex items-center gap-3 w-full md:w-auto">
-                            <div id="active-graph-filter" class="hidden bg-indigo-50 dark:bg-indigo-950/50 border border-indigo-200 dark:border-indigo-800 px-3 py-1.5 rounded-xl text-xs text-indigo-600 dark:text-indigo-300 font-semibold items-center gap-2">
-                                <span>Menapis: <strong id="filter-status-label">-</strong></span>
-                                <button onclick="clearGraphFilter()" class="hover:text-red-500 font-bold ml-1" title="Padam Penapis"><i class="fa-solid fa-circle-xmark"></i></button>
-                            </div>
-                            <div class="relative w-full md:w-80">
-                                <span class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-slate-400"><i class="fa-solid fa-magnifying-glass"></i></span>
-                                <input type="text" id="dashboard-search" onkeyup="filterDashboardStaff()" placeholder="Cari nama staf..." class="w-full pl-10 pr-4 py-2 border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none text-sm transition-all shadow-sm text-slate-900 dark:text-white">
-                            </div>
+                    <div class="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm text-center">
+                        <h2 class="text-xl font-extrabold text-slate-900 dark:text-white">Keberadaan Staf Hari Ini</h2>
+                        <p class="text-xs text-slate-500 dark:text-slate-400">Pilih status harian anda dan klik butang hantar.</p>
+                        <div id="active-graph-filter" class="hidden bg-indigo-50 dark:bg-indigo-950/50 border border-indigo-200 dark:border-indigo-800 px-3 py-1.5 rounded-xl text-xs text-indigo-600 dark:text-indigo-300 font-semibold items-center gap-2 mt-3 mx-auto w-fit">
+                            <span>Menapis: <strong id="filter-status-label">-</strong></span>
+                            <button onclick="clearGraphFilter()" class="hover:text-red-500 font-bold ml-1" title="Padam Penapis"><i class="fa-solid fa-circle-xmark"></i></button>
                         </div>
                     </div>
 
@@ -342,7 +334,7 @@
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6" id="staff-grid"></div>
+                    <div class="w-full" id="staff-grid"></div>
 
                     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 pt-4">
                         <div class="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col justify-between">
@@ -351,6 +343,7 @@
                                 <div class="space-y-3 text-sm">
                                     <div class="flex justify-between items-center py-1 hover:bg-slate-50 dark:hover:bg-slate-800/50 p-1.5 rounded-lg cursor-pointer" onclick="filterByStatusName('Di Sekolah')"><span class="text-slate-600 dark:text-slate-300 flex items-center gap-2"><span class="h-2.5 w-2.5 rounded-full bg-emerald-500"></span> Di Sekolah</span><span class="font-bold text-slate-950 dark:text-white" id="stat-school">0</span></div>
                                     <div class="flex justify-between items-center py-1 hover:bg-slate-50 dark:hover:bg-slate-800/50 p-1.5 rounded-lg cursor-pointer" onclick="filterByStatusName('Di Sekolah : Mesy/Bengkel')"><span class="text-slate-600 dark:text-slate-300 flex items-center gap-2"><span class="h-2.5 w-2.5 rounded-full bg-emerald-400"></span> Di Sekolah : Mesy/Bengkel</span><span class="font-bold text-slate-950 dark:text-white" id="stat-school-mesy">0</span></div>
+                                    <div class="flex justify-between items-center py-1 hover:bg-slate-50 dark:hover:bg-slate-800/50 p-1.5 rounded-lg cursor-pointer" onclick="filterByStatusName('Bekerja Dari Rumah')"><span class="text-slate-600 dark:text-slate-300 flex items-center gap-2"><span class="h-2.5 w-2.5 rounded-full bg-blue-500"></span> Bekerja Dari Rumah</span><span class="font-bold text-slate-950 dark:text-white" id="stat-wfh">0</span></div>
                                     <div class="flex justify-between items-center py-1 hover:bg-slate-50 dark:hover:bg-slate-800/50 p-1.5 rounded-lg cursor-pointer" onclick="filterByStatusName('Luar Pejabat : Urusan Rasmi')"><span class="text-slate-600 dark:text-slate-300 flex items-center gap-2"><span class="h-2.5 w-2.5 rounded-full bg-amber-500"></span> Luar Pejabat : Urusan Rasmi</span><span class="font-bold text-slate-950 dark:text-white" id="stat-outside-rasmi">0</span></div>
                                     <div class="flex justify-between items-center py-1 hover:bg-slate-50 dark:hover:bg-slate-800/50 p-1.5 rounded-lg cursor-pointer" onclick="filterByStatusName('Luar Pejabat : Urusan Peribadi')"><span class="text-slate-600 dark:text-slate-300 flex items-center gap-2"><span class="h-2.5 w-2.5 rounded-full bg-amber-400"></span> Luar Pejabat : Urusan Peribadi</span><span class="font-bold text-slate-950 dark:text-white" id="stat-outside-peribadi">0</span></div>
                                     <div class="flex justify-between items-center py-1 hover:bg-slate-50 dark:hover:bg-slate-800/50 p-1.5 rounded-lg cursor-pointer" onclick="filterByStatusName('Cuti Rehat')"><span class="text-slate-600 dark:text-slate-300 flex items-center gap-2"><span class="h-2.5 w-2.5 rounded-full bg-rose-600"></span> Cuti Rehat</span><span class="font-bold text-slate-950 dark:text-white" id="stat-cuti-rehat">0</span></div>
@@ -361,10 +354,21 @@
                         </div>
                         <div class="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm lg:col-span-2">
                             <div class="flex justify-between items-center border-b border-slate-100 dark:border-slate-800 pb-3 mb-4">
-                                <h3 class="font-bold text-slate-900 dark:text-white flex items-center gap-2"><i class="fa-solid fa-chart-simple text-indigo-600 dark:text-indigo-400"></i> Analisis Graf Semasa (Interaktif)</h3>
-                                <span class="text-[10px] bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 px-2 py-1 rounded-md font-semibold uppercase tracking-wider">Klik palang untuk menapis</span>
+                                <h3 class="font-bold text-slate-900 dark:text-white flex items-center gap-2"><i class="fa-solid fa-table-list text-indigo-600 dark:text-indigo-400"></i> <span id="status-table-title">Senarai Staf</span></h3>
+                                <span class="text-[10px] bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 px-2 py-1 rounded-md font-semibold uppercase tracking-wider">Klik status di kiri untuk tapis</span>
                             </div>
-                            <div class="h-60 relative"><canvas id="summaryChart"></canvas></div>
+                            <div class="max-h-72 overflow-y-auto">
+                                <table class="w-full text-sm">
+                                    <thead class="sticky top-0 bg-white dark:bg-slate-900">
+                                        <tr class="text-left text-[10px] uppercase tracking-wider text-slate-400 dark:text-slate-500 border-b border-slate-100 dark:border-slate-800">
+                                            <th class="pb-2 pr-2 font-bold">Nama</th>
+                                            <th class="pb-2 pr-2 font-bold">Jawatan</th>
+                                            <th class="pb-2 font-bold">Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="status-name-table"></tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1005,7 +1009,7 @@ function showModule(id){
    atau rangkaian gagal - sistem tetap berfungsi (macam sebelum ini) dalam
    keadaan tersebut, cuma tidak berkongsi merentasi peranti.
    ===================================================================== */
-const CMS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzq6TdbomBgCOdL2pxPtEY6finPdJ5vPmZ4BhQWUqoyiOGyzgldhpHjcyrsmO9mnDOu/exec";
+const CMS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwRiC7YlTUinGHiDfFUg92_kDNfMpC8yqTuy4XXtn72JwYIvQwZINCoMHoMYm0effMr/exec";
 
 const cmsUnitMeta = {
   'Pengurusan':      'Sila edit kandungan carta organisasi, dasar dan peraturan sekolah di sini.',
@@ -1369,6 +1373,7 @@ window.onload = function(){
         const statusDetails = {
             'Di Sekolah': { bg: 'bg-emerald-500', text: 'text-emerald-700 dark:text-emerald-300', icon: 'fa-school', badge: 'bg-emerald-100 dark:bg-emerald-950/40' },
             'Di Sekolah : Mesy/Bengkel': { bg: 'bg-emerald-400', text: 'text-emerald-600 dark:text-emerald-400', icon: 'fa-chalkboard-user', badge: 'bg-teal-50 dark:bg-teal-950/40' },
+            'Bekerja Dari Rumah': { bg: 'bg-blue-500', text: 'text-blue-700 dark:text-blue-300', icon: 'fa-house-laptop', badge: 'bg-blue-100 dark:bg-blue-950/40' },
             'Luar Pejabat : Urusan Rasmi': { bg: 'bg-amber-500', text: 'text-amber-700 dark:text-amber-300', icon: 'fa-business-time', badge: 'bg-amber-100 dark:bg-amber-950/40' },
             'Luar Pejabat : Urusan Peribadi': { bg: 'bg-amber-400', text: 'text-amber-600 dark:text-amber-400', icon: 'fa-user-clock', badge: 'bg-yellow-50 dark:bg-yellow-950/40' },
             'Cuti Rehat': { bg: 'bg-rose-600', text: 'text-rose-700 dark:text-rose-300', icon: 'fa-umbrella-beach', badge: 'bg-rose-100 dark:bg-rose-950/40' },
@@ -1610,33 +1615,52 @@ window.onload = function(){
 
         function buildStaffCard(s) {
             const curDetail = statusDetails[s.status] || { bg: 'bg-slate-500', text: 'text-slate-700', icon: 'fa-circle' };
+            const hour = new Date().getHours();
+            const greeting = hour < 12 ? 'Selamat Pagi' : hour < 15 ? 'Selamat Tengah Hari' : hour < 19 ? 'Selamat Petang' : 'Selamat Malam';
+            const firstName = s.name.split(' ')[0];
             return `
-            <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm p-5 hover:shadow-lg dark:hover:shadow-indigo-950/20 transition-all duration-300 flex flex-col justify-between gap-4 relative overflow-visible group staff-card" data-status="${s.status}">
-                <div class="absolute top-0 left-0 w-2 h-full rounded-l-2xl ${curDetail.bg}"></div>
-                <div>
-                    <h4 class="font-extrabold text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors duration-200">${s.name}</h4>
-                    <p class="text-xs text-indigo-600 dark:text-indigo-400 font-bold tracking-wider mt-1 uppercase">${s.position}</p>
-                </div>
-                <div class="space-y-3 relative">
-                    <div class="status-selector-container relative">
-                        <label class="block text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-1.5">Status Semasa</label>
-                        <button id="status-trigger-${s.id}" onclick="toggleStatusMenu(${s.id})" class="w-full text-xs font-semibold p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800 text-slate-800 dark:text-slate-200 flex items-center justify-between outline-none focus:ring-2 focus:ring-indigo-500 hover:bg-slate-100 dark:hover:bg-slate-700/50 transition-all">
-                            <span class="flex items-center gap-2">
-                                <span class="h-2.5 w-2.5 rounded-full ${curDetail.bg}"></span>
-                                <span class="truncate font-semibold">${s.status}</span>
-                            </span>
-                            <i class="fa-solid fa-chevron-down text-[10px] text-slate-400"></i>
-                        </button>
-                        <div id="status-menu-${s.id}" class="status-dropdown-menu hidden absolute left-0 right-0 mt-1 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl shadow-xl z-30 overflow-hidden py-1 max-h-56 overflow-y-auto">
-                            ${statusOptions.map(opt => {
-                                const optDetail = statusDetails[opt];
-                                return `<button onclick="selectStatusOption(${s.id}, '${opt}')" class="w-full px-4 py-2.5 text-xs text-left hover:bg-slate-50 dark:hover:bg-slate-700 flex items-center gap-2.5 text-slate-700 dark:text-slate-300 transition-colors font-medium"><span class="h-2 w-2 rounded-full ${optDetail.bg}"></span><span>${opt}</span></button>`;
-                            }).join('')}
+            <div class="max-w-md mx-auto bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-xl overflow-hidden staff-card" data-status="${s.status}">
+                <div class="h-28 ${curDetail.bg} relative flex items-start justify-center pt-5">
+                    <p class="text-white/90 font-bold text-sm tracking-wide">${greeting}, ${firstName}!</p>
+                    <div class="absolute -bottom-10 left-1/2 -translate-x-1/2">
+                        <div class="w-20 h-20 rounded-full bg-white dark:bg-slate-900 border-[5px] border-white dark:border-slate-900 shadow-lg flex items-center justify-center">
+                            <div class="w-full h-full rounded-full ${curDetail.bg} bg-opacity-15 flex items-center justify-center">
+                                <i class="fa-solid fa-user text-2xl ${curDetail.text}"></i>
+                            </div>
                         </div>
                     </div>
-                    <button id="btn-submit-${s.id}" onclick="triggerPinModal(${s.id}, '${s.name}')" class="w-full bg-slate-900 hover:bg-indigo-600 dark:bg-slate-800 dark:hover:bg-indigo-600 text-white font-extrabold py-2.5 rounded-xl text-xs flex items-center justify-center gap-2 transition-all shadow-sm hover:scale-[1.02] active:scale-95">
-                        <i class="fa-solid fa-cloud-arrow-up"></i> Hantar Status
-                    </button>
+                </div>
+
+                <div class="pt-12 pb-7 px-7 text-center">
+                    <h3 class="text-xl font-extrabold text-slate-900 dark:text-white">${s.name}</h3>
+                    <p class="text-xs text-indigo-600 dark:text-indigo-400 font-bold tracking-wider mt-1 uppercase">${s.position}</p>
+
+                    <div class="mt-5 inline-flex items-center gap-2 ${curDetail.badge} px-4 py-2 rounded-full">
+                        <span class="h-2.5 w-2.5 rounded-full ${curDetail.bg} animate-pulse"></span>
+                        <span class="text-xs font-bold ${curDetail.text}">Status Semasa: ${s.status}</span>
+                    </div>
+
+                    <div class="mt-7 space-y-3 text-left">
+                        <div class="status-selector-container relative">
+                            <label class="block text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-1.5">Tukar Status Kepada</label>
+                            <button id="status-trigger-${s.id}" onclick="toggleStatusMenu(${s.id})" class="w-full text-sm font-semibold p-3.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800 text-slate-800 dark:text-slate-200 flex items-center justify-between outline-none focus:ring-2 focus:ring-indigo-500 hover:bg-slate-100 dark:hover:bg-slate-700/50 transition-all">
+                                <span class="flex items-center gap-2">
+                                    <span class="h-2.5 w-2.5 rounded-full ${curDetail.bg}"></span>
+                                    <span class="truncate font-semibold">${s.status}</span>
+                                </span>
+                                <i class="fa-solid fa-chevron-down text-[10px] text-slate-400"></i>
+                            </button>
+                            <div id="status-menu-${s.id}" class="status-dropdown-menu hidden absolute left-0 right-0 mt-1 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl shadow-xl z-30 overflow-hidden py-1 max-h-56 overflow-y-auto">
+                                ${statusOptions.map(opt => {
+                                    const optDetail = statusDetails[opt];
+                                    return `<button onclick="selectStatusOption(${s.id}, '${opt}')" class="w-full px-4 py-2.5 text-xs text-left hover:bg-slate-50 dark:hover:bg-slate-700 flex items-center gap-2.5 text-slate-700 dark:text-slate-300 transition-colors font-medium"><span class="h-2 w-2 rounded-full ${optDetail.bg}"></span><span>${opt}</span></button>`;
+                                }).join('')}
+                            </div>
+                        </div>
+                        <button id="btn-submit-${s.id}" onclick="triggerPinModal(${s.id}, '${s.name}')" class="w-full bg-slate-900 hover:bg-indigo-600 dark:bg-slate-800 dark:hover:bg-indigo-600 text-white font-extrabold py-3.5 rounded-xl text-sm flex items-center justify-center gap-2 transition-all shadow-md hover:scale-[1.02] active:scale-95">
+                            <i class="fa-solid fa-cloud-arrow-up"></i> Hantar Status
+                        </button>
+                    </div>
                 </div>
             </div>`;
         }
@@ -1652,11 +1676,12 @@ window.onload = function(){
         let lastCounts = { school: 0, outside: 0, leave: 0 };
         function updateLocalStats() {
             let school = 0, outside = 0, leave = 0;
-            let countSchool = 0, countSchoolMesy = 0, countOutsideRasmi = 0, countOutsidePeribadi = 0, countCutiRehat = 0, countCutiSakit = 0, countCutiLain = 0;
+            let countSchool = 0, countSchoolMesy = 0, countWfh = 0, countOutsideRasmi = 0, countOutsidePeribadi = 0, countCutiRehat = 0, countCutiSakit = 0, countCutiLain = 0;
 
             staffData.forEach(s => {
                 if (s.status === 'Di Sekolah') { school++; countSchool++; }
                 else if (s.status === 'Di Sekolah : Mesy/Bengkel') { school++; countSchoolMesy++; }
+                else if (s.status === 'Bekerja Dari Rumah') { outside++; countWfh++; }
                 else if (s.status === 'Luar Pejabat : Urusan Rasmi') { outside++; countOutsideRasmi++; }
                 else if (s.status === 'Luar Pejabat : Urusan Peribadi') { outside++; countOutsidePeribadi++; }
                 else if (s.status === 'Cuti Rehat') { leave++; countCutiRehat++; }
@@ -1678,6 +1703,7 @@ window.onload = function(){
             if(eS) {
                 eS.innerText = countSchool;
                 document.getElementById('stat-school-mesy').innerText = countSchoolMesy;
+                document.getElementById('stat-wfh').innerText = countWfh;
                 document.getElementById('stat-outside-rasmi').innerText = countOutsideRasmi;
                 document.getElementById('stat-outside-peribadi').innerText = countOutsidePeribadi;
                 document.getElementById('stat-cuti-rehat').innerText = countCutiRehat;
@@ -1689,6 +1715,7 @@ window.onload = function(){
                 summaryChartInstance.data.datasets[0].data = [countSchool, countSchoolMesy, countOutsideRasmi, countOutsidePeribadi, countCutiRehat, countCutiSakit, countCutiLain];
                 summaryChartInstance.update();
             }
+            renderStatusNameTable(activeGraphFilterStatus);
         }
 
         async function submitStatus(id, staffName) {
@@ -1776,7 +1803,7 @@ window.onload = function(){
             document.getElementById('active-graph-filter').classList.remove('hidden');
             document.getElementById('active-graph-filter').classList.add('flex');
             document.getElementById('filter-status-label').innerText = statusName;
-            applyDashboardCardFilters();
+            renderStatusNameTable(statusName);
         }
 
         function clearGraphFilter() {
@@ -1784,23 +1811,30 @@ window.onload = function(){
             activeGraphFilterStatus = null;
             document.getElementById('active-graph-filter').classList.add('hidden');
             document.getElementById('active-graph-filter').classList.remove('flex');
-            applyDashboardCardFilters();
+            renderStatusNameTable(null);
         }
 
-        function applyDashboardCardFilters() {
-            const searchQuery = document.getElementById('dashboard-search').value.toLowerCase();
-            const cards = document.querySelectorAll('.staff-card');
-            cards.forEach(card => {
-                const name = card.querySelector('h4').innerText.toLowerCase();
-                const status = card.getAttribute('data-status');
-                const matchSearch = name.includes(searchQuery);
-                const matchGraph = activeGraphFilterStatus ? (status === activeGraphFilterStatus) : true;
-                if (matchSearch && matchGraph) { card.style.display = 'flex'; } 
-                else { card.style.display = 'none'; }
-            });
+        function renderStatusNameTable(statusName) {
+            const tbody = document.getElementById('status-name-table');
+            const titleEl = document.getElementById('status-table-title');
+            if(!tbody) return;
+            const list = statusName ? staffData.filter(s => s.status === statusName) : staffData.slice().sort((a,b) => a.name.localeCompare(b.name));
+            if(titleEl) titleEl.innerText = statusName ? `Senarai Staf — ${statusName} (${list.length})` : `Senarai Semua Staf (${list.length})`;
+            if(!list.length){
+                tbody.innerHTML = `<tr><td colspan="3" class="py-6 text-center text-slate-400 text-xs">Tiada staf dengan status ini.</td></tr>`;
+                return;
+            }
+            tbody.innerHTML = list.map(s => {
+                const d = statusDetails[s.status] || { bg: 'bg-slate-400' };
+                return `
+                <tr class="border-b border-slate-50 dark:border-slate-800/60 last:border-0">
+                    <td class="py-2 pr-2 font-semibold text-slate-800 dark:text-white">${s.name}</td>
+                    <td class="py-2 pr-2 text-slate-500 dark:text-slate-400 text-xs">${s.position}</td>
+                    <td class="py-2"><span class="inline-flex items-center gap-1.5 text-xs text-slate-600 dark:text-slate-300"><span class="h-2 w-2 rounded-full ${d.bg}"></span>${s.status}</span></td>
+                </tr>`;
+            }).join('');
         }
 
-        function filterDashboardStaff() { applyDashboardCardFilters(); }
 
         async function fetchRecords() {
             playPopSound();
