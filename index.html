@@ -11,16 +11,17 @@
     theme: {
       extend: {
         fontFamily: {
-          display: ['Sora', 'sans-serif'],
+          display: ['Fraunces', 'serif'],
           sans: ['"Plus Jakarta Sans"', 'sans-serif'],
         },
         colors: {
-          navy:  { DEFAULT:'#154D8F', deep:'#0D2C54', deepest:'#071B34' },
-          blue:  { DEFAULT:'#1D6FEA', 50:'#eff6ff', 100:'#dbeafe', 200:'#bfdbfe', 300:'#93c5fd', 400:'#60a5fa', 500:'#3b82f6', 600:'#2563eb', 700:'#1d4ed8', 800:'#1e40af', 900:'#1e3a8a', 950:'#172554' },
-          sky:   { DEFAULT:'#4DA3FF', 50:'#f0f9ff', 100:'#e0f2fe', 200:'#bae6fd', 300:'#7dd3fc', 400:'#38bdf8', 500:'#0ea5e9', 600:'#0284c7', 700:'#0369a1', 800:'#075985', 900:'#0c4a6e', 950:'#082f49' },
-          cyan:  { DEFAULT:'#22D3EE', 50:'#ecfeff', 100:'#cffafe', 200:'#a5f3fc', 300:'#67e8f9', 400:'#22d3ee', 500:'#06b6d4', 600:'#0891b2', 700:'#0e7490', 800:'#155e75', 900:'#164e63', 950:'#083344' },
-          ice:   '#EAF4FF',
-          gold:  '#F2B705'
+          paper:   '#FFFFFF',
+          mist:    '#F4F6F8',
+          ink:     { DEFAULT:'#16202E', soft:'#5B6B7D', faint:'#93A1B0' },
+          navy:    { DEFAULT:'#1B3A6B', deep:'#0F2440', 50:'#eef3fa', 100:'#dbe6f3' },
+          gold:    { DEFAULT:'#C08A3E', soft:'#F3E7D3' },
+          crimson: { DEFAULT:'#A23B3B', soft:'#F5E4E1' },
+          line:    '#E5E9EE'
         }
       }
     }
@@ -28,428 +29,343 @@
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <script src="https://unpkg.com/lucide@latest"></script>
 
 <style>
   *{ scrollbar-width:thin; }
-  body{ font-family:'Plus Jakarta Sans',sans-serif; background:#071B34; color:#EAF4FF; overflow-x:hidden; }
-  .font-display{ font-family:'Sora',sans-serif; }
+  body{ font-family:'Plus Jakarta Sans',sans-serif; background:#FFFFFF; color:#16202E; overflow-x:hidden; }
+  .font-display{ font-family:'Fraunces',serif; font-variation-settings:'opsz' 32; }
   ::-webkit-scrollbar{ width:10px; }
-  ::-webkit-scrollbar-track{ background:#0D2C54; }
-  ::-webkit-scrollbar-thumb{ background:#1D6FEA55; border-radius:6px; }
+  ::-webkit-scrollbar-track{ background:#F4F6F8; }
+  ::-webkit-scrollbar-thumb{ background:#1B3A6B33; border-radius:6px; }
 
-  /* ===== Latar animasi (mesh gradient + blob + partikel) ===== */
-  #bg-fx{ position:fixed; inset:0; z-index:0; overflow:hidden; background:radial-gradient(ellipse at top,#0D2C54 0%,#071B34 60%); }
-  .blob{ position:absolute; border-radius:9999px; filter:blur(80px); opacity:.35; animation:meshMove 16s ease-in-out infinite; }
-  @keyframes meshMove{ 0%,100%{ transform:translate(0,0) scale(1);} 33%{ transform:translate(6%,-8%) scale(1.15);} 66%{ transform:translate(-5%,5%) scale(.9);} }
-  .particle{ position:absolute; bottom:-10px; border-radius:9999px; background:#4DA3FF; animation:particleFloat linear infinite; }
-  @keyframes particleFloat{ 0%{ transform:translateY(0); opacity:0;} 10%{ opacity:.8;} 90%{ opacity:.6;} 100%{ transform:translateY(-115vh); opacity:0;} }
+  /* ===== Kad lembut ===== */
+  .soft-card{ background:#FFFFFF; border:1px solid #E5E9EE; transition:transform .25s ease, box-shadow .3s ease, border-color .3s ease; }
+  .soft-card:hover{ transform:translateY(-3px); box-shadow:0 20px 40px -18px rgba(22,32,46,.16); border-color:#dbe1e8; }
 
-  /* ===== Kaca (glassmorphism) ===== */
-  .glass{ background:rgba(255,255,255,0.06); backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px); border:1px solid rgba(255,255,255,0.12); }
-  .unit-page-tab-btn{ color:rgba(255,255,255,0.5); border-color:transparent; }
-  .unit-page-tab-btn:hover{ color:rgba(255,255,255,0.85); }
-  .unit-page-tab-btn.active{ color:#22D3EE; border-color:#22D3EE; }
-  body.light-mode .unit-page-tab-btn{ color:rgba(13,44,84,0.55); }
-  body.light-mode .unit-page-tab-btn:hover{ color:#0D2C54; }
-  body.light-mode .unit-page-tab-btn.active{ color:#1D6FEA; border-color:#1D6FEA; }
-  .glass-light{ background:rgba(255,255,255,0.9); backdrop-filter:blur(20px); border:1px solid rgba(255,255,255,0.6); }
+  .btn-primary{ background:#1B3A6B; color:#fff; transition:background .2s ease, transform .2s ease; }
+  .btn-primary:hover{ background:#0F2440; transform:translateY(-1px); }
 
-  /* ===== Kad premium & kesan hover ===== */
-  .premium-card{ transition:transform .25s ease, box-shadow .35s ease, border-color .35s ease; transform-style:preserve-3d; position:relative; }
-  .premium-card:hover{ box-shadow:0 25px 60px -15px rgba(29,111,234,.45); border-color:rgba(77,163,255,.5); }
-
-  .btn-glow{ position:relative; }
-  .btn-glow::after{ content:''; position:absolute; inset:-2px; border-radius:9999px; background:linear-gradient(90deg,#1D6FEA,#22D3EE); opacity:0; filter:blur(12px); transition:opacity .3s ease; z-index:-1; }
-  .btn-glow:hover::after{ opacity:.8; }
-  .btn-shine{ position:relative; overflow:hidden; }
-  .btn-shine::before{ content:''; position:absolute; top:0; left:-60%; width:40%; height:100%; background:linear-gradient(120deg,transparent,rgba(255,255,255,.4),transparent); transform:skewX(-20deg); transition:left .6s ease; }
-  .btn-shine:hover::before{ left:130%; }
-
-  /* ===== Kursor mengilau ===== */
-  #cursor-glow{ position:fixed; width:380px; height:380px; border-radius:9999px; pointer-events:none; z-index:1; background:radial-gradient(circle,rgba(77,163,255,.15),transparent 70%); transform:translate(-50%,-50%); transition:opacity .3s ease; }
+  /* ===== Tanda pennant (motif jata sekolah) ===== */
+  .pennant-mark{ display:inline-flex; width:14px; height:16px; }
 
   /* ===== Skrin pemuatan ===== */
-  #loading-screen{ position:fixed; inset:0; z-index:100; background:#071B34; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:20px; transition:opacity .6s ease, visibility .6s ease; }
-  .loader-ring{ width:56px; height:56px; border-radius:9999px; border:3px solid rgba(77,163,255,.2); border-top-color:#4DA3FF; animation:spin 1s linear infinite; }
+  #loading-screen{ position:fixed; inset:0; z-index:100; background:#FFFFFF; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:18px; transition:opacity .5s ease, visibility .5s ease; }
+  .loader-ring{ width:44px; height:44px; border-radius:9999px; border:3px solid #E5E9EE; border-top-color:#1B3A6B; animation:spin 1s linear infinite; }
   @keyframes spin{ to{ transform:rotate(360deg); } }
 
   /* ===== Dedah skrol ===== */
-  .reveal{ opacity:0; transform:translateY(30px); transition:opacity .8s cubic-bezier(.16,.84,.44,1), transform .8s cubic-bezier(.16,.84,.44,1); }
+  .reveal{ opacity:0; transform:translateY(24px); transition:opacity .7s cubic-bezier(.16,.84,.44,1), transform .7s cubic-bezier(.16,.84,.44,1); }
   .reveal.in{ opacity:1; transform:translateY(0); }
-  .reveal-stagger > *{ opacity:0; transform:translateY(24px); transition:opacity .7s ease, transform .7s ease; }
+  .reveal-stagger > *{ opacity:0; transform:translateY(18px); transition:opacity .6s ease, transform .6s ease; }
   .reveal-stagger.in > *{ opacity:1; transform:translateY(0); }
-  .reveal-stagger.in > *:nth-child(1){ transition-delay:.05s; } .reveal-stagger.in > *:nth-child(2){ transition-delay:.15s; }
-  .reveal-stagger.in > *:nth-child(3){ transition-delay:.25s; } .reveal-stagger.in > *:nth-child(4){ transition-delay:.35s; }
-  .reveal-stagger.in > *:nth-child(5){ transition-delay:.45s; } .reveal-stagger.in > *:nth-child(6){ transition-delay:.55s; }
+  .reveal-stagger.in > *:nth-child(1){ transition-delay:.04s; } .reveal-stagger.in > *:nth-child(2){ transition-delay:.1s; }
+  .reveal-stagger.in > *:nth-child(3){ transition-delay:.16s; } .reveal-stagger.in > *:nth-child(4){ transition-delay:.22s; }
+  .reveal-stagger.in > *:nth-child(5){ transition-delay:.28s; } .reveal-stagger.in > *:nth-child(6){ transition-delay:.34s; }
 
-  /* ===== Menu & nav-link ===== */
-  .nav-link{ position:relative; padding:.4rem .2rem; }
-  .nav-link::after{ content:''; position:absolute; left:0; bottom:-2px; width:0; height:2px; background:linear-gradient(90deg,#1D6FEA,#22D3EE); transition:width .25s ease; }
+  /* ===== Nav ===== */
+  .nav-link{ position:relative; padding:.4rem .1rem; color:#5B6B7D; }
+  .nav-link:hover{ color:#16202E; }
+  .nav-link::after{ content:''; position:absolute; left:0; bottom:-2px; width:0; height:2px; background:#C08A3E; transition:width .25s ease; }
   .nav-link:hover::after{ width:100%; }
 
-  /* ===== Tiker pengumuman ===== */
-  .ticker-track{ display:flex; width:max-content; animation:tickerScroll 28s linear infinite; }
+  /* ===== Tiker ===== */
+  .ticker-track{ display:flex; width:max-content; animation:tickerScroll 30s linear infinite; }
   @keyframes tickerScroll{ from{ transform:translateX(0);} to{ transform:translateX(-50%);} }
 
   /* ===== Garis masa ===== */
   .timeline-scroll{ scroll-snap-type:x mandatory; }
   .timeline-item{ scroll-snap-align:start; }
 
-  /* ===== Suis tema ===== */
-  .theme-switch{ width:52px; height:28px; border-radius:9999px; position:relative; cursor:pointer; transition:background .3s ease; }
-  .theme-switch-knob{ position:absolute; top:3px; left:3px; width:22px; height:22px; border-radius:9999px; background:white; transition:transform .3s cubic-bezier(.68,-0.4,.27,1.4); display:flex; align-items:center; justify-content:center; }
-
-  body.light-mode{ background:#EAF4FF; color:#0D2C54; }
-  body.light-mode #section-unit-detail{ background:#EAF4FF; }
-  body.light-mode #bg-fx{ background:radial-gradient(ellipse at top,#dceeff 0%,#EAF4FF 60%); }
-  body.light-mode .glass{ background:rgba(255,255,255,0.7); border:1px solid rgba(13,44,84,0.08); }
-  body.light-mode .text-cyan{ color:#0891B2 !important; }
-  body.light-mode .text-sky{ color:#0369A1 !important; }
-  body.light-mode .text-white{ color:#0D2C54 !important; }
-  body.light-mode .text-white\/80{ color:rgba(13,44,84,0.8) !important; }
-  body.light-mode .text-white\/75{ color:rgba(13,44,84,0.75) !important; }
-  body.light-mode .text-white\/70{ color:rgba(13,44,84,0.7) !important; }
-  body.light-mode .text-white\/65{ color:rgba(13,44,84,0.65) !important; }
-  body.light-mode .text-white\/60{ color:rgba(13,44,84,0.62) !important; }
-  body.light-mode .text-white\/50{ color:rgba(13,44,84,0.55) !important; }
-  body.light-mode .text-white\/40{ color:rgba(13,44,84,0.48) !important; }
-  body.light-mode .text-white\/30{ color:rgba(13,44,84,0.4) !important; }
-  body.light-mode .text-white\/5{ color:rgba(13,44,84,0.06) !important; }
-  body.light-mode nav.glass{ background:rgba(255,255,255,0.85); }
-
   .counter{ font-variant-numeric:tabular-nums; }
-  .float-slow{ animation:floatSlow 7s ease-in-out infinite; }
-  @keyframes floatSlow{ 0%,100%{ transform:translateY(0);} 50%{ transform:translateY(-14px);} }
 
-  .hotspot{ position:absolute; width:16px; height:16px; }
-  .hotspot-dot{ width:100%; height:100%; border-radius:9999px; background:#22D3EE; box-shadow:0 0 0 0 rgba(34,211,238,.7); animation:ping 2s ease-out infinite; }
-  @keyframes ping{ 0%{ box-shadow:0 0 0 0 rgba(34,211,238,.6);} 70%{ box-shadow:0 0 0 14px rgba(34,211,238,0);} 100%{ box-shadow:0 0 0 0 rgba(34,211,238,0);} }
+
+
+  /* ===== Unit page tabs ===== */
+  .unit-page-tab-btn{ color:#93A1B0; border-color:transparent; }
+  .unit-page-tab-btn:hover{ color:#16202E; }
+  .unit-page-tab-btn.active{ color:#1B3A6B; border-color:#C08A3E; }
 </style>
 </head>
 <body class="antialiased">
 
 <!-- ============ SKRIN PEMUATAN ============ -->
 <div id="loading-screen">
-  <div class="w-16 h-16 flex items-center justify-center">
+  <div class="w-14 h-14 flex items-center justify-center">
     <img src="logo.png" alt="Logo" class="w-full h-full object-contain" onerror="this.style.display='none'">
   </div>
   <div class="loader-ring"></div>
-  <p class="font-display font-bold text-sm tracking-widest text-sky uppercase">SK Krangan</p>
+  <p class="font-display font-semibold text-sm tracking-wide text-navy">SK Krangan</p>
 </div>
-
-<!-- ============ KURSOR MENGILAU ============ -->
-<div id="cursor-glow" class="hidden lg:block"></div>
-
-<!-- ============ LATAR ANIMASI ============ -->
-<div id="bg-fx">
-  <div class="blob w-[500px] h-[500px] bg-blue" style="top:-10%; left:-10%;"></div>
-  <div class="blob w-[600px] h-[600px] bg-cyan" style="bottom:-15%; right:-10%; animation-delay:-6s;"></div>
-  <div class="blob w-[400px] h-[400px] bg-sky" style="top:40%; left:60%; animation-delay:-11s;"></div>
-  <div id="particle-field"></div>
-</div>
-
-<div class="relative z-10">
 
 <!-- ============ NAV ============ -->
-<header class="sticky top-0 z-40 glass border-b border-white/10">
-  <nav class="max-w-6xl mx-auto px-5 sm:px-8 h-20 flex items-center justify-between">
+<header class="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-line">
+  <nav class="max-w-6xl mx-auto px-5 sm:px-8 h-[76px] flex items-center justify-between">
     <a href="index.html" class="flex items-center gap-3">
-      <div class="w-11 h-11 flex items-center justify-center">
-        <img src="logo.png" alt="Logo SK Krangan" class="w-full h-full object-contain" onerror="this.parentElement.innerHTML='<i data-lucide=school class=\'w-5 h-5 text-sky\'></i>'; lucide.createIcons();">
+      <div class="w-10 h-10 flex items-center justify-center">
+        <img src="logo.png" alt="Logo SK Krangan" class="w-full h-full object-contain" onerror="this.parentElement.innerHTML='<i data-lucide=school class=\'w-5 h-5 text-navy\'></i>'; lucide.createIcons();">
       </div>
       <div class="leading-tight">
-        <p class="font-display font-bold text-lg text-white">SK Krangan</p>
-        <p class="text-[10px] uppercase tracking-widest text-sky/70 font-semibold">Portal Digital</p>
+        <p class="font-display font-semibold text-lg text-ink">SK Krangan</p>
+        <p class="text-[10px] uppercase tracking-widest text-ink-faint font-bold">Portal Digital</p>
       </div>
     </a>
 
-    <div class="hidden lg:flex items-center gap-7 text-sm font-semibold text-white/75">
-      <a href="#utama" class="nav-link hover:text-white">Utama</a>
-      <a href="#unit" class="nav-link hover:text-white">Unit</a>
-      <a href="#carta" class="nav-link hover:text-white">Carta Organisasi</a>
-      <a href="#peta" class="nav-link hover:text-white">Peta Kampus</a>
-      <a href="#kalendar" class="nav-link hover:text-white">Kalendar</a>
+    <div class="hidden lg:flex items-center gap-8 text-sm font-semibold">
+      <a href="#utama" class="nav-link">Utama</a>
+      <a href="#unit" class="nav-link">Unit</a>
+      <a href="#carta" class="nav-link">Carta Organisasi</a>
+      <a href="#kalendar" class="nav-link">Kalendar</a>
     </div>
 
-    <div class="flex items-center gap-3">
-      <button onclick="toggleSearch()" class="w-10 h-10 rounded-full hover:bg-white/10 flex items-center justify-center text-white/80" title="Carian Pantas"><i data-lucide="search" class="w-4.5 h-4.5"></i></button>
-      <div class="theme-switch bg-navy-deep hidden sm:flex" onclick="toggleTheme()" id="theme-switch">
-        <div class="theme-switch-knob"><i data-lucide="moon" class="w-3 h-3 text-navy-deep" id="theme-icon"></i></div>
-      </div>
-      <a href="dashboard.html" class="btn-glow btn-shine hidden sm:flex items-center gap-2 bg-gradient-to-r from-blue to-cyan text-white text-sm font-bold px-5 py-2.5 rounded-full shadow-lg shadow-blue/30 transition-all hover:scale-[1.03]">
+    <div class="flex items-center gap-2">
+      <button onclick="toggleSearch()" class="w-10 h-10 rounded-full hover:bg-mist flex items-center justify-center text-ink-soft" title="Carian Pantas"><i data-lucide="search" class="w-4.5 h-4.5"></i></button>
+      <a href="dashboard.html" class="btn-primary hidden sm:flex items-center gap-2 text-sm font-bold px-5 py-2.5 rounded-full transition-all">
         <i data-lucide="log-in" class="w-4 h-4"></i> Masuk Portal
       </a>
-      <button onclick="document.getElementById('mobile-menu').classList.toggle('hidden')" class="lg:hidden w-10 h-10 flex items-center justify-center rounded-full hover:bg-white/10 text-white">
+      <button onclick="document.getElementById('mobile-menu').classList.toggle('hidden')" class="lg:hidden w-10 h-10 flex items-center justify-center rounded-full hover:bg-mist text-ink">
         <i data-lucide="menu" class="w-5 h-5"></i>
       </button>
     </div>
   </nav>
-  <div id="mobile-menu" class="hidden lg:hidden border-t border-white/10 px-5 py-4 flex flex-col gap-3 text-sm font-semibold text-white/80">
+  <div id="mobile-menu" class="hidden lg:hidden border-t border-line px-5 py-4 flex flex-col gap-3 text-sm font-semibold text-ink-soft">
     <a href="#utama" class="py-1">Utama</a>
     <a href="#unit" class="py-1">Unit</a>
     <a href="#carta" class="py-1">Carta Organisasi</a>
-    <a href="#peta" class="py-1">Peta Kampus</a>
     <a href="#kalendar" class="py-1">Kalendar</a>
-    <a href="dashboard.html" class="py-2 mt-1 text-center bg-gradient-to-r from-blue to-cyan text-white rounded-full font-bold">Masuk Portal</a>
+    <a href="dashboard.html" class="py-2.5 mt-1 text-center bg-navy text-white rounded-full font-bold">Masuk Portal</a>
   </div>
 
   <!-- Carian pantas -->
-  <div id="search-panel" class="hidden absolute inset-x-0 top-full glass border-b border-white/10 p-5">
+  <div id="search-panel" class="hidden absolute inset-x-0 top-full bg-white border-b border-line shadow-lg p-5">
     <div class="max-w-2xl mx-auto relative">
-      <i data-lucide="search" class="w-4 h-4 text-white/60 absolute left-4 top-1/2 -translate-y-1/2"></i>
-      <input id="search-input" oninput="runSearch(this.value)" type="text" placeholder="Cari 'guru', 'kalendar', 'kokurikulum', 'hubungi'..." class="w-full bg-white/10 border border-white/15 rounded-xl pl-11 pr-4 py-3 text-sm text-white placeholder-white/40 focus:outline-none focus:border-sky">
+      <i data-lucide="search" class="w-4 h-4 text-ink-faint absolute left-4 top-1/2 -translate-y-1/2"></i>
+      <input id="search-input" oninput="runSearch(this.value)" type="text" placeholder="Cari 'guru', 'kalendar', 'kokurikulum', 'hubungi'..." class="w-full bg-mist border border-line rounded-xl pl-11 pr-4 py-3 text-sm text-ink placeholder-ink-faint focus:outline-none focus:border-navy">
       <div id="search-results" class="mt-3 space-y-1"></div>
     </div>
   </div>
 </header>
 
 <!-- ============ TIKER PENGUMUMAN ============ -->
-<div class="bg-navy-deep/80 border-b border-white/5 overflow-hidden py-2">
-  <div class="ticker-track text-xs font-semibold text-sky/80">
+<div class="bg-navy border-b border-navy-deep overflow-hidden py-2">
+  <div class="ticker-track text-xs font-semibold text-white/85">
     <span class="flex items-center gap-3 px-6 whitespace-nowrap"><i data-lucide="megaphone" class="w-3.5 h-3.5"></i> Isnin: Mesyuarat Guru &nbsp;&bull;&nbsp; Selasa: Aktiviti STEM &nbsp;&bull;&nbsp; Rabu: Latihan Kokurikulum &nbsp;&bull;&nbsp; Peperiksaan UPDLP: 12&ndash;16 Oktober 2026</span>
     <span class="flex items-center gap-3 px-6 whitespace-nowrap" aria-hidden="true"><i data-lucide="megaphone" class="w-3.5 h-3.5"></i> Isnin: Mesyuarat Guru &nbsp;&bull;&nbsp; Selasa: Aktiviti STEM &nbsp;&bull;&nbsp; Rabu: Latihan Kokurikulum &nbsp;&bull;&nbsp; Peperiksaan UPDLP: 12&ndash;16 Oktober 2026</span>
   </div>
 </div>
 
-<!-- ============ HERO SKRIN PENUH ============ -->
-<section id="utama" class="min-h-[92vh] flex items-center relative px-5 sm:px-8 pt-10 pb-16">
-  <div class="max-w-4xl mx-auto text-center reveal w-full">
-    <div class="relative w-full max-w-3xl mx-auto rounded-[2rem] overflow-hidden shadow-2xl shadow-blue/20 border border-white/10 mb-10 h-[220px] sm:h-[320px] md:h-[380px]">
-      <div id="hero-slideshow" class="relative w-full h-full bg-navy-deep">
-        <div class="hero-slide absolute inset-0 opacity-100 transition-opacity duration-1000" style="background-image:url('sekolah-1.jpg'); background-size:cover; background-position:center;"></div>
-        <div class="hero-slide absolute inset-0 opacity-0 transition-opacity duration-1000" style="background-image:url('sekolah-2.jpg'); background-size:cover; background-position:center;"></div>
-        <div class="hero-slide absolute inset-0 opacity-0 transition-opacity duration-1000" style="background-image:url('sekolah-3.jpg'); background-size:cover; background-position:center;"></div>
-        <div class="hero-slide absolute inset-0 opacity-0 transition-opacity duration-1000" style="background-image:url('sekolah-4.jpg'); background-size:cover; background-position:center;"></div>
-        <div class="hero-slide absolute inset-0 opacity-0 transition-opacity duration-1000" style="background-image:url('sekolah-5.jpg'); background-size:cover; background-position:center;"></div>
-        <div class="hero-slide absolute inset-0 opacity-0 transition-opacity duration-1000" style="background-image:url('sekolah-6.jpg'); background-size:cover; background-position:center;"></div>
+<!-- ============ HERO ============ -->
+<section id="utama" class="relative px-5 sm:px-8 pt-16 pb-20 overflow-hidden">
+  <div class="max-w-6xl mx-auto grid lg:grid-cols-[1.05fr_1fr] gap-14 items-center">
+    <div class="reveal">
+      <span class="inline-flex items-center gap-2 text-gold text-xs font-bold uppercase tracking-widest mb-6">
+        <svg class="pennant-mark" viewBox="0 0 14 16" fill="none"><path d="M1 1H13V11.5L7 15L1 11.5V1Z" fill="currentColor"/></svg>
+        Selamat Datang
+      </span>
+      <h1 class="font-display font-semibold text-5xl sm:text-6xl md:text-[4.5rem] leading-[1.03] text-ink mb-7">
+        Mendidik generasi<br>Krangan dengan <span class="text-navy italic">bersungguh.</span>
+      </h1>
+      <p class="text-ink-soft text-lg leading-relaxed mb-10 max-w-lg">Portal digital rasmi SK Krangan &mdash; menghubungkan pentadbiran, staf dan komuniti Serian dalam satu ruang yang telus dan mudah diakses.</p>
+      <div class="flex flex-wrap items-center gap-4">
+        <a href="dashboard.html" class="btn-primary inline-flex items-center gap-2 font-bold px-7 py-3.5 rounded-full transition-all">
+          Masuk Portal <i data-lucide="arrow-right" class="w-4 h-4"></i>
+        </a>
+        <a href="#unit" class="inline-flex items-center gap-2 text-ink font-bold px-7 py-3.5 rounded-full border border-line hover:border-navy transition-all">
+          Terokai Unit
+        </a>
       </div>
-      <div class="absolute inset-0 bg-gradient-to-t from-navy-deepest/70 via-transparent to-transparent pointer-events-none"></div>
-      <div class="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5" id="hero-slide-dots"></div>
     </div>
 
-    <span class="inline-flex items-center gap-2 glass text-sky text-xs font-bold uppercase tracking-widest px-4 py-2 rounded-full mb-8">
-      <i data-lucide="sparkles" class="w-3.5 h-3.5"></i> Selamat Datang
-    </span>
-    <h1 class="font-display font-black text-4xl sm:text-6xl md:text-7xl leading-[1.05] text-white mb-6">
-      PORTAL DIGITAL<br><span class="bg-gradient-to-r from-blue via-sky to-cyan bg-clip-text text-transparent">SK KRANGAN</span>
-    </h1>
-    <p class="text-white/60 text-lg sm:text-xl mb-10 max-w-xl mx-auto">Empowering Future Learning &mdash; mendigitalkan pentadbiran &amp; perkhidmatan sekolah untuk komuniti Krangan, Serian.</p>
-    <div class="flex flex-wrap justify-center gap-4">
-      <a href="dashboard.html" class="btn-glow btn-shine inline-flex items-center gap-2 bg-gradient-to-r from-blue to-cyan text-white font-bold px-8 py-4 rounded-full shadow-xl shadow-blue/30 transition-all hover:scale-[1.04]">
-        Masuk Portal <i data-lucide="arrow-right" class="w-4 h-4"></i>
-      </a>
-      <a href="#unit" class="glass inline-flex items-center gap-2 text-white font-bold px-8 py-4 rounded-full transition-all hover:bg-white/10">
-        Terokai <i data-lucide="compass" class="w-4 h-4"></i>
-      </a>
+    <div class="relative reveal">
+      <div class="relative rounded-[1.75rem] overflow-hidden shadow-2xl shadow-navy/10 h-[340px] sm:h-[420px]">
+        <div id="hero-slideshow" class="relative w-full h-full bg-navy-50">
+          <div class="hero-slide absolute inset-0 opacity-100 transition-opacity duration-1000" style="background-image:url('sekolah-1.jpg'); background-size:cover; background-position:center;"></div>
+          <div class="hero-slide absolute inset-0 opacity-0 transition-opacity duration-1000" style="background-image:url('sekolah-2.jpg'); background-size:cover; background-position:center;"></div>
+          <div class="hero-slide absolute inset-0 opacity-0 transition-opacity duration-1000" style="background-image:url('sekolah-3.jpg'); background-size:cover; background-position:center;"></div>
+          <div class="hero-slide absolute inset-0 opacity-0 transition-opacity duration-1000" style="background-image:url('sekolah-4.jpg'); background-size:cover; background-position:center;"></div>
+          <div class="hero-slide absolute inset-0 opacity-0 transition-opacity duration-1000" style="background-image:url('sekolah-5.jpg'); background-size:cover; background-position:center;"></div>
+          <div class="hero-slide absolute inset-0 opacity-0 transition-opacity duration-1000" style="background-image:url('sekolah-6.jpg'); background-size:cover; background-position:center;"></div>
+        </div>
+      </div>
+      <div class="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5" id="hero-slide-dots"></div>
+      <div class="absolute -bottom-6 -left-6 bg-white rounded-2xl shadow-xl border border-line px-5 py-4 hidden sm:block">
+        <p class="text-[10px] font-bold uppercase tracking-wider text-ink-faint mb-0.5">Kod Sekolah</p>
+        <p class="font-display font-semibold text-navy text-lg">YBB8240</p>
+      </div>
     </div>
   </div>
-  <div class="absolute bottom-8 left-1/2 -translate-x-1/2 text-white/30 float-slow"><i data-lucide="chevron-down" class="w-6 h-6"></i></div>
 </section>
 
-<!-- ============ STATISTIK PREMIUM ============ -->
+<!-- ============ STATISTIK ============ -->
 <section class="max-w-6xl mx-auto px-5 sm:px-8 pb-24">
   <div class="grid grid-cols-2 md:grid-cols-4 gap-5 reveal-stagger">
-    <div class="premium-card glass rounded-3xl p-6 text-center">
-      <i data-lucide="graduation-cap" class="w-6 h-6 text-sky mx-auto mb-3"></i>
-      <div class="counter font-display font-black text-4xl text-white mb-1" data-target="78">0</div>
-      <div class="text-xs font-bold uppercase tracking-wider text-white/60">Murid</div>
+    <div class="soft-card rounded-2xl p-7 text-center">
+      <div class="counter font-display font-semibold text-4xl text-navy mb-1" data-target="78">0</div>
+      <div class="text-xs font-bold uppercase tracking-wider text-ink-faint">Murid</div>
     </div>
-    <div class="premium-card glass rounded-3xl p-6 text-center">
-      <i data-lucide="users" class="w-6 h-6 text-cyan mx-auto mb-3"></i>
-      <div class="counter font-display font-black text-4xl text-white mb-1" data-target="13">0</div>
-      <div class="text-xs font-bold uppercase tracking-wider text-white/60">Guru</div>
+    <div class="soft-card rounded-2xl p-7 text-center">
+      <div class="counter font-display font-semibold text-4xl text-navy mb-1" data-target="13">0</div>
+      <div class="text-xs font-bold uppercase tracking-wider text-ink-faint">Guru</div>
     </div>
-    <div class="premium-card glass rounded-3xl p-6 text-center">
-      <i data-lucide="briefcase" class="w-6 h-6 text-blue mx-auto mb-3"></i>
-      <div class="counter font-display font-black text-4xl text-white mb-1" data-target="2">0</div>
-      <div class="text-xs font-bold uppercase tracking-wider text-white/60">Staf</div>
+    <div class="soft-card rounded-2xl p-7 text-center">
+      <div class="counter font-display font-semibold text-4xl text-navy mb-1" data-target="2">0</div>
+      <div class="text-xs font-bold uppercase tracking-wider text-ink-faint">Staf</div>
     </div>
-    <div class="premium-card glass rounded-3xl p-6 text-center">
-      <i data-lucide="door-open" class="w-6 h-6 text-gold mx-auto mb-3"></i>
-      <div class="counter font-display font-black text-4xl text-white mb-1" data-target="6">0</div>
-      <div class="text-xs font-bold uppercase tracking-wider text-white/60">Kelas</div>
+    <div class="soft-card rounded-2xl p-7 text-center">
+      <div class="counter font-display font-semibold text-4xl text-navy mb-1" data-target="6">0</div>
+      <div class="text-xs font-bold uppercase tracking-wider text-ink-faint">Kelas</div>
     </div>
   </div>
 </section>
 
 <!-- ============ VISI / MISI ============ -->
 <section class="max-w-6xl mx-auto px-5 sm:px-8 pb-24 grid sm:grid-cols-2 gap-6 reveal-stagger">
-  <div class="premium-card glass rounded-3xl p-9">
-    <i data-lucide="compass" class="w-8 h-8 text-cyan mb-4"></i>
-    <h3 class="font-display font-bold text-xl mb-2 text-white">Visi</h3>
-    <p class="text-white/60 leading-relaxed">Pendidikan Berkualiti Insan Terdidik Negara Sejahtera.</p>
+  <div class="soft-card rounded-2xl p-9">
+    <i data-lucide="compass" class="w-7 h-7 text-navy mb-4"></i>
+    <h3 class="font-display font-semibold text-xl mb-2 text-ink">Visi</h3>
+    <p class="text-ink-soft leading-relaxed">Pendidikan Berkualiti Insan Terdidik Negara Sejahtera.</p>
   </div>
-  <div class="premium-card glass rounded-3xl p-9">
-    <i data-lucide="target" class="w-8 h-8 text-blue mb-4"></i>
-    <h3 class="font-display font-bold text-xl mb-2 text-white">Misi</h3>
-    <p class="text-white/60 leading-relaxed">Melestarikan sistem pendidikan yang berkualiti untuk membangunkan potensi setiap individu.</p>
+  <div class="soft-card rounded-2xl p-9">
+    <i data-lucide="target" class="w-7 h-7 text-gold mb-4"></i>
+    <h3 class="font-display font-semibold text-xl mb-2 text-ink">Misi</h3>
+    <p class="text-ink-soft leading-relaxed">Melestarikan sistem pendidikan yang berkualiti untuk membangunkan potensi setiap individu.</p>
   </div>
 </section>
 
 <!-- ============ UNIT SEKOLAH ============ -->
-<section id="unit" class="max-w-6xl mx-auto px-5 sm:px-8 pb-24">
-  <div class="text-center max-w-xl mx-auto mb-14 reveal">
-    <span class="text-xs font-bold uppercase tracking-widest text-cyan">Struktur Pentadbiran</span>
-    <h2 class="font-display font-bold text-3xl sm:text-4xl text-white mt-2">Unit Sekolah</h2>
-    <p class="text-white/65 mt-3">Kandungan setiap unit dikemas kini terus oleh Setiausaha unit berkenaan.</p>
+<section id="unit" class="bg-mist py-24">
+  <div class="max-w-6xl mx-auto px-5 sm:px-8">
+    <div class="text-center max-w-xl mx-auto mb-14 reveal">
+      <span class="text-xs font-bold uppercase tracking-widest text-gold">Struktur Pentadbiran</span>
+      <h2 class="font-display font-semibold text-3xl sm:text-4xl text-ink mt-2">Unit Sekolah</h2>
+      <p class="text-ink-soft mt-3">Kandungan setiap unit dikemas kini terus oleh Setiausaha unit berkenaan.</p>
+    </div>
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 reveal-stagger" id="unit-grid"></div>
   </div>
-  <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 reveal-stagger" id="unit-grid"></div>
 </section>
 
 <!-- ============ GARIS MASA ============ -->
-<section class="pb-24">
+<section class="py-24">
   <div class="max-w-6xl mx-auto px-5 sm:px-8 text-center max-w-xl mb-12 reveal">
-    <span class="text-xs font-bold uppercase tracking-widest text-cyan">Sesi 2026</span>
-    <h2 class="font-display font-bold text-3xl sm:text-4xl text-white mt-2">Garis Masa Sekolah</h2>
+    <span class="text-xs font-bold uppercase tracking-widest text-gold">Sesi 2026</span>
+    <h2 class="font-display font-semibold text-3xl sm:text-4xl text-ink mt-2">Garis Masa Sekolah</h2>
   </div>
   <div class="timeline-scroll flex gap-5 overflow-x-auto px-5 sm:px-8 pb-6 snap-x">
-    <div class="timeline-item premium-card glass rounded-2xl p-6 min-w-[220px] shrink-0">
-      <i data-lucide="heart-handshake" class="w-6 h-6 text-gold mb-3"></i><p class="font-display font-bold text-white mb-1">Hari Guru</p><p class="text-xs text-white/65">Mei 2026</p>
+    <div class="timeline-item soft-card rounded-2xl p-6 min-w-[220px] shrink-0">
+      <i data-lucide="heart-handshake" class="w-6 h-6 text-gold mb-3"></i><p class="font-display font-semibold text-ink mb-1">Hari Guru</p><p class="text-xs text-ink-soft">Mei 2026</p>
     </div>
-    <div class="timeline-item premium-card glass rounded-2xl p-6 min-w-[220px] shrink-0">
-      <i data-lucide="trophy" class="w-6 h-6 text-cyan mb-3"></i><p class="font-display font-bold text-white mb-1">Hari Sukan</p><p class="text-xs text-white/65">Julai 2026</p>
+    <div class="timeline-item soft-card rounded-2xl p-6 min-w-[220px] shrink-0">
+      <i data-lucide="trophy" class="w-6 h-6 text-navy mb-3"></i><p class="font-display font-semibold text-ink mb-1">Hari Sukan</p><p class="text-xs text-ink-soft">Julai 2026</p>
     </div>
-    <div class="timeline-item premium-card glass rounded-2xl p-6 min-w-[220px] shrink-0">
-      <i data-lucide="flask-conical" class="w-6 h-6 text-blue mb-3"></i><p class="font-display font-bold text-white mb-1">Program STEM</p><p class="text-xs text-white/65">Ogos 2026</p>
+    <div class="timeline-item soft-card rounded-2xl p-6 min-w-[220px] shrink-0">
+      <i data-lucide="flask-conical" class="w-6 h-6 text-crimson mb-3"></i><p class="font-display font-semibold text-ink mb-1">Program STEM</p><p class="text-xs text-ink-soft">Ogos 2026</p>
     </div>
-    <div class="timeline-item premium-card glass rounded-2xl p-6 min-w-[220px] shrink-0">
-      <i data-lucide="pencil-line" class="w-6 h-6 text-sky mb-3"></i><p class="font-display font-bold text-white mb-1">Peperiksaan UPDLP</p><p class="text-xs text-white/65">Oktober 2026</p>
+    <div class="timeline-item soft-card rounded-2xl p-6 min-w-[220px] shrink-0">
+      <i data-lucide="pencil-line" class="w-6 h-6 text-navy mb-3"></i><p class="font-display font-semibold text-ink mb-1">Peperiksaan UPDLP</p><p class="text-xs text-ink-soft">Oktober 2026</p>
     </div>
-    <div class="timeline-item premium-card glass rounded-2xl p-6 min-w-[220px] shrink-0">
-      <i data-lucide="tent-tree" class="w-6 h-6 text-gold mb-3"></i><p class="font-display font-bold text-white mb-1">Perkhemahan</p><p class="text-xs text-white/65">November 2026</p>
+    <div class="timeline-item soft-card rounded-2xl p-6 min-w-[220px] shrink-0">
+      <i data-lucide="tent-tree" class="w-6 h-6 text-gold mb-3"></i><p class="font-display font-semibold text-ink mb-1">Perkhemahan</p><p class="text-xs text-ink-soft">November 2026</p>
     </div>
-    <div class="timeline-item premium-card glass rounded-2xl p-6 min-w-[220px] shrink-0">
-      <i data-lucide="graduation-cap" class="w-6 h-6 text-cyan mb-3"></i><p class="font-display font-bold text-white mb-1">Majlis Graduasi</p><p class="text-xs text-white/65">November 2026</p>
+    <div class="timeline-item soft-card rounded-2xl p-6 min-w-[220px] shrink-0">
+      <i data-lucide="graduation-cap" class="w-6 h-6 text-crimson mb-3"></i><p class="font-display font-semibold text-ink mb-1">Majlis Graduasi</p><p class="text-xs text-ink-soft">November 2026</p>
     </div>
   </div>
 </section>
 
 <!-- ============ CARTA ORGANISASI ============ -->
-<section id="carta" class="max-w-6xl mx-auto px-5 sm:px-8 pb-24">
+<section id="carta" class="max-w-6xl mx-auto px-5 sm:px-8 py-24">
   <div class="text-center max-w-xl mx-auto mb-14 reveal">
-    <span class="text-xs font-bold uppercase tracking-widest text-cyan">Kepimpinan</span>
-    <h2 class="font-display font-bold text-3xl sm:text-4xl text-white mt-2">Carta Organisasi</h2>
-    <p class="text-white/65 mt-3">Klik kad untuk maklumat lanjut.</p>
+    <span class="text-xs font-bold uppercase tracking-widest text-gold">Kepimpinan</span>
+    <h2 class="font-display font-semibold text-3xl sm:text-4xl text-ink mt-2">Carta Organisasi</h2>
+    <p class="text-ink-soft mt-3">Klik kad untuk maklumat lanjut.</p>
   </div>
-  <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 reveal-stagger" id="org-grid"></div>
+  <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 reveal-stagger" id="org-grid"></div>
 </section>
 
 <!-- Modal profil staf -->
-<div id="org-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-navy-deepest/70 backdrop-blur-sm">
-  <div class="glass rounded-3xl max-w-sm w-full p-8 text-center relative">
-    <button onclick="closeOrgModal()" class="absolute top-4 right-4 w-8 h-8 rounded-full hover:bg-white/10 flex items-center justify-center"><i data-lucide="x" class="w-4 h-4 text-white/60"></i></button>
-    <div id="org-modal-avatar" class="w-20 h-20 rounded-full bg-gradient-to-br from-blue to-cyan mx-auto mb-4 flex items-center justify-center overflow-hidden"><i data-lucide="user" class="w-9 h-9 text-white"></i></div>
-    <h3 id="org-modal-name" class="font-display font-bold text-xl text-white mb-1">Nama</h3>
-    <p id="org-modal-role" class="text-sky text-sm font-semibold mb-4">Jawatan</p>
-    <p class="text-white/65 text-sm">Hubungi melalui pejabat SK Krangan untuk urusan rasmi.</p>
+<div id="org-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-ink/40 backdrop-blur-sm">
+  <div class="bg-white rounded-3xl max-w-sm w-full p-8 text-center relative shadow-2xl">
+    <button onclick="closeOrgModal()" class="absolute top-4 right-4 w-8 h-8 rounded-full hover:bg-mist flex items-center justify-center"><i data-lucide="x" class="w-4 h-4 text-ink-soft"></i></button>
+    <div id="org-modal-avatar" class="w-20 h-20 rounded-full bg-navy-50 mx-auto mb-4 flex items-center justify-center overflow-hidden"><i data-lucide="user" class="w-9 h-9 text-navy"></i></div>
+    <h3 id="org-modal-name" class="font-display font-semibold text-xl text-ink mb-1">Nama</h3>
+    <p id="org-modal-role" class="text-gold text-sm font-bold mb-4">Jawatan</p>
+    <p class="text-ink-soft text-sm">Hubungi melalui pejabat SK Krangan untuk urusan rasmi.</p>
   </div>
 </div>
 
-<!-- ============ PETA KAMPUS INTERAKTIF ============ -->
-<section id="peta" class="max-w-6xl mx-auto px-5 sm:px-8 pb-24">
-  <div class="text-center max-w-xl mx-auto mb-14 reveal">
-    <span class="text-xs font-bold uppercase tracking-widest text-cyan">Terokai</span>
-    <h2 class="font-display font-bold text-3xl sm:text-4xl text-white mt-2">Peta Kampus Interaktif</h2>
-    <p class="text-white/65 mt-3">Klik penanda untuk maklumat setiap bangunan.</p>
-  </div>
-  <div class="premium-card glass rounded-3xl p-8 sm:p-12 reveal" style="perspective:1200px;">
-    <div class="relative mx-auto" style="max-width:640px; transform:rotateX(35deg) rotateZ(-8deg); transform-style:preserve-3d;">
-      <svg viewBox="0 0 600 400" class="w-full h-auto drop-shadow-2xl">
-        <rect x="0" y="0" width="600" height="400" rx="16" fill="#0D2C54"/>
-        <rect x="30" y="260" width="540" height="110" rx="8" fill="#154D8F"/>
-        <rect x="60" y="60" width="220" height="140" rx="10" fill="#1D6FEA"/>
-        <rect x="320" y="90" width="180" height="110" rx="10" fill="#22D3EE" opacity="0.85"/>
-        <rect x="120" y="220" width="140" height="40" rx="6" fill="#4DA3FF" opacity="0.7"/>
-        <circle cx="480" cy="230" r="34" fill="#F2B705" opacity="0.85"/>
-      </svg>
-      <button onclick="showHotspot('Blok Akademik','Kelas Tahun 1 hingga 6, makmal komputer dan bilik guru.')" class="hotspot" style="top:32%; left:28%;"><span class="hotspot-dot"></span></button>
-      <button onclick="showHotspot('Dewan Serbaguna','Ruang perhimpunan, program dan majlis rasmi sekolah.')" class="hotspot" style="top:38%; left:65%;"><span class="hotspot-dot"></span></button>
-      <button onclick="showHotspot('Padang Sekolah','Aktiviti sukan, perhimpunan pagi dan Hari Sukan Tahunan.')" class="hotspot" style="top:70%; left:80%;"><span class="hotspot-dot"></span></button>
-      <button onclick="showHotspot('Prasekolah','Kelas prasekolah dengan ruang permainan bertutup.')" class="hotspot" style="top:60%; left:35%;"><span class="hotspot-dot"></span></button>
-    </div>
-  </div>
-  <div id="hotspot-info" class="hidden mt-6 glass rounded-2xl p-6 max-w-xl mx-auto text-center reveal in">
-    <h4 id="hotspot-title" class="font-display font-bold text-white text-lg mb-1"></h4>
-    <p id="hotspot-desc" class="text-white/60 text-sm"></p>
-  </div>
-</section>
-
 <!-- ============ KALENDAR ============ -->
-<section id="kalendar" class="max-w-6xl mx-auto px-5 sm:px-8 pb-24">
+<section id="kalendar" class="max-w-6xl mx-auto px-5 sm:px-8 py-24">
   <div class="text-center max-w-xl mx-auto mb-14 reveal">
-    <span class="text-xs font-bold uppercase tracking-widest text-cyan">Agenda</span>
-    <h2 class="font-display font-bold text-3xl sm:text-4xl text-white mt-2">Kalendar Aktiviti</h2>
+    <span class="text-xs font-bold uppercase tracking-widest text-gold">Agenda</span>
+    <h2 class="font-display font-semibold text-3xl sm:text-4xl text-ink mt-2">Kalendar Aktiviti</h2>
   </div>
   <div class="grid md:grid-cols-2 gap-5 reveal-stagger">
-    <div class="premium-card glass rounded-2xl p-5 flex items-center gap-4">
-      <div class="w-12 h-12 rounded-xl bg-blue/20 flex items-center justify-center shrink-0"><i data-lucide="graduation-cap" class="text-sky w-5 h-5"></i></div>
-      <div><p class="font-bold text-white">Matriks Pembelajaran Tahun 4</p><p class="text-sm text-white/60">6 &ndash; 8 Oktober 2026</p></div>
+    <div class="soft-card rounded-2xl p-5 flex items-center gap-4">
+      <div class="w-12 h-12 rounded-xl bg-navy-50 flex items-center justify-center shrink-0"><i data-lucide="graduation-cap" class="text-navy w-5 h-5"></i></div>
+      <div><p class="font-bold text-ink">Matriks Pembelajaran Tahun 4</p><p class="text-sm text-ink-soft">6 &ndash; 8 Oktober 2026</p></div>
     </div>
-    <div class="premium-card glass rounded-2xl p-5 flex items-center gap-4">
-      <div class="w-12 h-12 rounded-xl bg-gold/20 flex items-center justify-center shrink-0"><i data-lucide="pencil-line" class="text-gold w-5 h-5"></i></div>
-      <div><p class="font-bold text-white">Peperiksaan (UPDLP)</p><p class="text-sm text-white/60">12 &ndash; 16 Oktober 2026</p></div>
+    <div class="soft-card rounded-2xl p-5 flex items-center gap-4">
+      <div class="w-12 h-12 rounded-xl bg-gold-soft flex items-center justify-center shrink-0"><i data-lucide="pencil-line" class="text-gold w-5 h-5"></i></div>
+      <div><p class="font-bold text-ink">Peperiksaan (UPDLP)</p><p class="text-sm text-ink-soft">12 &ndash; 16 Oktober 2026</p></div>
     </div>
-    <div class="premium-card glass rounded-2xl p-5 flex items-center gap-4">
-      <div class="w-12 h-12 rounded-xl bg-cyan/20 flex items-center justify-center shrink-0"><i data-lucide="users" class="text-cyan w-5 h-5"></i></div>
-      <div><p class="font-bold text-white">Mesyuarat Guru</p><p class="text-sm text-white/60">Setiap bulan</p></div>
+    <div class="soft-card rounded-2xl p-5 flex items-center gap-4">
+      <div class="w-12 h-12 rounded-xl bg-crimson-soft flex items-center justify-center shrink-0"><i data-lucide="users" class="text-crimson w-5 h-5"></i></div>
+      <div><p class="font-bold text-ink">Mesyuarat Guru</p><p class="text-sm text-ink-soft">Setiap bulan</p></div>
     </div>
-    <div class="premium-card glass rounded-2xl p-5 flex items-center gap-4">
-      <div class="w-12 h-12 rounded-xl bg-blue/20 flex items-center justify-center shrink-0"><i data-lucide="palmtree" class="text-blue w-5 h-5"></i></div>
-      <div><p class="font-bold text-white">Cuti Sekolah</p><p class="text-sm text-white/60">Rujuk Takwim Rasmi</p></div>
+    <div class="soft-card rounded-2xl p-5 flex items-center gap-4">
+      <div class="w-12 h-12 rounded-xl bg-navy-50 flex items-center justify-center shrink-0"><i data-lucide="palmtree" class="text-navy w-5 h-5"></i></div>
+      <div><p class="font-bold text-ink">Cuti Sekolah</p><p class="text-sm text-ink-soft">Rujuk Takwim Rasmi</p></div>
     </div>
   </div>
 </section>
 
-<!-- ============ FOOTER PREMIUM ============ -->
-<footer class="border-t border-white/10 pt-16 pb-10">
+<!-- ============ FOOTER ============ -->
+<footer class="bg-navy-deep pt-16 pb-10">
   <div class="max-w-6xl mx-auto px-5 sm:px-8 grid md:grid-cols-3 gap-10 mb-12 reveal-stagger">
     <div>
-      <p class="font-display font-bold text-white text-xl mb-3">SK Krangan</p>
-      <p class="text-sm text-white/65 leading-relaxed">Jalan Krangan-Balai Ringin, 94700 Serian, Sarawak.</p>
-      <p class="text-sm text-white/65 mt-2">Kod Sekolah: YBB8240</p>
+      <p class="font-display font-semibold text-white text-xl mb-3">SK Krangan</p>
+      <p class="text-sm text-white/60 leading-relaxed">Jalan Krangan-Balai Ringin, 94700 Serian, Sarawak.</p>
+      <p class="text-sm text-white/60 mt-2">Kod Sekolah: YBB8240</p>
       <div class="flex gap-3 mt-5">
-        <a href="#" class="w-9 h-9 rounded-full glass flex items-center justify-center hover:bg-white/15"><i data-lucide="facebook" class="w-4 h-4"></i></a>
-        <a href="#" class="w-9 h-9 rounded-full glass flex items-center justify-center hover:bg-white/15"><i data-lucide="instagram" class="w-4 h-4"></i></a>
+        <a href="#" class="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20"><i data-lucide="facebook" class="w-4 h-4 text-white"></i></a>
+        <a href="#" class="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20"><i data-lucide="instagram" class="w-4 h-4 text-white"></i></a>
       </div>
     </div>
     <div>
       <p class="font-bold text-white text-sm uppercase tracking-wider mb-3">Hubungi</p>
-      <p class="text-sm text-white/65 flex items-center gap-2 mb-2"><i data-lucide="mail" class="w-4 h-4"></i> ybb8240@moe.edu.my</p>
+      <p class="text-sm text-white/60 flex items-center gap-2 mb-2"><i data-lucide="mail" class="w-4 h-4"></i> ybb8240@moe.edu.my</p>
     </div>
     <div>
       <p class="font-bold text-white text-sm uppercase tracking-wider mb-3">Pautan</p>
-      <a href="dashboard.html" class="text-sm text-white/65 flex items-center gap-2 hover:text-white"><i data-lucide="log-in" class="w-4 h-4"></i> Masuk Portal (DELIMA)</a>
+      <a href="dashboard.html" class="text-sm text-white/60 flex items-center gap-2 hover:text-white"><i data-lucide="log-in" class="w-4 h-4"></i> Masuk Portal (DELIMA)</a>
     </div>
   </div>
   <p class="text-center text-xs text-white/30 border-t border-white/10 pt-6">&copy; 2026 Portal Digital SK Krangan (YBB8240).</p>
 </footer>
 
-</div><!-- /relative z-10 -->
-
 <!-- ============ BUTANG APUNG PANTAS ============ -->
 <div class="fixed bottom-6 right-6 z-30 flex flex-col items-end gap-3">
   <div id="quick-actions" class="hidden flex-col gap-3">
-    <a href="https://wa.me/60" target="_blank" rel="noopener" class="w-12 h-12 rounded-full bg-emerald-500 shadow-lg shadow-emerald-500/30 flex items-center justify-center hover:scale-110 transition-transform"><i data-lucide="message-circle" class="w-5 h-5 text-white"></i></a>
-    <a href="tel:+6082" class="w-12 h-12 rounded-full bg-blue shadow-lg shadow-blue/30 flex items-center justify-center hover:scale-110 transition-transform"><i data-lucide="phone" class="w-5 h-5 text-white"></i></a>
-    <button onclick="window.scrollTo({top:0,behavior:'smooth'})" class="w-12 h-12 rounded-full glass flex items-center justify-center hover:scale-110 transition-transform"><i data-lucide="arrow-up" class="w-5 h-5 text-white"></i></button>
+    <a href="https://wa.me/60" target="_blank" rel="noopener" class="w-12 h-12 rounded-full bg-emerald-600 shadow-lg shadow-emerald-600/30 flex items-center justify-center hover:scale-110 transition-transform"><i data-lucide="message-circle" class="w-5 h-5 text-white"></i></a>
+    <a href="tel:+6082" class="w-12 h-12 rounded-full bg-navy shadow-lg shadow-navy/30 flex items-center justify-center hover:scale-110 transition-transform"><i data-lucide="phone" class="w-5 h-5 text-white"></i></a>
+    <button onclick="window.scrollTo({top:0,behavior:'smooth'})" class="w-12 h-12 rounded-full bg-white shadow-lg border border-line flex items-center justify-center hover:scale-110 transition-transform"><i data-lucide="arrow-up" class="w-5 h-5 text-ink"></i></button>
   </div>
-  <button onclick="document.getElementById('quick-actions').classList.toggle('hidden'); document.getElementById('quick-actions').classList.toggle('flex')" class="w-14 h-14 rounded-full bg-gradient-to-br from-blue to-cyan shadow-xl shadow-blue/40 flex items-center justify-center hover:scale-105 transition-transform">
+  <button onclick="document.getElementById('quick-actions').classList.toggle('hidden'); document.getElementById('quick-actions').classList.toggle('flex')" class="w-14 h-14 rounded-full bg-navy shadow-xl shadow-navy/30 flex items-center justify-center hover:scale-105 transition-transform">
     <i data-lucide="plus" class="w-6 h-6 text-white"></i>
   </button>
 </div>
 
-<!-- Laman Penuh Unit (gantikan modal popup) -->
-<div id="section-unit-detail" class="hidden fixed inset-0 z-50 bg-navy-deepest overflow-y-auto">
-  <div class="sticky top-0 z-10 glass border-b border-white/10">
+<!-- Laman Penuh Unit -->
+<div id="section-unit-detail" class="hidden fixed inset-0 z-50 bg-white overflow-y-auto">
+  <div class="sticky top-0 z-10 bg-white/95 backdrop-blur-md border-b border-line">
     <div class="max-w-4xl mx-auto px-5 sm:px-8 py-5 flex items-center justify-between gap-4">
-      <button onclick="closeUnitPage()" class="flex items-center gap-2 text-white/70 hover:text-white font-bold text-sm shrink-0">
+      <button onclick="closeUnitPage()" class="flex items-center gap-2 text-ink-soft hover:text-ink font-bold text-sm shrink-0">
         <i data-lucide="arrow-left" class="w-4 h-4"></i> Kembali
       </button>
       <div class="text-center min-w-0">
-        <span class="text-[10px] font-bold uppercase tracking-widest text-cyan">Unit Sekolah</span>
-        <h1 id="unit-page-title" class="font-display font-bold text-lg sm:text-xl text-white truncate">-</h1>
+        <span class="text-[10px] font-bold uppercase tracking-widest text-gold">Unit Sekolah</span>
+        <h1 id="unit-page-title" class="font-display font-semibold text-lg sm:text-xl text-ink truncate">-</h1>
       </div>
       <div class="w-16 shrink-0"></div>
     </div>
@@ -485,13 +401,13 @@
   const heroSlides = document.querySelectorAll('.hero-slide');
   const heroDotsBox = document.getElementById('hero-slide-dots');
   if(heroDotsBox && heroSlides.length){
-    heroDotsBox.innerHTML = Array.from(heroSlides).map((_,i) => `<span class="hero-dot w-1.5 h-1.5 rounded-full transition-all ${i===0 ? 'bg-white w-5' : 'bg-white/40'}"></span>`).join('');
+    heroDotsBox.innerHTML = Array.from(heroSlides).map((_,i) => `<span class="hero-dot w-1.5 h-1.5 rounded-full transition-all ${i===0 ? 'bg-white w-5' : 'bg-white/50'}"></span>`).join('');
   }
   function goToHeroSlide(next){
     if(!heroSlides.length) return;
     heroSlides[heroSlideIndex].style.opacity = '0';
     const dots = document.querySelectorAll('.hero-dot');
-    if(dots[heroSlideIndex]) dots[heroSlideIndex].className = 'hero-dot w-1.5 h-1.5 rounded-full transition-all bg-white/40';
+    if(dots[heroSlideIndex]) dots[heroSlideIndex].className = 'hero-dot w-1.5 h-1.5 rounded-full transition-all bg-white/50';
     heroSlideIndex = next;
     heroSlides[heroSlideIndex].style.opacity = '1';
     if(dots[heroSlideIndex]) dots[heroSlideIndex].className = 'hero-dot w-1.5 h-1.5 rounded-full transition-all bg-white w-5';
@@ -503,41 +419,8 @@
     setTimeout(() => {
       const ls = document.getElementById('loading-screen');
       ls.style.opacity = '0'; ls.style.visibility = 'hidden';
-    }, 700);
+    }, 500);
   });
-
-  // ---- Partikel terapung ----
-  const pf = document.getElementById('particle-field');
-  for(let i=0;i<26;i++){
-    const p = document.createElement('div');
-    const size = Math.random()*4+2;
-    p.className = 'particle';
-    p.style.width = size+'px'; p.style.height = size+'px';
-    p.style.left = Math.random()*100+'%';
-    p.style.animationDuration = (Math.random()*14+10)+'s';
-    p.style.animationDelay = (Math.random()*-20)+'s';
-    p.style.opacity = Math.random()*0.5+0.2;
-    pf.appendChild(p);
-  }
-
-  // ---- Kursor mengilau ----
-  const cursorGlow = document.getElementById('cursor-glow');
-  document.addEventListener('mousemove', (e) => {
-    cursorGlow.style.left = e.clientX+'px';
-    cursorGlow.style.top = e.clientY+'px';
-  });
-
-  // ---- Suis tema terang/gelap ----
-  function toggleTheme(){
-    document.body.classList.toggle('light-mode');
-    const isLight = document.body.classList.contains('light-mode');
-    document.getElementById('theme-switch').style.background = isLight ? '#4DA3FF' : '';
-    document.getElementById('theme-switch').querySelector('.theme-switch-knob').style.transform = isLight ? 'translateX(24px)' : 'translateX(0)';
-    document.getElementById('theme-icon').setAttribute('data-lucide', isLight ? 'sun' : 'moon');
-    lucide.createIcons();
-    localStorage.setItem('skk_theme', isLight ? 'light' : 'dark');
-  }
-  if(localStorage.getItem('skk_theme') === 'light'){ toggleTheme(); }
 
   // ---- Carian pantas ----
   const searchIndex = [
@@ -547,7 +430,6 @@
     { label:'Unit Prasekolah', hint:'Kelas prasekolah SK Krangan', target:'#unit' },
     { label:'Carta Organisasi / Guru', hint:'Kepimpinan sekolah', target:'#carta' },
     { label:'Kalendar & Peperiksaan', hint:'Takwim aktiviti sekolah', target:'#kalendar' },
-    { label:'Peta Kampus', hint:'Lokasi bangunan sekolah', target:'#peta' },
     { label:'Hubungi / Borang', hint:'Emel & lokasi sekolah', target:'footer' },
     { label:'Masuk Portal / Dashboard', hint:'Log masuk staf DELIMA', target:'dashboard.html' },
   ];
@@ -562,22 +444,14 @@
     if(!q){ box.innerHTML=''; return; }
     const hits = searchIndex.filter(i => i.label.toLowerCase().includes(q) || i.hint.toLowerCase().includes(q));
     box.innerHTML = hits.length ? hits.map(h => `
-      <a href="${h.target}" onclick="toggleSearch()" class="flex items-center justify-between px-4 py-3 rounded-xl hover:bg-white/10 text-left">
-        <span><span class="text-white font-semibold text-sm block">${h.label}</span><span class="text-white/60 text-xs">${h.hint}</span></span>
-        <i data-lucide="arrow-right" class="w-4 h-4 text-white/30"></i>
-      </a>`).join('') : `<p class="text-white/60 text-sm px-4 py-3">Tiada hasil untuk "${q}"</p>`;
+      <a href="${h.target}" onclick="toggleSearch()" class="flex items-center justify-between px-4 py-3 rounded-xl hover:bg-mist text-left">
+        <span><span class="text-ink font-semibold text-sm block">${h.label}</span><span class="text-ink-soft text-xs">${h.hint}</span></span>
+        <i data-lucide="arrow-right" class="w-4 h-4 text-ink-faint"></i>
+      </a>`).join('') : `<p class="text-ink-soft text-sm px-4 py-3">Tiada hasil untuk "${q}"</p>`;
     lucide.createIcons();
   }
 
-  // ---- Peta kampus - hotspot ----
-  function showHotspot(title, desc){
-    document.getElementById('hotspot-title').innerText = title;
-    document.getElementById('hotspot-desc').innerText = desc;
-    document.getElementById('hotspot-info').classList.remove('hidden');
-    document.getElementById('hotspot-info').scrollIntoView({behavior:'smooth', block:'nearest'});
-  }
-
-  // ---- Carta organisasi (subset selamat untuk paparan awam - tiada PIN/emel peribadi) ----
+  // ---- Carta organisasi ----
   const orgChart = [
     { name:'Stanley anak Ngawah', role:'Guru Besar', photo:'staf-stanley.jpg' },
     { name:'Dick Lester anak Bakir', role:'Guru Penolong Kanan Kurikulum', photo:'staf-dick.jpg' },
@@ -596,20 +470,19 @@
   ];
   function renderOrgChart(){
     document.getElementById('org-grid').innerHTML = orgChart.map(p => `
-      <button onclick="openOrgModal('${p.name}','${p.role}','${p.photo || ''}')" class="premium-card glass rounded-2xl p-6 text-left flex items-center gap-4">
-        <div class="w-12 h-12 rounded-full bg-gradient-to-br from-blue to-cyan flex items-center justify-center shrink-0 overflow-hidden">
-          ${p.photo ? `<img src="${p.photo}" alt="${p.name}" class="w-full h-full object-cover">` : `<i data-lucide="user" class="w-5 h-5 text-white"></i>`}
+      <button onclick="openOrgModal('${p.name}','${p.role}','${p.photo || ''}')" class="soft-card rounded-2xl p-6 text-left flex items-center gap-4">
+        <div class="w-12 h-12 rounded-full bg-navy-50 flex items-center justify-center shrink-0 overflow-hidden">
+          ${p.photo ? `<img src="${p.photo}" alt="${p.name}" class="w-full h-full object-cover">` : `<i data-lucide="user" class="w-5 h-5 text-navy"></i>`}
         </div>
-        <div><p class="font-display font-bold text-white text-sm">${p.name}</p><p class="text-xs text-sky">${p.role}</p></div>
+        <div><p class="font-display font-semibold text-ink text-sm">${p.name}</p><p class="text-xs text-gold font-bold">${p.role}</p></div>
       </button>`).join('');
     lucide.createIcons();
-    attachTilt('#org-grid .premium-card');
   }
   function openOrgModal(name, role, photo){
     document.getElementById('org-modal-name').innerText = name;
     document.getElementById('org-modal-role').innerText = role;
     const avatarBox = document.getElementById('org-modal-avatar');
-    avatarBox.innerHTML = photo ? `<img src="${photo}" alt="${name}" class="w-full h-full object-cover">` : `<i data-lucide="user" class="w-8 h-8 text-white"></i>`;
+    avatarBox.innerHTML = photo ? `<img src="${photo}" alt="${name}" class="w-full h-full object-cover">` : `<i data-lucide="user" class="w-8 h-8 text-navy"></i>`;
     lucide.createIcons();
     const m = document.getElementById('org-modal'); m.classList.remove('hidden'); m.classList.add('flex');
   }
@@ -620,18 +493,6 @@
     entries.forEach(entry => { if(entry.isIntersecting){ entry.target.classList.add('in'); revealObserver.unobserve(entry.target); } });
   }, { threshold: 0.15, rootMargin: '0px 0px -60px 0px' });
   document.querySelectorAll('.reveal, .reveal-stagger').forEach(el => revealObserver.observe(el));
-
-  // ---- Kesan condong 3D ----
-  function attachTilt(selector){
-    document.querySelectorAll(selector).forEach(card => {
-      card.addEventListener('mousemove', (e) => {
-        const r = card.getBoundingClientRect();
-        const x = (e.clientX - r.left) / r.width - 0.5, y = (e.clientY - r.top) / r.height - 0.5;
-        card.style.transform = `perspective(700px) rotateY(${x*6}deg) rotateX(${-y*6}deg) translateY(-4px)`;
-      });
-      card.addEventListener('mouseleave', () => { card.style.transform = ''; });
-    });
-  }
 
   // ---- Kaunter animasi ----
   const counters = document.querySelectorAll('.counter');
@@ -647,7 +508,7 @@
   }, { threshold: 0.4 });
   counters.forEach(c => counterObserver.observe(c));
 
-  // ---- Kandungan Unit (Fasa 2: tarik dari storan DIKONGSI, sandaran localStorage/lalai) ----
+  // ---- Kandungan Unit (tarik dari storan DIKONGSI, sandaran localStorage/lalai) ----
   const CMS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzY60s_hPRK4kRzfEsOkqcbqI15tyNjQ6FGMkRrSwkfjuawQw_mdb1MuuA8WWAmDtMc/exec";
 
   const defaultDb = {
@@ -676,7 +537,7 @@
       const remote = await res.json();
       cmsRemoteCache = remote;
       localStorage.setItem('skk_db', JSON.stringify(remote));
-      renderUnitGrid(); // bina semula kad dgn kandungan terkini (huraian kad sendiri tetap tak berubah, cuma isi modal yang disegerakkan)
+      renderUnitGrid();
     }catch(e){ /* senyap - kekal guna salinan tempatan/lalai sedia ada */ }
   }
 
@@ -697,7 +558,7 @@
       if(repRes.ok){ const d = await repRes.json(); unitReportsCache = Array.isArray(d) ? d : []; }
       if(cartaRes.ok){ const d = await cartaRes.json(); unitCartaCache = Array.isArray(d) ? d : []; }
       if(minitRes.ok){ const d = await minitRes.json(); unitMinitCache = Array.isArray(d) ? d : []; }
-      if(currentOpenUnit) renderUnitPageContent(currentOpenUnit); // segarkan laman jika ia sedang terbuka semasa data tiba
+      if(currentOpenUnit) renderUnitPageContent(currentOpenUnit);
     }catch(e){ /* senyap - galeri kekal kosong jika rangkaian gagal */ }
   }
 
@@ -705,16 +566,14 @@
     document.getElementById('unit-grid').innerHTML = Object.keys(defaultDb).map(name => {
       const meta = defaultDb[name];
       return `
-        <button onclick="openUnitPage('${name}')" class="premium-card glass rounded-3xl p-7 text-left relative overflow-hidden">
-          <i data-lucide="${meta.icon}" class="absolute -right-3 -bottom-3 w-24 h-24 text-white/5 pointer-events-none"></i>
-          <div class="relative w-12 h-12 rounded-2xl bg-blue/20 flex items-center justify-center mb-5"><i data-lucide="${meta.icon}" class="w-6 h-6 text-sky"></i></div>
-          <h3 class="relative font-display font-bold text-lg text-white mb-1.5">${name}</h3>
-          <p class="relative text-sm text-white/65 leading-relaxed">${meta.desc}</p>
-          <span class="relative inline-flex items-center gap-1 text-xs font-bold text-cyan mt-4">Baca lagi <i data-lucide="arrow-right" class="w-3 h-3"></i></span>
+        <button onclick="openUnitPage('${name}')" class="soft-card rounded-2xl p-7 text-left relative overflow-hidden">
+          <div class="w-12 h-12 rounded-xl bg-navy-50 flex items-center justify-center mb-5"><i data-lucide="${meta.icon}" class="w-6 h-6 text-navy"></i></div>
+          <h3 class="font-display font-semibold text-lg text-ink mb-1.5">${name}</h3>
+          <p class="text-sm text-ink-soft leading-relaxed">${meta.desc}</p>
+          <span class="inline-flex items-center gap-1 text-xs font-bold text-gold mt-4">Baca lagi <i data-lucide="arrow-right" class="w-3 h-3"></i></span>
         </button>`;
     }).join('');
     lucide.createIcons();
-    attachTilt('#unit-grid .premium-card');
   }
   let currentOpenUnit = null;
   let currentUnitTab = 'content';
@@ -724,54 +583,50 @@
     return (a || '').trim().toLowerCase() === (b || '').trim().toLowerCase();
   }
   function renderUnitPageContent(name){
-    // ---- Tab: Kandungan (teks + gambar unit) ----
     const images = unitImagesCache.filter(i => unitMatches(i.unit, name));
     document.getElementById('unit-tab-content').innerHTML = `
-      <div class="text-white/80 leading-relaxed text-base">${getUnitContent(name).replace(/\n/g,'<br>')}</div>
+      <div class="text-ink-soft leading-relaxed text-base">${getUnitContent(name).replace(/\n/g,'<br>')}</div>
       ${images.length ? `
         <div class="grid grid-cols-2 sm:grid-cols-3 gap-4 mt-6">
           ${images.map(i => `
             <a href="${i.imageUrl}" target="_blank" rel="noopener" class="group block">
-              <div class="aspect-square rounded-xl overflow-hidden border border-white/10 group-hover:border-cyan transition-all" style="background-image:url('${i.imageUrl}'); background-size:cover; background-position:center;"></div>
-              ${i.caption ? `<p class="text-xs text-white/65 mt-1.5 truncate">${i.caption}</p>` : ''}
+              <div class="aspect-square rounded-xl overflow-hidden border border-line group-hover:border-gold transition-all" style="background-image:url('${i.imageUrl}'); background-size:cover; background-position:center;"></div>
+              ${i.caption ? `<p class="text-xs text-ink-soft mt-1.5 truncate">${i.caption}</p>` : ''}
             </a>`).join('')}
         </div>` : ''}
     `;
 
-    // ---- Tab: Carta Organisasi ----
     const carta = unitCartaCache.filter(m => unitMatches(m.unit, name));
     document.getElementById('unit-tab-carta').innerHTML = carta.length ? `
       <div class="grid sm:grid-cols-2 gap-3">
         ${carta.map(m => `
-          <div class="flex items-center gap-3 bg-white/5 rounded-2xl px-5 py-4 border border-white/10">
-            <div class="w-11 h-11 rounded-full bg-gradient-to-br from-blue to-cyan flex items-center justify-center shrink-0"><i data-lucide="user" class="w-4.5 h-4.5 text-white"></i></div>
-            <div class="min-w-0"><p class="text-base text-white font-bold truncate">${m.nama}</p><p class="text-xs text-white/60 truncate mt-0.5">${m.jawatan || ''}</p></div>
+          <div class="flex items-center gap-3 bg-mist rounded-2xl px-5 py-4 border border-line">
+            <div class="w-11 h-11 rounded-full bg-navy-50 flex items-center justify-center shrink-0"><i data-lucide="user" class="w-4.5 h-4.5 text-navy"></i></div>
+            <div class="min-w-0"><p class="text-base text-ink font-bold truncate">${m.nama}</p><p class="text-xs text-ink-soft truncate mt-0.5">${m.jawatan || ''}</p></div>
           </div>`).join('')}
-      </div>` : `<p class="text-center text-white/40 text-sm py-16">Carta organisasi bagi unit ini belum tersedia.</p>`;
+      </div>` : `<p class="text-center text-ink-faint text-sm py-16">Carta organisasi bagi unit ini belum tersedia.</p>`;
 
-    // ---- Tab: Minit Mesyuarat ----
     const minit = unitMinitCache.filter(m => unitMatches(m.unit, name));
     document.getElementById('unit-tab-minit').innerHTML = minit.length ? `
       <div class="space-y-2.5">
         ${minit.map(m => `
-          <a href="${m.fileUrl}" target="_blank" rel="noopener" class="flex items-center gap-3 bg-white/5 hover:bg-white/10 border border-white/10 rounded-2xl px-5 py-4 transition-all">
-            <div class="w-10 h-10 rounded-xl bg-cyan/15 flex items-center justify-center shrink-0"><i data-lucide="file-text" class="w-4.5 h-4.5 text-cyan"></i></div>
-            <span class="flex-1 text-sm text-white font-bold truncate">${m.title || 'Minit Mesyuarat'}</span>
-            <span class="text-xs text-white/60 shrink-0">${m.meetingDate || ''}</span>
-            <i data-lucide="external-link" class="w-3.5 h-3.5 text-white/40 shrink-0"></i>
+          <a href="${m.fileUrl}" target="_blank" rel="noopener" class="flex items-center gap-3 bg-mist hover:bg-navy-50 border border-line rounded-2xl px-5 py-4 transition-all">
+            <div class="w-10 h-10 rounded-xl bg-navy-50 flex items-center justify-center shrink-0"><i data-lucide="file-text" class="w-4.5 h-4.5 text-navy"></i></div>
+            <span class="flex-1 text-sm text-ink font-bold truncate">${m.title || 'Minit Mesyuarat'}</span>
+            <span class="text-xs text-ink-soft shrink-0">${m.meetingDate || ''}</span>
+            <i data-lucide="external-link" class="w-3.5 h-3.5 text-ink-faint shrink-0"></i>
           </a>`).join('')}
-      </div>` : `<p class="text-center text-white/40 text-sm py-16">Tiada minit mesyuarat dimuat naik bagi unit ini.</p>`;
+      </div>` : `<p class="text-center text-ink-faint text-sm py-16">Tiada minit mesyuarat dimuat naik bagi unit ini.</p>`;
 
-    // ---- Tab: Laporan Aktiviti ----
     const reports = unitReportsCache.filter(r => unitMatches(r.unit, name));
     document.getElementById('unit-tab-reports').innerHTML = reports.length ? `
       <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
         ${reports.map(r => `
           <a href="${r.imageUrl}" target="_blank" rel="noopener" class="group block">
-            <div class="aspect-[210/297] rounded-xl overflow-hidden border border-white/10 group-hover:border-cyan transition-all shadow-lg" style="background-image:url('${r.imageUrl}'); background-size:cover; background-position:top;"></div>
-            <p class="text-xs text-white/65 mt-2 truncate font-semibold">${r.title || 'Laporan'}</p>
+            <div class="aspect-[210/297] rounded-xl overflow-hidden border border-line group-hover:border-gold transition-all shadow-md" style="background-image:url('${r.imageUrl}'); background-size:cover; background-position:top;"></div>
+            <p class="text-xs text-ink-soft mt-2 truncate font-semibold">${r.title || 'Laporan'}</p>
           </a>`).join('')}
-      </div>` : `<p class="text-center text-white/40 text-sm py-16">Tiada laporan aktiviti disimpan bagi unit ini.</p>`;
+      </div>` : `<p class="text-center text-ink-faint text-sm py-16">Tiada laporan aktiviti disimpan bagi unit ini.</p>`;
 
     lucide.createIcons();
   }
@@ -798,7 +653,6 @@
     document.getElementById('section-unit-detail').classList.add('hidden');
     document.body.style.overflow = '';
   }
-
 
   renderUnitGrid();
   renderOrgChart();
