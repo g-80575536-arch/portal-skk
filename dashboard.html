@@ -13,16 +13,22 @@
     theme: {
       extend: {
         fontFamily: {
-          display: ['Sora', 'sans-serif'],
+          display: ['Fraunces', 'serif'],
+          sora: ['Sora', 'sans-serif'],
           sans: ['"Plus Jakarta Sans"', 'sans-serif'],
         },
         colors: {
-          navy: { DEFAULT:'#154D8F', deep:'#0D2C54', deepest:'#071B34' },
+          navy: { DEFAULT:'#1B3A6B', deep:'#0F2440', deepest:'#071B34', 50:'#eef3fa', 100:'#dbe6f3' },
           blue: { DEFAULT:'#1D6FEA', 50:'#eff6ff', 100:'#dbeafe', 200:'#bfdbfe', 300:'#93c5fd', 400:'#60a5fa', 500:'#3b82f6', 600:'#2563eb', 700:'#1d4ed8', 800:'#1e40af', 900:'#1e3a8a', 950:'#172554' },
           sky:  { DEFAULT:'#4DA3FF', 50:'#f0f9ff', 100:'#e0f2fe', 200:'#bae6fd', 300:'#7dd3fc', 400:'#38bdf8', 500:'#0ea5e9', 600:'#0284c7', 700:'#0369a1', 800:'#075985', 900:'#0c4a6e', 950:'#082f49' },
           cyan: { DEFAULT:'#22D3EE', 50:'#ecfeff', 100:'#cffafe', 200:'#a5f3fc', 300:'#67e8f9', 400:'#22d3ee', 500:'#06b6d4', 600:'#0891b2', 700:'#0e7490', 800:'#155e75', 900:'#164e63', 950:'#083344' },
           ice:  '#EAF4FF',
-          gold: '#F2B705'
+          gold: { DEFAULT:'#C08A3E', soft:'#F3E7D3', old:'#F2B705' },
+          crimson: { DEFAULT:'#A23B3B', soft:'#F5E4E1' },
+          paper: '#FFFFFF',
+          mist:  '#F4F6F8',
+          ink:   { DEFAULT:'#16202E', soft:'#5B6B7D', faint:'#93A1B0' },
+          line:  '#E5E9EE'
         }
       }
     }
@@ -30,7 +36,7 @@
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Sora:wght@500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <script src="https://unpkg.com/lucide@latest"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -39,40 +45,39 @@
 
 <style>
   *{ scrollbar-width:thin; }
-  body{ font-family:'Plus Jakarta Sans',sans-serif; background:#071B34; color:#EAF4FF; overflow-x:hidden; }
-  .font-display{ font-family:'Sora',sans-serif; }
+  body{ font-family:'Plus Jakarta Sans',sans-serif; background:#FFFFFF; color:#16202E; overflow-x:hidden; }
+  .font-display{ font-family:'Fraunces',serif; font-variation-settings:'opsz' 32; }
+  .font-sora{ font-family:'Sora',sans-serif; }
   #section-ehadir{ font-family:'Inter',sans-serif; }
   .tab-content{ display:none; }
   .tab-content.active{ display:block; }
   #section-eopr.active{ display:flex; flex-direction:column; }
-  .module-card{ transition:transform .2s ease, box-shadow .3s ease; transform-style:preserve-3d; }
-  .module-card:hover{ box-shadow:0 25px 60px -15px rgba(29,111,234,.45); }
+  .module-card{ transition:transform .2s ease, box-shadow .3s ease; }
+  .module-card:hover{ box-shadow:0 20px 45px -18px rgba(22,32,46,.18); transform:translateY(-3px); }
   ::-webkit-scrollbar{ width:10px; }
-  ::-webkit-scrollbar-track{ background:#0D2C54; }
-  ::-webkit-scrollbar-thumb{ background:#1D6FEA55; border-radius:6px; }
+  ::-webkit-scrollbar-track{ background:#F4F6F8; }
+  ::-webkit-scrollbar-thumb{ background:#1B3A6B33; border-radius:6px; }
 
-  /* ===== Kaca (glassmorphism) ===== */
-  .glass{ background:rgba(255,255,255,0.06); backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px); border:1px solid rgba(255,255,255,0.12); }
+  /* ===== Kad lembut (gantikan kaca gelap) ===== */
+  .soft-card{ background:#FFFFFF; border:1px solid #E5E9EE; transition:transform .25s ease, box-shadow .3s ease, border-color .3s ease; }
+  .soft-card:hover{ transform:translateY(-3px); box-shadow:0 20px 40px -18px rgba(22,32,46,.16); border-color:#dbe1e8; }
+  .glass{ background:#FFFFFF; border:1px solid #E5E9EE; }
 
-  /* ===== Latar animasi ===== */
-  #bg-fx{ position:fixed; inset:0; z-index:0; overflow:hidden; background:radial-gradient(ellipse at top,#0D2C54 0%,#071B34 60%); }
-  .blob{ position:absolute; border-radius:9999px; filter:blur(80px); opacity:.35; animation:meshMove 16s ease-in-out infinite; }
-  @keyframes meshMove{ 0%,100%{ transform:translate(0,0) scale(1);} 33%{ transform:translate(6%,-8%) scale(1.15);} 66%{ transform:translate(-5%,5%) scale(.9);} }
-  .particle{ position:absolute; bottom:-10px; border-radius:9999px; background:#4DA3FF; animation:particleFloat linear infinite; }
-  @keyframes particleFloat{ 0%{ transform:translateY(0); opacity:0;} 10%{ opacity:.8;} 90%{ opacity:.6;} 100%{ transform:translateY(-115vh); opacity:0;} }
+  /* ===== Latar (statik, tiada lagi blob/zarah animasi) ===== */
+  #bg-fx{ position:fixed; inset:0; z-index:0; overflow:hidden; background:#FFFFFF; }
 
   /* ===== Skrin pemuatan ===== */
-  #loading-screen{ position:fixed; inset:0; z-index:100; background:#071B34; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:20px; transition:opacity .6s ease, visibility .6s ease; }
-  .loader-ring{ width:56px; height:56px; border-radius:9999px; border:3px solid rgba(77,163,255,.2); border-top-color:#4DA3FF; animation:spin 1s linear infinite; }
+  #loading-screen{ position:fixed; inset:0; z-index:100; background:#FFFFFF; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:20px; transition:opacity .6s ease, visibility .6s ease; }
+  .loader-ring{ width:48px; height:48px; border-radius:9999px; border:3px solid #E5E9EE; border-top-color:#1B3A6B; animation:spin 1s linear infinite; }
   @keyframes spin{ to{ transform:rotate(360deg); } }
   @keyframes popIn{ from{ opacity:0; transform:scale(.94) translateY(10px);} to{ opacity:1; transform:scale(1) translateY(0);} }
   .pop-in{ animation: popIn .6s cubic-bezier(.16,.84,.44,1) both; }
   .stagger-1{ animation-delay:.05s; } .stagger-2{ animation-delay:.15s; } .stagger-3{ animation-delay:.25s; }
   .float-slow{ animation: floatSlow 7s ease-in-out infinite; }
   @keyframes floatSlow{ 0%,100%{ transform:translateY(0);} 50%{ transform:translateY(-14px);} }
+  .btn-primary{ background:#1B3A6B; color:#fff; transition:background .2s ease, transform .2s ease; }
+  .btn-primary:hover{ background:#0F2440; transform:translateY(-1px); }
   .btn-glow{ position:relative; }
-  .btn-glow::after{ content:''; position:absolute; inset:-2px; border-radius:9999px; background:linear-gradient(90deg,#1D6FEA,#22D3EE); opacity:0; filter:blur(12px); transition:opacity .3s ease; z-index:-1; }
-  .btn-glow:hover::after{ opacity:.8; }
   .btn-shine{ position:relative; overflow:hidden; }
   .btn-shine::after{ content:''; position:absolute; top:0; left:-60%; width:40%; height:100%; background:linear-gradient(120deg, transparent, rgba(255,255,255,.35), transparent); transform:skewX(-20deg); transition:left .6s ease; }
   .btn-shine:hover::after{ left:130%; }
@@ -123,37 +128,32 @@
     <img src="logo.png" alt="Logo" class="w-full h-full object-contain" onerror="this.style.display='none'">
   </div>
   <div class="loader-ring"></div>
-  <p class="font-display font-bold text-sm tracking-widest text-sky uppercase">SK Krangan</p>
+  <p class="font-display font-semibold text-sm tracking-widest text-navy uppercase">SK Krangan</p>
 </div>
 
-<!-- ============ LATAR ANIMASI ============ -->
-<div id="bg-fx" class="no-print">
-  <div class="blob w-[500px] h-[500px] bg-blue" style="top:-10%; left:-10%;"></div>
-  <div class="blob w-[600px] h-[600px] bg-cyan" style="bottom:-15%; right:-10%; animation-delay:-6s;"></div>
-  <div class="blob w-[400px] h-[400px] bg-sky" style="top:40%; left:60%; animation-delay:-11s;"></div>
-  <div id="particle-field"></div>
-</div>
+<!-- ============ LATAR (bersih, tiada blob/zarah) ============ -->
+<div id="bg-fx" class="no-print"></div>
 
 <div id="login-gate" class="relative z-10 min-h-screen flex items-center justify-center px-5 py-10">
-  <div class="relative w-full max-w-md glass rounded-[2rem] shadow-2xl shadow-blue/10 p-9 text-center pop-in">
-    <a href="index.html" class="inline-flex items-center gap-2 text-xs font-bold text-white/40 hover:text-white mb-6"><i data-lucide="arrow-left" class="w-3.5 h-3.5"></i> Kembali ke laman awam</a>
+  <div class="relative w-full max-w-md soft-card rounded-[2rem] shadow-2xl shadow-navy/5 p-9 text-center pop-in">
+    <a href="index.html" class="inline-flex items-center gap-2 text-xs font-bold text-ink-faint hover:text-ink mb-6"><i data-lucide="arrow-left" class="w-3.5 h-3.5"></i> Kembali ke laman awam</a>
     <div class="relative w-16 h-16 mx-auto mb-5">
       <div class="w-16 h-16 flex items-center justify-center">
-        <img src="logo.png" alt="Logo" class="w-full h-full object-contain" onerror="this.style.display='none'; this.insertAdjacentHTML('afterend','<i data-lucide=school class=\'w-7 h-7 text-sky\'></i>'); lucide.createIcons();">
+        <img src="logo.png" alt="Logo" class="w-full h-full object-contain" onerror="this.style.display='none'; this.insertAdjacentHTML('afterend','<i data-lucide=school class=\'w-7 h-7 text-navy\'></i>'); lucide.createIcons();">
       </div>
     </div>
-    <h1 class="font-display font-bold text-2xl text-white mb-2">Papan Pemuka Staf</h1>
-    <p class="text-sm text-white/50 mb-1">SK Krangan &bull; Kod Sekolah YBB8240</p>
-    <p class="text-xs text-cyan font-bold uppercase tracking-wider mb-8">Wajib log masuk dengan akaun DELIMA</p>
+    <h1 class="font-display font-semibold text-2xl text-ink mb-2">Papan Pemuka Staf</h1>
+    <p class="text-sm text-ink-soft mb-1">SK Krangan &bull; Kod Sekolah YBB8240</p>
+    <p class="text-xs text-gold font-bold uppercase tracking-wider mb-8">Wajib log masuk dengan akaun DELIMA</p>
 
     <div id="g_id_signin" class="flex justify-center mb-4"></div>
 
-    <div id="login-error" class="hidden text-left bg-rose-500/10 border border-rose-400/30 text-rose-300 text-sm rounded-2xl p-4 mt-2 flex gap-3">
+    <div id="login-error" class="hidden text-left bg-crimson-soft border border-crimson/20 text-crimson text-sm rounded-2xl p-4 mt-2 flex gap-3">
       <i data-lucide="alert-triangle" class="w-5 h-5 shrink-0 mt-0.5"></i>
       <span id="login-error-text"></span>
     </div>
 
-    <p class="text-xs text-white/30 mt-8 leading-relaxed">Hanya akaun rasmi <strong>@moe-dl.edu.my</strong> atau <strong>@moe.gov.my</strong> yang berdaftar dalam sistem sekolah dibenarkan masuk, selaras dengan Dasar Pendigitalan DELIMA KPM.</p>
+    <p class="text-xs text-ink-faint mt-8 leading-relaxed">Hanya akaun rasmi <strong>@moe-dl.edu.my</strong> atau <strong>@moe.gov.my</strong> yang berdaftar dalam sistem sekolah dibenarkan masuk, selaras dengan Dasar Pendigitalan DELIMA KPM.</p>
   </div>
 </div>
 
@@ -162,23 +162,23 @@
 <!-- ===================================================================== -->
 <div id="dashboard-shell" class="hidden min-h-screen relative z-10">
 
-  <header class="no-print sticky top-0 z-40 glass border-b border-white/10">
+  <header class="no-print sticky top-0 z-40 glass border-b border-line">
     <div class="max-w-6xl mx-auto px-5 sm:px-8 h-20 flex items-center justify-between">
       <button onclick="showModule('picker')" class="flex items-center gap-3">
         <div class="w-11 h-11 flex items-center justify-center">
           <img src="logo.png" alt="Logo" class="w-full h-full object-contain" onerror="this.style.display='none'">
         </div>
         <div class="leading-tight text-left">
-          <p class="font-display font-bold text-lg text-white">Papan Pemuka Staf</p>
-          <p class="text-[10px] uppercase tracking-widest text-sky/70 font-semibold">SK Krangan</p>
+          <p class="font-display font-semibold text-lg text-ink">Papan Pemuka Staf</p>
+          <p class="text-[10px] uppercase tracking-widest text-ink-faint font-bold">SK Krangan</p>
         </div>
       </button>
       <div class="flex items-center gap-4">
         <div class="hidden sm:block text-right">
-          <p id="user-name-label" class="font-bold text-sm text-white leading-tight">-</p>
-          <p id="user-role-label" class="text-xs text-cyan font-semibold leading-tight">-</p>
+          <p id="user-name-label" class="font-bold text-sm text-ink leading-tight">-</p>
+          <p id="user-role-label" class="text-xs text-gold font-semibold leading-tight">-</p>
         </div>
-        <button onclick="signOutDashboard()" class="w-10 h-10 rounded-full hover:bg-rose-500/10 text-rose-400 flex items-center justify-center" title="Log Keluar">
+        <button onclick="signOutDashboard()" class="w-10 h-10 rounded-full hover:bg-crimson-soft text-crimson flex items-center justify-center" title="Log Keluar">
           <i data-lucide="log-out" class="w-4.5 h-4.5"></i>
         </button>
       </div>
@@ -188,53 +188,53 @@
   <!-- ============ PEMILIH MODUL ============ -->
   <div id="section-picker" class="tab-content active max-w-6xl mx-auto px-5 sm:px-8 py-14">
     <div class="mb-10 pop-in">
-      <h2 class="font-display font-bold text-3xl text-white">Selamat kembali, <span id="welcome-name" class="text-cyan">Staf</span> 👋</h2>
-      <p class="text-white/50 mt-1">Sila pilih sistem anda di bawah.</p>
+      <h2 class="font-display font-semibold text-3xl text-ink">Selamat kembali, <span id="welcome-name" class="text-navy">Staf</span> 👋</h2>
+      <p class="text-ink-soft mt-1">Sila pilih sistem anda di bawah.</p>
     </div>
     <div id="module-grid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
   </div>
 
   <!-- ============ MODUL: KANDUNGAN LAMAN WEB (CMS) ============ -->
   <div id="section-cms" class="tab-content max-w-5xl mx-auto px-5 sm:px-8 py-10">
-    <button onclick="showModule('picker')" class="mb-6 inline-flex items-center gap-2 text-sm font-bold text-white/50 hover:text-white"><i data-lucide="arrow-left" class="w-4 h-4"></i> Kembali ke Papan Pemuka</button>
-    <div class="glass rounded-3xl p-8">
-      <h2 class="font-display font-bold text-2xl text-white mb-1">Kandungan Laman Web</h2>
-      <p class="text-sm text-white/50 mb-8">Kemas kini terus terbit ke laman awam sebaik sahaja disimpan.</p>
+    <button onclick="showModule('picker')" class="mb-6 inline-flex items-center gap-2 text-sm font-bold text-ink-soft hover:text-ink"><i data-lucide="arrow-left" class="w-4 h-4"></i> Kembali ke Papan Pemuka</button>
+    <div class="glass rounded-3xl p-8 shadow-sm">
+      <h2 class="font-display font-bold text-2xl text-ink mb-1">Kandungan Laman Web</h2>
+      <p class="text-sm text-ink-soft mb-8">Kemas kini terus terbit ke laman awam sebaik sahaja disimpan.</p>
       <div class="grid md:grid-cols-4 gap-8">
         <div class="md:col-span-1 flex md:flex-col gap-2 overflow-x-auto" id="cms-unit-tabs"></div>
         <div class="md:col-span-3">
           <div class="space-y-5">
             <div>
-              <label class="text-xs font-bold uppercase tracking-wider text-white/50 block mb-1.5">Pengenalan</label>
-              <p class="text-[11px] text-white/30 mb-2">Apa unit ini, siapa ketuai.</p>
-              <textarea id="cms-field-pengenalan" rows="3" class="w-full bg-white/5 border border-white/15 rounded-2xl p-4 text-sm leading-relaxed text-white focus:ring-2 focus:ring-sky focus:outline-none"></textarea>
+              <label class="text-xs font-bold uppercase tracking-wider text-ink-soft block mb-1.5">Pengenalan</label>
+              <p class="text-[11px] text-ink-faint mb-2">Apa unit ini, siapa ketuai.</p>
+              <textarea id="cms-field-pengenalan" rows="3" class="w-full bg-mist border border-line rounded-2xl p-4 text-sm leading-relaxed text-ink focus:ring-2 focus:ring-navy focus:outline-none"></textarea>
             </div>
             <div>
-              <label class="text-xs font-bold uppercase tracking-wider text-white/50 block mb-1.5">Objektif Utama</label>
-              <p class="text-[11px] text-white/30 mb-2">2&ndash;4 matlamat utama unit tahun ini.</p>
-              <textarea id="cms-field-objektif" rows="3" class="w-full bg-white/5 border border-white/15 rounded-2xl p-4 text-sm leading-relaxed text-white focus:ring-2 focus:ring-sky focus:outline-none"></textarea>
+              <label class="text-xs font-bold uppercase tracking-wider text-ink-soft block mb-1.5">Objektif Utama</label>
+              <p class="text-[11px] text-ink-faint mb-2">2&ndash;4 matlamat utama unit tahun ini.</p>
+              <textarea id="cms-field-objektif" rows="3" class="w-full bg-mist border border-line rounded-2xl p-4 text-sm leading-relaxed text-ink focus:ring-2 focus:ring-navy focus:outline-none"></textarea>
             </div>
             <div>
-              <label class="text-xs font-bold uppercase tracking-wider text-white/50 block mb-1.5">Program &amp; Aktiviti Sepanjang Tahun</label>
-              <p class="text-[11px] text-white/30 mb-2">Apa yang dijalankan secara berkala.</p>
-              <textarea id="cms-field-program" rows="3" class="w-full bg-white/5 border border-white/15 rounded-2xl p-4 text-sm leading-relaxed text-white focus:ring-2 focus:ring-sky focus:outline-none"></textarea>
+              <label class="text-xs font-bold uppercase tracking-wider text-ink-soft block mb-1.5">Program &amp; Aktiviti Sepanjang Tahun</label>
+              <p class="text-[11px] text-ink-faint mb-2">Apa yang dijalankan secara berkala.</p>
+              <textarea id="cms-field-program" rows="3" class="w-full bg-mist border border-line rounded-2xl p-4 text-sm leading-relaxed text-ink focus:ring-2 focus:ring-navy focus:outline-none"></textarea>
             </div>
             <div>
-              <label class="text-xs font-bold uppercase tracking-wider text-white/50 block mb-1.5">Fokus Semasa <span class="text-white/30 normal-case font-normal">(pilihan)</span></label>
-              <p class="text-[11px] text-white/30 mb-2">Inisiatif/tumpuan istimewa tahun ini, jika ada.</p>
-              <textarea id="cms-field-fokus" rows="2" class="w-full bg-white/5 border border-white/15 rounded-2xl p-4 text-sm leading-relaxed text-white focus:ring-2 focus:ring-sky focus:outline-none"></textarea>
+              <label class="text-xs font-bold uppercase tracking-wider text-ink-soft block mb-1.5">Fokus Semasa <span class="text-ink-faint normal-case font-normal">(pilihan)</span></label>
+              <p class="text-[11px] text-ink-faint mb-2">Inisiatif/tumpuan istimewa tahun ini, jika ada.</p>
+              <textarea id="cms-field-fokus" rows="2" class="w-full bg-mist border border-line rounded-2xl p-4 text-sm leading-relaxed text-ink focus:ring-2 focus:ring-navy focus:outline-none"></textarea>
             </div>
           </div>
 
           <div class="mt-6">
-            <label class="text-xs font-bold uppercase tracking-wider text-white/50 block mb-3">Gambar Unit (pilihan)</label>
+            <label class="text-xs font-bold uppercase tracking-wider text-ink-soft block mb-3">Gambar Unit (pilihan)</label>
             <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 mb-4">
-              <label class="cursor-pointer inline-flex items-center justify-center gap-1.5 text-xs font-bold text-sky hover:text-white bg-white/5 hover:bg-white/10 px-3 py-2.5 rounded-lg transition-all shrink-0">
+              <label class="cursor-pointer inline-flex items-center justify-center gap-1.5 text-xs font-bold text-navy hover:text-navy-deep bg-mist hover:bg-navy-50 px-3 py-2.5 rounded-lg transition-all shrink-0">
                 <i data-lucide="image-plus" class="w-3.5 h-3.5"></i> <span id="cms-image-file-label">Pilih Gambar</span>
                 <input id="cms-image-file-input" type="file" accept="image/*" class="hidden" onchange="handleCmsImageChosen(event)">
               </label>
-              <input id="cms-image-caption" type="text" placeholder="Kapsyen gambar (pilihan)" class="flex-1 bg-white/5 border border-white/15 rounded-lg px-3 py-2.5 text-xs text-white placeholder-white/30 focus:ring-2 focus:ring-sky focus:outline-none">
-              <button onclick="uploadCmsImage()" class="shrink-0 text-xs font-bold bg-gradient-to-r from-blue to-cyan text-white px-4 py-2.5 rounded-lg transition-all inline-flex items-center justify-center gap-1.5">
+              <input id="cms-image-caption" type="text" placeholder="Kapsyen gambar (pilihan)" class="flex-1 bg-mist border border-line rounded-lg px-3 py-2.5 text-xs text-ink placeholder-ink-faint focus:ring-2 focus:ring-sky focus:outline-none">
+              <button onclick="uploadCmsImage()" class="shrink-0 text-xs font-bold bg-navy hover:bg-navy-deep text-white px-4 py-2.5 rounded-lg transition-all inline-flex items-center justify-center gap-1.5">
                 <i data-lucide="upload" class="w-3.5 h-3.5"></i> Muat Naik
               </button>
             </div>
@@ -242,44 +242,44 @@
           </div>
 
           <!-- ===== Carta Organisasi Unit ===== -->
-          <div class="mt-8 pt-6 border-t border-white/10">
+          <div class="mt-8 pt-6 border-t border-line">
             <div class="flex items-center justify-between mb-3">
-              <label class="text-xs font-bold uppercase tracking-wider text-white/50">Carta Organisasi Unit</label>
-              <button onclick="addCartaRow()" class="inline-flex items-center gap-1.5 text-xs font-bold text-sky hover:text-white bg-white/5 hover:bg-white/10 px-3 py-1.5 rounded-lg transition-all">
+              <label class="text-xs font-bold uppercase tracking-wider text-ink-soft">Carta Organisasi Unit</label>
+              <button onclick="addCartaRow()" class="inline-flex items-center gap-1.5 text-xs font-bold text-navy hover:text-navy-deep bg-mist hover:bg-navy-50 px-3 py-1.5 rounded-lg transition-all">
                 <i data-lucide="user-plus" class="w-3.5 h-3.5"></i> Tambah Ahli
               </button>
             </div>
             <div id="cms-carta-rows" class="space-y-2 mb-3"></div>
-            <button onclick="saveCartaUnit()" class="text-xs font-bold text-white/60 hover:text-white bg-white/5 hover:bg-white/10 px-4 py-2 rounded-lg transition-all inline-flex items-center gap-1.5">
+            <button onclick="saveCartaUnit()" class="text-xs font-bold text-navy hover:text-navy-deep bg-mist hover:bg-navy-50 px-4 py-2 rounded-lg transition-all inline-flex items-center gap-1.5">
               <i data-lucide="save" class="w-3.5 h-3.5"></i> Simpan Carta Organisasi
             </button>
-            <span id="cms-carta-status" class="text-xs text-white/40 ml-2"></span>
+            <span id="cms-carta-status" class="text-xs text-ink-faint ml-2"></span>
           </div>
 
           <!-- ===== Minit Mesyuarat ===== -->
-          <div class="mt-8 pt-6 border-t border-white/10">
-            <label class="text-xs font-bold uppercase tracking-wider text-white/50 block mb-3">Minit Mesyuarat</label>
+          <div class="mt-8 pt-6 border-t border-line">
+            <label class="text-xs font-bold uppercase tracking-wider text-ink-soft block mb-3">Minit Mesyuarat</label>
             <div class="grid sm:grid-cols-2 gap-3 mb-3">
-              <input id="minit-title" type="text" placeholder="Tajuk mesyuarat (cth. Mesyuarat Panitia Bil.1)" class="w-full bg-white/5 border border-white/15 rounded-xl px-4 py-2.5 text-sm text-white placeholder-white/30 focus:ring-2 focus:ring-sky focus:outline-none">
-              <input id="minit-date" type="date" class="w-full bg-white/5 border border-white/15 rounded-xl px-4 py-2.5 text-sm text-white focus:ring-2 focus:ring-sky focus:outline-none">
+              <input id="minit-title" type="text" placeholder="Tajuk mesyuarat (cth. Mesyuarat Panitia Bil.1)" class="w-full bg-mist border border-line rounded-xl px-4 py-2.5 text-sm text-ink placeholder-ink-faint focus:ring-2 focus:ring-sky focus:outline-none">
+              <input id="minit-date" type="date" class="w-full bg-mist border border-line rounded-xl px-4 py-2.5 text-sm text-ink focus:ring-2 focus:ring-navy focus:outline-none">
             </div>
             <div class="flex items-center gap-3 mb-4">
-              <label class="cursor-pointer inline-flex items-center gap-1.5 text-xs font-bold text-sky hover:text-white bg-white/5 hover:bg-white/10 px-3 py-2 rounded-lg transition-all">
+              <label class="cursor-pointer inline-flex items-center gap-1.5 text-xs font-bold text-navy hover:text-navy-deep bg-mist hover:bg-navy-50 px-3 py-2 rounded-lg transition-all">
                 <i data-lucide="file-up" class="w-3.5 h-3.5"></i> Pilih Fail PDF
                 <input id="minit-file-input" type="file" accept="application/pdf" class="hidden" onchange="handleMinitFileChosen(event)">
               </label>
-              <span id="minit-file-label" class="text-xs text-white/40">Tiada fail dipilih</span>
-              <button onclick="uploadMinit()" class="ml-auto text-xs font-bold bg-gradient-to-r from-blue to-cyan text-white px-4 py-2 rounded-lg transition-all inline-flex items-center gap-1.5">
+              <span id="minit-file-label" class="text-xs text-ink-faint">Tiada fail dipilih</span>
+              <button onclick="uploadMinit()" class="ml-auto text-xs font-bold bg-navy hover:bg-navy-deep text-white px-4 py-2 rounded-lg transition-all inline-flex items-center gap-1.5">
                 <i data-lucide="upload" class="w-3.5 h-3.5"></i> Muat Naik
               </button>
             </div>
-            <span id="cms-minit-status" class="text-xs text-white/40 block mb-3"></span>
+            <span id="cms-minit-status" class="text-xs text-ink-faint block mb-3"></span>
             <div id="cms-minit-list" class="space-y-2"></div>
           </div>
 
           <div class="flex items-center justify-between mt-6">
-            <span id="cms-save-status" class="text-xs text-white/40"></span>
-            <button onclick="saveCmsContent()" class="btn-glow btn-shine inline-flex items-center gap-2 bg-gradient-to-r from-blue to-cyan text-white font-bold px-6 py-3 rounded-full transition-all">
+            <span id="cms-save-status" class="text-xs text-ink-faint"></span>
+            <button onclick="saveCmsContent()" class="btn-primary btn-shine inline-flex items-center gap-2 text-white font-bold px-6 py-3 rounded-full transition-all">
               <i data-lucide="save" class="w-4 h-4"></i> Simpan &amp; Terbitkan
             </button>
           </div>
@@ -291,13 +291,13 @@
   <!-- ============ MODUL: EHADIR (disisipkan) ============ -->
   <div id="section-ehadir" class="tab-content w-full bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100 rounded-3xl overflow-hidden shadow-2xl border border-slate-200 dark:border-slate-800 relative">
             
-            <header class="bg-slate-900 text-white shadow-xl border-b-4 border-indigo-600 no-print transition-all duration-300">
+            <header class="bg-slate-900 text-white shadow-xl border-b-4 border-gold no-print transition-all duration-300">
                 <div class="max-w-7xl mx-auto px-4 py-5 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-4">
                     <div class="flex items-center gap-4">
                         <img src="logo.png" alt="Logo SK Krangan" class="h-16 w-auto object-contain drop-shadow transition-transform hover:scale-105" onerror="this.src='https://placehold.co/150x150/1e293b/ffffff?text=SK+Krangan'">
                         <div>
-                            <h1 class="text-2xl font-extrabold tracking-tight bg-gradient-to-r from-white via-slate-200 to-indigo-300 bg-clip-text text-transparent">PORTAL KEBERADAAN STAF</h1>
-                            <p class="text-xs text-indigo-400 font-bold uppercase tracking-wider">SK Krangan Serian &bull; Kod Sekolah: <strong>YBB8240</strong></p>
+                            <h1 class="text-2xl font-extrabold tracking-tight bg-gradient-to-r from-white via-slate-200 to-gold bg-clip-text text-transparent">PORTAL KEBERADAAN STAF</h1>
+                            <p class="text-xs text-gold font-bold uppercase tracking-wider">SK Krangan Serian &bull; Kod Sekolah: <strong>YBB8240</strong></p>
                         </div>
                     </div>
                     
@@ -305,11 +305,11 @@
                         <button onclick="showModule('picker')" class="p-3 rounded-xl bg-rose-600 hover:bg-rose-700 text-white border border-rose-700 transition-all shadow-md hover:scale-105 active:scale-95" title="Kembali ke Papan Pemuka">
                             <i class="fa-solid fa-arrow-left"></i> Kembali
                         </button>
-                        <button onclick="toggleDarkMode()" class="p-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-amber-400 dark:text-indigo-300 border border-slate-700 transition-all shadow-md hover:scale-105 active:scale-95" title="Tukar Tema Warna">
+                        <button onclick="toggleDarkMode()" class="p-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-amber-400 dark:text-gold border border-slate-700 transition-all shadow-md hover:scale-105 active:scale-95" title="Tukar Tema Warna">
                             <i id="theme-icon" class="fa-solid fa-moon text-lg"></i>
                         </button>
                         <div class="bg-slate-800/80 border border-slate-700 rounded-xl px-5 py-2.5 text-right flex flex-col items-center md:items-end min-w-[200px] shadow-lg">
-                            <div id="live-date" class="text-[10px] font-bold text-indigo-400 tracking-wider uppercase">Memuatkan tarikh...</div>
+                            <div id="live-date" class="text-[10px] font-bold text-gold tracking-wider uppercase">Memuatkan tarikh...</div>
                             <div id="live-time" class="text-2xl font-black tracking-widest text-white mt-0.5 font-mono">00:00:00 AM</div>
                         </div>
                     </div>
@@ -319,13 +319,13 @@
             <nav id="ehadir-nav" class="bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 sticky top-0 z-20 shadow-sm no-print transition-all duration-300">
                 <div class="max-w-7xl mx-auto px-4">
                     <div class="flex space-x-1 sm:space-x-4">
-                        <button onclick="switchTab('dashboard')" id="btn-dashboard" class="py-4 px-3 sm:px-5 font-bold text-sm border-b-4 border-indigo-600 text-indigo-600 dark:text-indigo-400 flex items-center gap-2 transition-all">
+                        <button onclick="switchTab('dashboard')" id="btn-dashboard" class="py-4 px-3 sm:px-5 font-bold text-sm border-b-4 border-navy text-navy dark:text-indigo-400 flex items-center gap-2 transition-all">
                             <i class="fa-solid fa-gauge-high"></i> Dashboard Keberadaan
                         </button>
-                        <button onclick="switchTab('rekod')" id="btn-rekod" class="py-4 px-3 sm:px-5 font-semibold text-sm border-b-4 border-transparent text-slate-500 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 hover:border-slate-300 flex items-center gap-2 transition-all">
+                        <button onclick="switchTab('rekod')" id="btn-rekod" class="py-4 px-3 sm:px-5 font-semibold text-sm border-b-4 border-transparent text-slate-500 dark:text-slate-400 hover:text-navy dark:hover:text-indigo-400 hover:border-slate-300 flex items-center gap-2 transition-all">
                             <i class="fa-solid fa-folder-open"></i> Rekod
                         </button>
-                        <button onclick="switchTab('laporan')" id="btn-laporan" class="py-4 px-3 sm:px-5 font-semibold text-sm border-b-4 border-transparent text-slate-500 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 hover:border-slate-300 flex items-center gap-2 transition-all">
+                        <button onclick="switchTab('laporan')" id="btn-laporan" class="py-4 px-3 sm:px-5 font-semibold text-sm border-b-4 border-transparent text-slate-500 dark:text-slate-400 hover:text-navy dark:hover:text-indigo-400 hover:border-slate-300 flex items-center gap-2 transition-all">
                             <i class="fa-solid fa-file-invoice"></i> Laporan Bulanan
                         </button>
                     </div>
@@ -341,21 +341,6 @@
                         <div id="active-graph-filter" class="hidden bg-indigo-50 dark:bg-indigo-950/50 border border-indigo-200 dark:border-indigo-800 px-3 py-1.5 rounded-xl text-xs text-indigo-600 dark:text-indigo-300 font-semibold items-center gap-2 mt-3 mx-auto w-fit">
                             <span>Menapis: <strong id="filter-status-label">-</strong></span>
                             <button onclick="clearGraphFilter()" class="hover:text-red-500 font-bold ml-1" title="Padam Penapis"><i class="fa-solid fa-circle-xmark"></i></button>
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-5">
-                        <div class="bg-emerald-50 dark:bg-emerald-950/20 border border-emerald-100 dark:border-emerald-900/30 rounded-2xl p-6 shadow-sm flex items-center gap-4 transition-transform hover:scale-[1.02]">
-                            <div class="p-4 bg-emerald-600 text-white rounded-2xl"><i class="fa-solid fa-school text-xl"></i></div>
-                            <div><p class="text-xs font-bold text-emerald-700 dark:text-emerald-400 uppercase tracking-wider">Di Sekolah</p><p class="text-3xl font-black text-slate-900 dark:text-white mt-0.5" id="count-school">0</p></div>
-                        </div>
-                        <div class="bg-amber-50 dark:bg-amber-950/20 border border-amber-100 dark:border-amber-900/30 rounded-2xl p-6 shadow-sm flex items-center gap-4 transition-transform hover:scale-[1.02]">
-                            <div class="p-4 bg-amber-500 text-white rounded-2xl"><i class="fa-solid fa-plane-departure text-xl"></i></div>
-                            <div><p class="text-xs font-bold text-amber-700 dark:text-amber-400 uppercase tracking-wider">Luar Pejabat</p><p class="text-3xl font-black text-slate-900 dark:text-white mt-0.5" id="count-outside">0</p></div>
-                        </div>
-                        <div class="bg-rose-50 dark:bg-rose-950/20 border border-rose-100 dark:border-rose-900/30 rounded-2xl p-6 shadow-sm flex items-center gap-4 transition-transform hover:scale-[1.02]">
-                            <div class="p-4 bg-rose-600 text-white rounded-2xl"><i class="fa-solid fa-calendar-times text-xl"></i></div>
-                            <div><p class="text-xs font-bold text-rose-700 dark:text-rose-400 uppercase tracking-wider">Cuti / Sakit</p><p class="text-3xl font-black text-slate-900 dark:text-white mt-0.5" id="count-leave">0</p></div>
                         </div>
                     </div>
 
@@ -506,25 +491,25 @@
   <!-- ============ MODUL: EOPR (disisipkan) ============ -->
   <div id="section-eopr" class="tab-content fixed inset-0 z-[60] bg-slate-50 text-slate-800 font-sans overflow-hidden">
 
-  <header class="no-print flex-shrink-0 bg-slate-900 border-b-4 border-indigo-600 text-white shadow-md px-6 py-4 flex flex-col md:flex-row justify-between items-center gap-4 z-20 relative">
+  <header class="no-print flex-shrink-0 bg-slate-900 border-b-4 border-gold text-white shadow-md px-6 py-4 flex flex-col md:flex-row justify-between items-center gap-4 z-20 relative">
     <div class="flex items-center gap-3">
       <div class="bg-white p-2 rounded-xl shadow-inner flex items-center justify-center">
-        <svg class="w-7 h-7 text-indigo-600" viewBox="0 0 24 24" fill="currentColor">
+        <svg class="w-7 h-7 text-navy" viewBox="0 0 24 24" fill="currentColor">
           <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
         </svg>
       </div>
       <div>
         <h1 class="font-montserrat font-extrabold text-xl tracking-wide flex items-center gap-2">
-          SISTEM OPR DIGITAL <span class="bg-yellow-400 text-slate-900 text-[10px] font-bold px-2 py-0.5 rounded-full shadow-sm">PRO</span>
+          SISTEM OPR DIGITAL <span class="bg-gold text-slate-900 text-[10px] font-bold px-2 py-0.5 rounded-full shadow-sm">PRO</span>
         </h1>
-        <p class="text-xs text-indigo-200 font-medium">Auto-A4 Layout Engine</p>
+        <p class="text-xs text-gold/80 font-medium">Auto-A4 Layout Engine</p>
       </div>
     </div>
     <div class="flex items-center gap-3">
       <button onclick="showModule('picker')" class="bg-rose-600 hover:bg-rose-700 text-white text-sm font-semibold px-4 py-2 rounded-lg transition-all flex items-center gap-2 shadow-sm" title="Kembali ke Papan Pemuka">
         <i data-lucide="arrow-left" class="w-4 h-4"></i> Kembali
       </button>
-      <button onclick="loadTemplate()" class="bg-indigo-600/30 hover:bg-indigo-600/50 border border-indigo-400/40 text-white text-sm font-semibold px-4 py-2 rounded-lg transition-all flex items-center gap-2">
+      <button onclick="loadTemplate()" class="bg-gold/20 hover:bg-gold/30 border border-gold/40 text-white text-sm font-semibold px-4 py-2 rounded-lg transition-all flex items-center gap-2">
         <i data-lucide="rotate-ccw" class="w-4 h-4"></i> Templat Asal
       </button>
       <button onclick="triggerClearForm()" class="bg-slate-700/30 hover:bg-slate-700/50 border border-slate-500/40 text-slate-200 text-sm font-semibold px-3 py-2 rounded-lg transition-all" title="Kosongkan Borang">
@@ -984,28 +969,28 @@ function renderModuleGrid(){
   if(currentUser.cmsUnits && currentUser.cmsUnits.length > 0){
     idx++;
     cards += `
-      <button onclick="showModule('cms')" class="module-card glass pop-in stagger-${idx} text-left rounded-3xl p-8 relative overflow-hidden">
-        <i data-lucide="layout-template" class="absolute -right-3 -bottom-3 w-24 h-24 text-white/5 pointer-events-none"></i>
-        <div class="relative w-12 h-12 rounded-2xl bg-gold/20 flex items-center justify-center mb-5"><i data-lucide="layout-template" class="w-6 h-6 text-gold"></i></div>
-        <h3 class="relative font-display font-bold text-lg text-white mb-1.5">Kandungan Laman Web</h3>
-        <p class="relative text-sm text-white/50">Edit kandungan: ${currentUser.cmsUnits.join(', ')}</p>
+      <button onclick="showModule('cms')" class="module-card soft-card pop-in stagger-${idx} text-left rounded-3xl p-8 relative overflow-hidden">
+        <i data-lucide="layout-template" class="absolute -right-3 -bottom-3 w-24 h-24 text-mist pointer-events-none"></i>
+        <div class="relative w-12 h-12 rounded-2xl bg-gold-soft flex items-center justify-center mb-5"><i data-lucide="layout-template" class="w-6 h-6 text-gold"></i></div>
+        <h3 class="relative font-display font-semibold text-lg text-ink mb-1.5">Kandungan Laman Web</h3>
+        <p class="relative text-sm text-ink-soft">Edit kandungan: ${currentUser.cmsUnits.join(', ')}</p>
       </button>`;
   }
   idx++;
   cards += `
-    <button onclick="showModule('ehadir')" class="module-card glass pop-in stagger-${idx} text-left rounded-3xl p-8 relative overflow-hidden">
-      <i data-lucide="user-check" class="absolute -right-3 -bottom-3 w-24 h-24 text-white/5 pointer-events-none"></i>
-      <div class="relative w-12 h-12 rounded-2xl bg-blue/20 flex items-center justify-center mb-5"><i data-lucide="user-check" class="w-6 h-6 text-sky"></i></div>
-      <h3 class="relative font-display font-bold text-lg text-white mb-1.5">Sistem eHadir</h3>
-      <p class="relative text-sm text-white/50">Rekod kehadiran staf harian.</p>
+    <button onclick="showModule('ehadir')" class="module-card soft-card pop-in stagger-${idx} text-left rounded-3xl p-8 relative overflow-hidden">
+      <i data-lucide="user-check" class="absolute -right-3 -bottom-3 w-24 h-24 text-mist pointer-events-none"></i>
+      <div class="relative w-12 h-12 rounded-2xl bg-navy-50 flex items-center justify-center mb-5"><i data-lucide="user-check" class="w-6 h-6 text-navy"></i></div>
+      <h3 class="relative font-display font-semibold text-lg text-ink mb-1.5">Sistem eHadir</h3>
+      <p class="relative text-sm text-ink-soft">Rekod kehadiran staf harian.</p>
     </button>`;
   idx++;
   cards += `
-    <button onclick="showModule('eopr')" class="module-card glass pop-in stagger-${Math.min(idx,3)} text-left rounded-3xl p-8 relative overflow-hidden">
-      <i data-lucide="file-text" class="absolute -right-3 -bottom-3 w-24 h-24 text-white/5 pointer-events-none"></i>
-      <div class="relative w-12 h-12 rounded-2xl bg-cyan/20 flex items-center justify-center mb-5"><i data-lucide="file-text" class="w-6 h-6 text-cyan"></i></div>
-      <h3 class="relative font-display font-bold text-lg text-white mb-1.5">Laporan eOPR</h3>
-      <p class="relative text-sm text-white/50">Jana laporan One Page Report.</p>
+    <button onclick="showModule('eopr')" class="module-card soft-card pop-in stagger-${Math.min(idx,3)} text-left rounded-3xl p-8 relative overflow-hidden">
+      <i data-lucide="file-text" class="absolute -right-3 -bottom-3 w-24 h-24 text-mist pointer-events-none"></i>
+      <div class="relative w-12 h-12 rounded-2xl bg-crimson-soft flex items-center justify-center mb-5"><i data-lucide="file-text" class="w-6 h-6 text-crimson"></i></div>
+      <h3 class="relative font-display font-semibold text-lg text-ink mb-1.5">Laporan eOPR</h3>
+      <p class="relative text-sm text-ink-soft">Jana laporan One Page Report.</p>
     </button>`;
   grid.innerHTML = cards;
   if(typeof lucide !== 'undefined') lucide.createIcons();
@@ -1738,8 +1723,8 @@ window.onload = function(){
             const greeting = hour < 12 ? 'Selamat Pagi' : hour < 15 ? 'Selamat Tengah Hari' : hour < 19 ? 'Selamat Petang' : 'Selamat Malam';
             const firstName = s.name.split(' ')[0];
             return `
-            <div class="max-w-md mx-auto bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-xl overflow-hidden staff-card" data-status="${s.status}">
-                <div class="h-28 ${curDetail.bg} relative flex items-start justify-center pt-5">
+            <div class="max-w-md mx-auto bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-xl staff-card" data-status="${s.status}">
+                <div class="h-28 rounded-t-3xl overflow-hidden ${curDetail.bg} relative flex items-start justify-center pt-5">
                     <p class="text-white/90 font-bold text-sm tracking-wide">${greeting}, ${firstName}!</p>
                     <div class="absolute -bottom-10 left-1/2 -translate-x-1/2">
                         <div class="w-20 h-20 rounded-full bg-white dark:bg-slate-900 border-[5px] border-white dark:border-slate-900 shadow-lg flex items-center justify-center">
@@ -1769,10 +1754,11 @@ window.onload = function(){
                                 </span>
                                 <i class="fa-solid fa-chevron-down text-[10px] text-slate-400"></i>
                             </button>
-                            <div id="status-menu-${s.id}" class="status-dropdown-menu hidden absolute left-0 right-0 mt-1 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl shadow-xl z-30 overflow-hidden py-1 max-h-56 overflow-y-auto">
+                            <div id="status-menu-${s.id}" class="status-dropdown-menu hidden absolute left-0 right-0 mt-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl shadow-2xl z-30 overflow-y-auto py-2 max-h-96">
                                 ${statusOptions.map(opt => {
                                     const optDetail = statusDetails[opt];
-                                    return `<button onclick="selectStatusOption(${s.id}, '${opt}')" class="w-full px-4 py-2.5 text-xs text-left hover:bg-slate-50 dark:hover:bg-slate-700 flex items-center gap-2.5 text-slate-700 dark:text-slate-300 transition-colors font-medium"><span class="h-2 w-2 rounded-full ${optDetail.bg}"></span><span>${opt}</span></button>`;
+                                    const isCurrent = opt === s.status;
+                                    return `<button onclick="selectStatusOption(${s.id}, '${opt}')" class="w-full px-4 py-3 text-sm text-left hover:bg-slate-50 dark:hover:bg-slate-700 flex items-center gap-3 transition-colors font-medium ${isCurrent ? 'bg-indigo-50 dark:bg-indigo-950/40 text-indigo-700 dark:text-indigo-300' : 'text-slate-700 dark:text-slate-300'}"><span class="h-2.5 w-2.5 rounded-full shrink-0 ${optDetail.bg}"></span><span class="flex-1">${opt}</span>${isCurrent ? '<i class="fa-solid fa-check text-indigo-500 text-xs"></i>' : ''}</button>`;
                                 }).join('')}
                             </div>
                         </div>
