@@ -547,6 +547,18 @@
     if(typeof db[name] === 'string' && db[name].trim() !== '') return db[name];
     return defaultDb[name].content;
   }
+  const CONTENT_SECTION_LABELS = ['PENGENALAN', 'OBJEKTIF UTAMA', 'PROGRAM & AKTIVITI SEPANJANG TAHUN', 'FOKUS SEMASA'];
+  function renderStructuredContent(text){
+    const labelPattern = CONTENT_SECTION_LABELS.join('|');
+    const re = new RegExp(`(${labelPattern})\\n([\\s\\S]*?)(?=\\n(?:${labelPattern})\\n|$)`, 'g');
+    let match, html = '', found = false;
+    while((match = re.exec(text)) !== null){
+      found = true;
+      const body = match[2].trim().replace(/\n/g, '<br>');
+      html += `<div class="mb-5 last:mb-0"><p class="text-xs font-bold uppercase tracking-wider text-gold mb-1.5">${match[1]}</p><p>${body}</p></div>`;
+    }
+    return found ? html : text.replace(/\n/g, '<br>');
+  }
   async function syncCmsFromBackend(){
     if(!CMS_SCRIPT_URL || CMS_SCRIPT_URL.includes('PLACEHOLDER')) return;
     try{
@@ -603,7 +615,7 @@
   function renderUnitPageContent(name){
     const images = unitImagesCache.filter(i => unitMatches(i.unit, name));
     document.getElementById('unit-tab-content').innerHTML = `
-      <div class="text-ink-soft leading-relaxed text-base">${getUnitContent(name).replace(/\n/g,'<br>')}</div>
+      <div class="text-ink-soft leading-relaxed text-base">${renderStructuredContent(getUnitContent(name))}</div>
       ${images.length ? `
         <div class="grid grid-cols-2 sm:grid-cols-3 gap-4 mt-6">
           ${images.map(i => `

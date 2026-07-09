@@ -203,7 +203,28 @@
       <div class="grid md:grid-cols-4 gap-8">
         <div class="md:col-span-1 flex md:flex-col gap-2 overflow-x-auto" id="cms-unit-tabs"></div>
         <div class="md:col-span-3">
-          <textarea id="cms-editor" rows="10" class="w-full bg-white/5 border border-white/15 rounded-2xl p-5 text-sm leading-relaxed text-white focus:ring-2 focus:ring-sky focus:outline-none"></textarea>
+          <div class="space-y-5">
+            <div>
+              <label class="text-xs font-bold uppercase tracking-wider text-white/50 block mb-1.5">Pengenalan</label>
+              <p class="text-[11px] text-white/30 mb-2">Apa unit ini, siapa ketuai.</p>
+              <textarea id="cms-field-pengenalan" rows="3" class="w-full bg-white/5 border border-white/15 rounded-2xl p-4 text-sm leading-relaxed text-white focus:ring-2 focus:ring-sky focus:outline-none"></textarea>
+            </div>
+            <div>
+              <label class="text-xs font-bold uppercase tracking-wider text-white/50 block mb-1.5">Objektif Utama</label>
+              <p class="text-[11px] text-white/30 mb-2">2&ndash;4 matlamat utama unit tahun ini.</p>
+              <textarea id="cms-field-objektif" rows="3" class="w-full bg-white/5 border border-white/15 rounded-2xl p-4 text-sm leading-relaxed text-white focus:ring-2 focus:ring-sky focus:outline-none"></textarea>
+            </div>
+            <div>
+              <label class="text-xs font-bold uppercase tracking-wider text-white/50 block mb-1.5">Program &amp; Aktiviti Sepanjang Tahun</label>
+              <p class="text-[11px] text-white/30 mb-2">Apa yang dijalankan secara berkala.</p>
+              <textarea id="cms-field-program" rows="3" class="w-full bg-white/5 border border-white/15 rounded-2xl p-4 text-sm leading-relaxed text-white focus:ring-2 focus:ring-sky focus:outline-none"></textarea>
+            </div>
+            <div>
+              <label class="text-xs font-bold uppercase tracking-wider text-white/50 block mb-1.5">Fokus Semasa <span class="text-white/30 normal-case font-normal">(pilihan)</span></label>
+              <p class="text-[11px] text-white/30 mb-2">Inisiatif/tumpuan istimewa tahun ini, jika ada.</p>
+              <textarea id="cms-field-fokus" rows="2" class="w-full bg-white/5 border border-white/15 rounded-2xl p-4 text-sm leading-relaxed text-white focus:ring-2 focus:ring-sky focus:outline-none"></textarea>
+            </div>
+          </div>
 
           <div class="mt-6">
             <label class="text-xs font-bold uppercase tracking-wider text-white/50 block mb-3">Gambar Unit (pilihan)</label>
@@ -1053,6 +1074,41 @@ function renderCmsTabs(){
   if(currentUser.cmsUnits.length) selectCmsUnit(currentUser.cmsUnits[0]);
 }
 
+const CMS_SECTION_LABELS = {
+  pengenalan: 'PENGENALAN',
+  objektif: 'OBJEKTIF UTAMA',
+  program: 'PROGRAM & AKTIVITI SEPANJANG TAHUN',
+  fokus: 'FOKUS SEMASA'
+};
+function combineContentSections(fields){
+  return Object.keys(CMS_SECTION_LABELS).map(key => {
+    const val = (fields[key] || '').trim();
+    return val ? `${CMS_SECTION_LABELS[key]}\n${val}` : '';
+  }).filter(Boolean).join('\n\n');
+}
+function parseContentSections(text){
+  const result = { pengenalan:'', objektif:'', program:'', fokus:'' };
+  if(!text || typeof text !== 'string') return result;
+  const labelToKey = {}; Object.keys(CMS_SECTION_LABELS).forEach(k => labelToKey[CMS_SECTION_LABELS[k]] = k);
+  const labelPattern = Object.values(CMS_SECTION_LABELS).join('|');
+  const re = new RegExp('(' + labelPattern + ')\\n([\\s\\S]*?)(?=\\n+(?:' + labelPattern + ')\\n|$)', 'g');
+  let match, found = false;
+  while((match = re.exec(text)) !== null){
+    found = true;
+    const key = labelToKey[match[1]];
+    if(key) result[key] = match[2].trim();
+  }
+  if(!found) result.pengenalan = text.trim(); // teks lama/bebas format - letak dalam Pengenalan supaya tak hilang
+  return result;
+}
+function fillCmsFields(text){
+  const parsed = parseContentSections(text);
+  document.getElementById('cms-field-pengenalan').value = parsed.pengenalan;
+  document.getElementById('cms-field-objektif').value = parsed.objektif;
+  document.getElementById('cms-field-program').value = parsed.program;
+  document.getElementById('cms-field-fokus').value = parsed.fokus;
+}
+
 async function selectCmsUnit(unit){
   cmsActiveUnit = unit;
   currentUser.cmsUnits.forEach(u => {
@@ -1061,11 +1117,10 @@ async function selectCmsUnit(unit){
     tab.className = 'text-left px-4 py-3 rounded-xl text-sm font-bold whitespace-nowrap md:whitespace-normal transition-all ' + (u===unit ? 'bg-gradient-to-r from-blue to-cyan text-white' : 'bg-white/5 text-white/60 hover:bg-white/10');
   });
   const statusEl = document.getElementById('cms-save-status');
-  const editorEl = document.getElementById('cms-editor');
 
   // Papar dahulu apa yang ada (tempatan/lalai) supaya editor tak nampak kosong semasa tunggu rangkaian
   let db = loadCmsDb();
-  editorEl.value = (typeof db[unit] === 'string' && db[unit].trim()!=='') ? db[unit] : cmsUnitMeta[unit];
+  fillCmsFields((typeof db[unit] === 'string' && db[unit].trim()!=='') ? db[unit] : cmsUnitMeta[unit]);
   statusEl.innerText = isCmsBackendConfigured() ? 'Menyemak kandungan terkini...' : 'Mod tempatan sahaja (storan dikongsi belum disediakan)';
   renderCmsImageGrid([]); // kosongkan dahulu semasa tukar tab
   renderCartaRows([]);
@@ -1076,7 +1131,7 @@ async function selectCmsUnit(unit){
     if(remote){
       localStorage.setItem('skk_db', JSON.stringify(remote));
       if(cmsActiveUnit === unit){ // elak timpa jika staf dah tukar tab semasa tunggu
-        editorEl.value = (typeof remote[unit] === 'string' && remote[unit].trim()!=='') ? remote[unit] : cmsUnitMeta[unit];
+        fillCmsFields((typeof remote[unit] === 'string' && remote[unit].trim()!=='') ? remote[unit] : cmsUnitMeta[unit]);
         statusEl.innerText = '';
       }
     } else {
@@ -1323,7 +1378,12 @@ async function uploadMinit(){
 
 async function saveCmsContent(){
   if(!cmsActiveUnit) return;
-  const content = document.getElementById('cms-editor').value;
+  const content = combineContentSections({
+    pengenalan: document.getElementById('cms-field-pengenalan').value,
+    objektif: document.getElementById('cms-field-objektif').value,
+    program: document.getElementById('cms-field-program').value,
+    fokus: document.getElementById('cms-field-fokus').value
+  });
   const db = loadCmsDb();
   db[cmsActiveUnit] = content;
   localStorage.setItem('skk_db', JSON.stringify(db));
