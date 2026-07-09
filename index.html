@@ -116,7 +116,7 @@
       <a href="#utama" class="nav-link">Utama</a>
       <a href="#unit" class="nav-link">Unit</a>
       <a href="#carta" class="nav-link">Carta Organisasi</a>
-      <a href="#kalendar" class="nav-link">Kalendar</a>
+      <a href="#kalendar" class="nav-link">Takwim Sekolah</a>
     </div>
 
     <div class="flex items-center gap-2">
@@ -133,7 +133,7 @@
     <a href="#utama" class="py-1">Utama</a>
     <a href="#unit" class="py-1">Unit</a>
     <a href="#carta" class="py-1">Carta Organisasi</a>
-    <a href="#kalendar" class="py-1">Kalendar</a>
+    <a href="#kalendar" class="py-1">Takwim Sekolah</a>
     <a href="dashboard.html" class="py-2.5 mt-1 text-center bg-navy text-white rounded-full font-bold">Masuk Portal</a>
   </div>
 
@@ -298,7 +298,7 @@
 <section id="kalendar" class="max-w-6xl mx-auto px-5 sm:px-8 py-24">
   <div class="text-center max-w-xl mx-auto mb-14 reveal">
     <span class="text-xs font-bold uppercase tracking-widest text-gold">Agenda</span>
-    <h2 class="font-display font-semibold text-3xl sm:text-4xl text-ink mt-2">Kalendar Aktiviti</h2>
+    <h2 class="font-display font-semibold text-3xl sm:text-4xl text-ink mt-2">Takwim Sekolah</h2>
   </div>
   <div class="grid md:grid-cols-2 gap-5 reveal-stagger">
     <div class="soft-card rounded-2xl p-5 flex items-center gap-4">
@@ -379,7 +379,7 @@
     </div>
     <div class="max-w-4xl mx-auto px-5 sm:px-8 pb-1 flex gap-1.5 sm:gap-2 overflow-x-auto">
       <button onclick="switchUnitPageTab('content')" id="unit-tab-btn-content" class="unit-page-tab-btn shrink-0 flex items-center gap-1.5 px-3.5 py-2.5 rounded-t-xl text-xs sm:text-sm font-bold border-b-2 transition-all">
-        <i data-lucide="file-text" class="w-3.5 h-3.5"></i> Kandungan
+        <i data-lucide="file-text" class="w-3.5 h-3.5"></i> Maklumat Umum
       </button>
       <button onclick="switchUnitPageTab('carta')" id="unit-tab-btn-carta" class="unit-page-tab-btn shrink-0 flex items-center gap-1.5 px-3.5 py-2.5 rounded-t-xl text-xs sm:text-sm font-bold border-b-2 transition-all">
         <i data-lucide="users" class="w-3.5 h-3.5"></i> Carta Organisasi
@@ -437,7 +437,7 @@
     { label:'Unit Hal Ehwal Murid', hint:'Kebajikan & disiplin murid', target:'#unit' },
     { label:'Unit Prasekolah', hint:'Kelas prasekolah SK Krangan', target:'#unit' },
     { label:'Carta Organisasi / Guru', hint:'Kepimpinan sekolah', target:'#carta' },
-    { label:'Kalendar & Peperiksaan', hint:'Takwim aktiviti sekolah', target:'#kalendar' },
+    { label:'Takwim Sekolah & Peperiksaan', hint:'Takwim aktiviti sekolah', target:'#kalendar' },
     { label:'Hubungi / Borang', hint:'Emel & lokasi sekolah', target:'footer' },
     { label:'Masuk Portal / Dashboard', hint:'Log masuk staf DELIMA', target:'dashboard.html' },
   ];
@@ -530,7 +530,7 @@
   const CMS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzY60s_hPRK4kRzfEsOkqcbqI15tyNjQ6FGMkRrSwkfjuawQw_mdb1MuuA8WWAmDtMc/exec";
 
   const defaultDb = {
-    'Pengurusan':      { icon:'briefcase',    desc:'Carta organisasi, dasar & peraturan sekolah.',       content:'Sila rujuk pihak pentadbiran sekolah untuk maklumat lanjut mengenai carta organisasi dan dasar sekolah.' },
+    'Pentadbiran':      { icon:'briefcase',    desc:'Carta organisasi, dasar & peraturan sekolah.',       content:'Sila rujuk pihak pentadbiran sekolah untuk maklumat lanjut mengenai carta organisasi dan dasar sekolah.' },
     'Kurikulum':       { icon:'book-open',    desc:'Pengurusan akademik & peningkatan mutu pengajaran.', content:'Unit Kurikulum bertanggungjawab menyelaraskan pengajaran dan pembelajaran di seluruh sekolah.' },
     'Kokurikulum':     { icon:'trophy',       desc:'Sukan, permainan, kelab & persatuan.',               content:'Unit Kokurikulum menguruskan aktiviti sukan, kelab dan persatuan murid sepanjang sesi persekolahan.' },
     'Hal Ehwal Murid': { icon:'shield-check', desc:'Kebajikan, disiplin & keselamatan murid.',           content:'Unit Hal Ehwal Murid (HEM) menguruskan kebajikan, disiplin dan keselamatan murid di sekolah.' },

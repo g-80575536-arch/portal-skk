@@ -581,7 +581,7 @@
               <option value="HAL EHWAL MURID">HAL EHWAL MURID</option>
               <option value="KOKURIKULUM">KOKURIKULUM</option>
               <option value="KURIKULUM">KURIKULUM</option>
-              <option value="PENGURUSAN">PENGURUSAN</option>
+              <option value="PENTADBIRAN">PENTADBIRAN</option>
             </select>
           </div>
         </div>
@@ -880,7 +880,7 @@ if(pf){
    Emel DELIMA di bawah masih PLACEHOLDER - tukar ke emel sebenar staf.
    ===================================================================== */
 let staffData = [
-  { id: 1,  name: 'Stanley anak Ngawah',                position: 'Guru Besar',                                   pin: '1111', status: 'Di Sekolah', delimaEmail: 'g-85307134@moe-dl.edu.my',    cmsUnits: ['Pengurusan','Kurikulum','Kokurikulum','Hal Ehwal Murid','Prasekolah'], canViewAttendanceDashboard: true },
+  { id: 1,  name: 'Stanley anak Ngawah',                position: 'Guru Besar',                                   pin: '1111', status: 'Di Sekolah', delimaEmail: 'g-85307134@moe-dl.edu.my',    cmsUnits: ['Pentadbiran','Kurikulum','Kokurikulum','Hal Ehwal Murid','Prasekolah'], canViewAttendanceDashboard: true },
   { id: 2,  name: 'Dick Lester anak Bakir',              position: 'Guru Penolong Kanan Kurikulum',                pin: '2222', status: 'Di Sekolah', delimaEmail: 'g-21307380@moe-dl.edu.my',   cmsUnits: ['Kurikulum'], canViewAttendanceDashboard: true },
   { id: 3,  name: 'Amir bin Ngatiman',                   position: 'Guru Penolong Kanan Hal Ehwal Murid',          pin: '3333', status: 'Di Sekolah', delimaEmail: 'g-29307435@moe-dl.edu.my',         cmsUnits: ['Hal Ehwal Murid'], canViewAttendanceDashboard: true },
   { id: 4,  name: 'Mohammad Fadzly bin Noor Azman',      position: 'Guru Penolong Kanan Kokurikulum',              pin: '4444', status: 'Di Sekolah', delimaEmail: 'g-71295196@moe-dl.edu.my',       cmsUnits: ['Kokurikulum'], canViewAttendanceDashboard: true },
@@ -892,11 +892,11 @@ let staffData = [
   { id: 16, name: 'Siti Norhafizah binti Daud',          position: 'Guru Akademik',                                pin: '3939', status: 'Di Sekolah', delimaEmail: 'g-70540376@moe-dl.edu.my',               cmsUnits: [] },
   { id: 10, name: 'Mohd Arfiq Rahimi bin Abdul Rahman',  position: 'Guru Akademik',                                pin: '1212', status: 'Di Sekolah', delimaEmail: 'g-35570001@moe-dl.edu.my',        cmsUnits: [] },
   { id: 11, name: 'Elnisia anak Guwel',                  position: 'Guru Akademik',                                pin: '2323', status: 'Di Sekolah', delimaEmail: 'g-32576685@moe-dl.edu.my',      cmsUnits: [] },
-  { id: 12, name: 'Aimuni Athirah binti Latif',          position: 'Guru Akademik',                                pin: '1711', status: 'Di Sekolah', delimaEmail: 'g-80575536@moe-dl.edu.my',       cmsUnits: ['Pengurusan','Kurikulum','Kokurikulum','Hal Ehwal Murid','Prasekolah'], cmsRoleLabel: 'Penyelaras Digital', canViewAttendanceDashboard: true },
+  { id: 12, name: 'Aimuni Athirah binti Latif',          position: 'Guru Akademik',                                pin: '1711', status: 'Di Sekolah', delimaEmail: 'g-80575536@moe-dl.edu.my',       cmsUnits: ['Pentadbiran','Kurikulum','Kokurikulum','Hal Ehwal Murid','Prasekolah'], cmsRoleLabel: 'Penyelaras Digital', canViewAttendanceDashboard: true },
   { id: 13, name: 'Nur Syuhada binti Abdul Razak',       position: 'Guru Akademik',                                pin: '4545', status: 'Di Sekolah', delimaEmail: 'PLACEHOLDER.syuhada@moe-dl.edu.my',      cmsUnits: [] },
   { id: 14, name: 'Liminang anak Sabang',                position: 'Pembantu Tadbir',                              pin: '5656', status: 'Di Sekolah', delimaEmail: 'liminangsabang@gmail.com',               cmsUnits: [] },
   { id: 15, name: 'Ajek anak Sumping',                   position: 'Pembantu Pengurusan Murid Prasekolah',         pin: '6767', status: 'Di Sekolah', delimaEmail: 'PLACEHOLDER.ajek@moe-dl.edu.my',         cmsUnits: ['Prasekolah'], cmsRoleLabel: 'Penyelaras Prasekolah' },
-  { id: 17, name: 'SK Krangan (Akaun Pentadbir)',        position: 'Akaun Pentadbir Sistem Sekolah',               pin: '7000', status: 'Di Sekolah', delimaEmail: 'sekolah-8173@moe-dl.edu.my',             cmsUnits: ['Pengurusan','Kurikulum','Kokurikulum','Hal Ehwal Murid','Prasekolah'], cmsRoleLabel: 'Pentadbir Sistem', canViewAttendanceDashboard: true }
+  { id: 17, name: 'SK Krangan (Akaun Pentadbir)',        position: 'Akaun Pentadbir Sistem Sekolah',               pin: '7000', status: 'Di Sekolah', delimaEmail: 'sekolah-8173@moe-dl.edu.my',             cmsUnits: ['Pentadbiran','Kurikulum','Kokurikulum','Hal Ehwal Murid','Prasekolah'], cmsRoleLabel: 'Pentadbir Sistem', canViewAttendanceDashboard: true }
 ];
 
 const ALLOWED_DELIMA_DOMAINS = ['moe-dl.edu.my', 'moe.gov.my'];
@@ -1037,7 +1037,7 @@ function showModule(id){
 const CMS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzY60s_hPRK4kRzfEsOkqcbqI15tyNjQ6FGMkRrSwkfjuawQw_mdb1MuuA8WWAmDtMc/exec";
 
 const cmsUnitMeta = {
-  'Pengurusan':      'Sila edit kandungan carta organisasi, dasar dan peraturan sekolah di sini.',
+  'Pentadbiran':      'Sila edit kandungan carta organisasi, dasar dan peraturan sekolah di sini.',
   'Kurikulum':       'Unit Kurikulum bertanggungjawab menyelaraskan pengajaran dan pembelajaran di seluruh sekolah.',
   'Kokurikulum':     'Unit Kokurikulum menguruskan aktiviti sukan, kelab dan persatuan murid sepanjang sesi persekolahan.',
   'Hal Ehwal Murid': 'Unit Hal Ehwal Murid (HEM) menguruskan kebajikan, disiplin dan keselamatan murid di sekolah.',
@@ -2176,7 +2176,7 @@ window.onload = function(){
       'HAL EHWAL MURID': { badgeBg: 'bg-sky-500', blockBg: 'bg-sky-50', blockBorder: 'border-sky-500', ribbonBg: 'bg-sky-100/95', ribbonBorder: 'border-sky-200', textAccent: 'text-sky-600', artGlow1: 'bg-sky-300', artGlow2: 'bg-blue-200', artFloral: 'text-sky-400' },
       'KOKURIKULUM': { badgeBg: 'bg-emerald-500', blockBg: 'bg-emerald-50', blockBorder: 'border-emerald-500', ribbonBg: 'bg-emerald-100/95', ribbonBorder: 'border-emerald-200', textAccent: 'text-emerald-600', artGlow1: 'bg-emerald-300', artGlow2: 'bg-teal-200', artFloral: 'text-emerald-400' },
       'KURIKULUM': { badgeBg: 'bg-purple-500', blockBg: 'bg-purple-50', blockBorder: 'border-purple-500', ribbonBg: 'bg-purple-100/95', ribbonBorder: 'border-purple-200', textAccent: 'text-purple-600', artGlow1: 'bg-purple-300', artGlow2: 'bg-fuchsia-200', artFloral: 'text-purple-400' },
-      'PENGURUSAN': { badgeBg: 'bg-amber-500', blockBg: 'bg-amber-50', blockBorder: 'border-amber-500', ribbonBg: 'bg-amber-100/95', ribbonBorder: 'border-amber-200', textAccent: 'text-amber-600', artGlow1: 'bg-amber-300', artGlow2: 'bg-yellow-200', artFloral: 'text-amber-400' }
+      'PENTADBIRAN': { badgeBg: 'bg-amber-500', blockBg: 'bg-amber-50', blockBorder: 'border-amber-500', ribbonBg: 'bg-amber-100/95', ribbonBorder: 'border-amber-200', textAccent: 'text-amber-600', artGlow1: 'bg-amber-300', artGlow2: 'bg-yellow-200', artFloral: 'text-amber-400' }
     };
 
 
@@ -2550,14 +2550,14 @@ window.onload = function(){
     }
 
     // Petakan label unit eOPR (HURUF BESAR) kepada format Huruf Besar-Kecil yang digunakan
-    // di laman awam & CMS (cth. "PENGURUSAN" -> "Pengurusan"), supaya Laporan Aktiviti
+    // di laman awam & CMS (cth. "PENTADBIRAN" -> "Pentadbiran"), supaya Laporan Aktiviti
     // betul-betul padan bila ditapis ikut unit di laman awam.
     const OPR_UNIT_TO_TITLECASE = {
       'PRASEKOLAH': 'Prasekolah',
       'HAL EHWAL MURID': 'Hal Ehwal Murid',
       'KOKURIKULUM': 'Kokurikulum',
       'KURIKULUM': 'Kurikulum',
-      'PENGURUSAN': 'Pengurusan'
+      'PENTADBIRAN': 'Pentadbiran'
     };
 
     async function saveReportToPortal() {
