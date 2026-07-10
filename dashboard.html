@@ -289,9 +289,9 @@
   </div>
 
   <!-- ============ MODUL: EHADIR (disisipkan) ============ -->
-  <div id="section-ehadir" class="tab-content w-full bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100 rounded-3xl overflow-hidden shadow-2xl border border-slate-200 dark:border-slate-800 relative">
+  <div id="section-ehadir" class="tab-content w-full bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100 rounded-3xl shadow-2xl border border-slate-200 dark:border-slate-800 relative">
             
-            <header class="bg-slate-900 text-white shadow-xl border-b-4 border-gold no-print transition-all duration-300">
+            <header class="bg-slate-900 text-white shadow-xl border-b-4 border-gold no-print transition-all duration-300 rounded-t-3xl overflow-hidden">
                 <div class="max-w-7xl mx-auto px-4 py-5 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-4">
                     <div class="flex items-center gap-4">
                         <img src="logo.png" alt="Logo SK Krangan" class="h-16 w-auto object-contain drop-shadow transition-transform hover:scale-105" onerror="this.src='https://placehold.co/150x150/1e293b/ffffff?text=SK+Krangan'">
@@ -959,19 +959,19 @@ if(pf){
    Emel DELIMA di bawah masih PLACEHOLDER - tukar ke emel sebenar staf.
    ===================================================================== */
 let staffData = [
-  { id: 1,  name: 'Stanley anak Ngawah',                position: 'Guru Besar',                                   pin: '1111', status: 'Di Sekolah', delimaEmail: 'g-85307134@moe-dl.edu.my',    cmsUnits: ['Pentadbiran','Kurikulum','Kokurikulum','Hal Ehwal Murid','Prasekolah'], canViewAttendanceDashboard: true },
-  { id: 2,  name: 'Dick Lester anak Bakir',              position: 'Guru Penolong Kanan Kurikulum',                pin: '2222', status: 'Di Sekolah', delimaEmail: 'g-21307380@moe-dl.edu.my',   cmsUnits: ['Kurikulum'], canViewAttendanceDashboard: true },
-  { id: 3,  name: 'Amir bin Ngatiman',                   position: 'Guru Penolong Kanan Hal Ehwal Murid',          pin: '3333', status: 'Di Sekolah', delimaEmail: 'g-29307435@moe-dl.edu.my',         cmsUnits: ['Hal Ehwal Murid'], canViewAttendanceDashboard: true },
-  { id: 4,  name: 'Mohammad Fadzly bin Noor Azman',      position: 'Guru Penolong Kanan Kokurikulum',              pin: '4444', status: 'Di Sekolah', delimaEmail: 'g-71295196@moe-dl.edu.my',       cmsUnits: ['Kokurikulum'], canViewAttendanceDashboard: true },
-  { id: 5,  name: 'Angeline anak Michael Jawa',          position: 'Guru Akademik',                                pin: '5555', status: 'Di Sekolah', delimaEmail: 'g-10307379@moe-dl.edu.my',     cmsUnits: [] },
-  { id: 6,  name: 'Marina anak Luat',                    position: 'Guru Akademik',                                pin: '6666', status: 'Di Sekolah', delimaEmail: 'g-22307419@moe-dl.edu.my',       cmsUnits: [] },
-  { id: 7,  name: 'Jeanica May anak Kuyah',              position: 'Guru Akademik',                                pin: '7777', status: 'Di Sekolah', delimaEmail: 'g-42304184@moe-dl.edu.my',      cmsUnits: [] },
+  { id: 1,  name: 'Stanley anak Ngawah',                position: 'Guru Besar',                                   pin: '1111', status: 'Di Sekolah', delimaEmail: 'g-85307134@moe-dl.edu.my',    cmsUnits: ['Pentadbiran','Kurikulum','Kokurikulum','Hal Ehwal Murid','Prasekolah'], canViewAttendanceDashboard: true, photo: 'staf-stanley.jpg' },
+  { id: 2,  name: 'Dick Lester anak Bakir',              position: 'Guru Penolong Kanan Kurikulum',                pin: '2222', status: 'Di Sekolah', delimaEmail: 'g-21307380@moe-dl.edu.my',   cmsUnits: ['Kurikulum'], canViewAttendanceDashboard: true, photo: 'staf-dick.jpg' },
+  { id: 3,  name: 'Amir bin Ngatiman',                   position: 'Guru Penolong Kanan Hal Ehwal Murid',          pin: '3333', status: 'Di Sekolah', delimaEmail: 'g-29307435@moe-dl.edu.my',         cmsUnits: ['Hal Ehwal Murid'], canViewAttendanceDashboard: true, photo: 'staf-amir.jpg' },
+  { id: 4,  name: 'Mohammad Fadzly bin Noor Azman',      position: 'Guru Penolong Kanan Kokurikulum',              pin: '4444', status: 'Di Sekolah', delimaEmail: 'g-71295196@moe-dl.edu.my',       cmsUnits: ['Kokurikulum'], canViewAttendanceDashboard: true, photo: 'staf-fadzly.jpg' },
+  { id: 5,  name: 'Angeline anak Michael Jawa',          position: 'Guru Akademik',                                pin: '5555', status: 'Di Sekolah', delimaEmail: 'g-10307379@moe-dl.edu.my',     cmsUnits: [], photo: 'staf-angeline.jpg' },
+  { id: 6,  name: 'Marina anak Luat',                    position: 'Guru Akademik',                                pin: '6666', status: 'Di Sekolah', delimaEmail: 'g-22307419@moe-dl.edu.my',       cmsUnits: [], photo: 'staf-marina.jpg' },
+  { id: 7,  name: 'Jeanica May anak Kuyah',              position: 'Guru Akademik',                                pin: '7777', status: 'Di Sekolah', delimaEmail: 'g-42304184@moe-dl.edu.my',      cmsUnits: [], photo: 'staf-jeanica.jpg' },
   { id: 8,  name: 'Noor Izzati Abdullah',                position: 'Guru Akademik',                                pin: '8888', status: 'Di Sekolah', delimaEmail: 'PLACEHOLDER.izzati@moe-dl.edu.my',       cmsUnits: [] },
-  { id: 9,  name: 'Hadijah anak Ambun',                  position: 'Guru Akademik',                                pin: '9999', status: 'Di Sekolah', delimaEmail: 'g-16489881@moe-dl.edu.my',      cmsUnits: [] },
-  { id: 16, name: 'Siti Norhafizah binti Daud',          position: 'Guru Akademik',                                pin: '3939', status: 'Di Sekolah', delimaEmail: 'g-70540376@moe-dl.edu.my',               cmsUnits: [] },
-  { id: 10, name: 'Mohd Arfiq Rahimi bin Abdul Rahman',  position: 'Guru Akademik',                                pin: '1212', status: 'Di Sekolah', delimaEmail: 'g-35570001@moe-dl.edu.my',        cmsUnits: [] },
-  { id: 11, name: 'Elnisia anak Guwel',                  position: 'Guru Akademik',                                pin: '2323', status: 'Di Sekolah', delimaEmail: 'g-32576685@moe-dl.edu.my',      cmsUnits: [] },
-  { id: 12, name: 'Aimuni Athirah binti Latif',          position: 'Guru Akademik',                                pin: '1711', status: 'Di Sekolah', delimaEmail: 'g-80575536@moe-dl.edu.my',       cmsUnits: ['Pentadbiran','Kurikulum','Kokurikulum','Hal Ehwal Murid','Prasekolah'], cmsRoleLabel: 'Penyelaras Digital', canViewAttendanceDashboard: true },
+  { id: 9,  name: 'Hadijah anak Ambun',                  position: 'Guru Akademik',                                pin: '9999', status: 'Di Sekolah', delimaEmail: 'g-16489881@moe-dl.edu.my',      cmsUnits: [], photo: 'staf-hadijah.jpg' },
+  { id: 16, name: 'Siti Norhafizah binti Daud',          position: 'Guru Akademik',                                pin: '3939', status: 'Di Sekolah', delimaEmail: 'g-70540376@moe-dl.edu.my',               cmsUnits: [], photo: 'staf-siti.jpg' },
+  { id: 10, name: 'Mohd Arfiq Rahimi bin Abdul Rahman',  position: 'Guru Akademik',                                pin: '1212', status: 'Di Sekolah', delimaEmail: 'g-35570001@moe-dl.edu.my',        cmsUnits: [], photo: 'staf-arfiq.jpg' },
+  { id: 11, name: 'Elnisia anak Guwel',                  position: 'Guru Akademik',                                pin: '2323', status: 'Di Sekolah', delimaEmail: 'g-32576685@moe-dl.edu.my',      cmsUnits: [], photo: 'staf-elnisia.jpg' },
+  { id: 12, name: 'Aimuni Athirah binti Latif',          position: 'Guru Akademik',                                pin: '1711', status: 'Di Sekolah', delimaEmail: 'g-80575536@moe-dl.edu.my',       cmsUnits: ['Pentadbiran','Kurikulum','Kokurikulum','Hal Ehwal Murid','Prasekolah'], cmsRoleLabel: 'Penyelaras Digital', canViewAttendanceDashboard: true, photo: 'staf-aimuni.jpg' },
   { id: 13, name: 'Nur Syuhada binti Abdul Razak',       position: 'Guru Akademik',                                pin: '4545', status: 'Di Sekolah', delimaEmail: 'PLACEHOLDER.syuhada@moe-dl.edu.my',      cmsUnits: [] },
   { id: 14, name: 'Liminang anak Sabang',                position: 'Pembantu Tadbir',                              pin: '5656', status: 'Di Sekolah', delimaEmail: 'liminangsabang@gmail.com',               cmsUnits: [] },
   { id: 15, name: 'Ajek anak Sumping',                   position: 'Pembantu Pengurusan Murid Prasekolah',         pin: '6767', status: 'Di Sekolah', delimaEmail: 'PLACEHOLDER.ajek@moe-dl.edu.my',         cmsUnits: ['Prasekolah'], cmsRoleLabel: 'Penyelaras Prasekolah' },
@@ -1843,10 +1843,11 @@ window.onload = function(){
                 <div class="h-28 rounded-t-3xl overflow-hidden ${curDetail.bg} relative flex items-start justify-center pt-5">
                     <p class="text-white/90 font-bold text-sm tracking-wide">${greeting}, ${firstName}!</p>
                     <div class="absolute -bottom-10 left-1/2 -translate-x-1/2">
-                        <div class="w-20 h-20 rounded-full bg-white dark:bg-slate-900 border-[5px] border-white dark:border-slate-900 shadow-lg flex items-center justify-center">
-                            <div class="w-full h-full rounded-full ${curDetail.bg} bg-opacity-15 flex items-center justify-center">
-                                <i class="fa-solid fa-user text-2xl ${curDetail.text}"></i>
-                            </div>
+                        <div class="w-20 h-20 rounded-full bg-white dark:bg-slate-900 border-[5px] border-white dark:border-slate-900 shadow-lg flex items-center justify-center overflow-hidden">
+                            ${s.photo
+                                ? `<img src="${s.photo}" alt="${s.name}" class="w-full h-full object-cover rounded-full" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><div class="w-full h-full rounded-full ${curDetail.bg} bg-opacity-15 items-center justify-center" style="display:none;"><i class="fa-solid fa-user text-2xl ${curDetail.text}"></i></div>`
+                                : `<div class="w-full h-full rounded-full ${curDetail.bg} bg-opacity-15 flex items-center justify-center"><i class="fa-solid fa-user text-2xl ${curDetail.text}"></i></div>`
+                            }
                         </div>
                     </div>
                 </div>
