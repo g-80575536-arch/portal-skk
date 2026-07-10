@@ -277,6 +277,13 @@
             <div id="cms-minit-list" class="space-y-2"></div>
           </div>
 
+          <!-- ===== Laporan Aktiviti (dicipta melalui eOPR - di sini untuk lihat/padam sahaja) ===== -->
+          <div class="mt-8 pt-6 border-t border-line">
+            <label class="text-xs font-bold uppercase tracking-wider text-ink-soft block mb-1">Laporan Aktiviti</label>
+            <p class="text-[11px] text-ink-faint mb-3">Laporan dicipta melalui modul eOPR (butang "Simpan ke Portal"). Di sini anda boleh lihat &amp; padam sahaja.</p>
+            <div id="cms-report-grid" class="grid grid-cols-2 sm:grid-cols-3 gap-3"></div>
+          </div>
+
           <div class="flex items-center justify-between mt-6">
             <span id="cms-save-status" class="text-xs text-ink-faint"></span>
             <button onclick="saveCmsContent()" class="btn-primary btn-shine inline-flex items-center gap-2 text-white font-bold px-6 py-3 rounded-full transition-all">
@@ -1210,6 +1217,7 @@ async function selectCmsUnit(unit){
   renderCmsImageGrid([]); // kosongkan dahulu semasa tukar tab
   renderCartaRows([]);
   renderMinitList([]);
+  renderCmsReportGrid([]);
 
   if(isCmsBackendConfigured()){
     const remote = await fetchCmsDbRemote();
@@ -1225,6 +1233,7 @@ async function selectCmsUnit(unit){
     loadCmsImages(unit);
     loadCartaForUnit(unit);
     loadMinitForUnit(unit);
+    loadCmsReports(unit);
   }
 }
 
@@ -1310,6 +1319,52 @@ async function deleteCmsImage(imageUrl){
     setTimeout(() => loadCmsImages(cmsActiveUnit), 1000);
   }catch(e){
     showToast('Gagal padam gambar.', 'error');
+  }
+}
+
+/* ===== Laporan Aktiviti (lihat/padam sahaja - dicipta melalui eOPR) ===== */
+async function loadCmsReports(unit){
+  try{
+    const res = await fetch(CMS_SCRIPT_URL + '?action=reports');
+    if(!res.ok) throw new Error();
+    const all = await res.json();
+    if(cmsActiveUnit === unit){
+      renderCmsReportGrid(Array.isArray(all) ? all.filter(r => (r.unit || '').toLowerCase() === unit.toLowerCase()) : []);
+    }
+  }catch(e){ /* senyap - laporan sedia ada takkan papar jika rangkaian gagal */ }
+}
+
+function renderCmsReportGrid(reports){
+  const grid = document.getElementById('cms-report-grid');
+  if(!grid) return;
+  if(!reports.length){
+    grid.innerHTML = `<p class="col-span-full text-xs text-ink-faint italic">Tiada laporan aktiviti disimpan lagi untuk unit ini.</p>`;
+    return;
+  }
+  grid.innerHTML = reports.map(r => `
+    <div class="relative group">
+      <a href="${r.imageUrl}" target="_blank" rel="noopener" class="block aspect-[210/297] rounded-xl overflow-hidden border border-line hover:border-navy transition-all bg-mist shadow-sm" style="background-image:url('${r.imageUrl}'); background-size:cover; background-position:top;" title="Buka saiz penuh"></a>
+      <p class="text-[10px] text-ink-soft mt-1.5 truncate font-semibold">${r.title || 'Laporan'}</p>
+      <button onclick="deleteCmsReport('${r.imageUrl}')" title="Padam laporan" class="absolute top-1.5 right-1.5 w-6 h-6 rounded-full bg-slate-900/80 hover:bg-rose-600 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all">
+        <i data-lucide="trash-2" class="w-3 h-3"></i>
+      </button>
+    </div>`).join('');
+  lucide.createIcons();
+}
+
+async function deleteCmsReport(imageUrl){
+  if(!confirm('Padam laporan aktiviti ini? Tindakan ini tidak boleh diundur.')) return;
+  showToast('Memadam laporan...', 'info');
+  try{
+    await fetch(CMS_SCRIPT_URL, {
+      method: 'POST', mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'deleteReport', imageUrl: imageUrl })
+    });
+    showToast('Laporan berjaya dipadam.', 'success');
+    setTimeout(() => loadCmsReports(cmsActiveUnit), 1000);
+  }catch(e){
+    showToast('Gagal padam laporan.', 'error');
   }
 }
 
@@ -2809,15 +2864,24 @@ window.onload = function(){
     }
 
     function toggleDecorationsForExport(hide) {
-      const elements = [
-        document.getElementById('art-glow-1'),
-        document.getElementById('art-glow-2'),
-        document.getElementById('art-floral-1'),
-        document.getElementById('art-floral-2'),
-        document.getElementById('art-dots')
-      ];
-      elements.forEach(el => { 
-        if(el) el.style.opacity = hide ? '0' : ''; 
+      // art-floral-1/2 cuma SVG + opacity - render BETUL dalam html2canvas, tak perlu disorok.
+      // art-glow-1/2 guna mix-blend-mode + filter:blur() - DUA ciri CSS yang html2canvas TAK boleh
+      // render dengan betul. Ganti sementara dengan radial-gradient (guna warna SEBENAR semasa)
+      // semasa eksport sahaja, supaya tekstur berwarna kekal kelihatan dalam JPG/PDF.
+      ['art-glow-1', 'art-glow-2'].forEach(id => {
+        const el = document.getElementById(id);
+        if (!el) return;
+        if (hide) {
+          const bgColor = getComputedStyle(el).backgroundColor; // tangkap warna tema unit SEMASA
+          el.dataset.originalClass = el.className;
+          el.dataset.originalStyle = el.getAttribute('style') || '';
+          el.className = el.className.replace(/mix-blend-\S+|filter|blur-\S+/g, '').trim();
+          el.style.background = `radial-gradient(circle, ${bgColor} 0%, transparent 72%)`;
+          el.style.opacity = '0.55';
+        } else {
+          if (el.dataset.originalClass !== undefined) el.className = el.dataset.originalClass;
+          el.setAttribute('style', el.dataset.originalStyle || '');
+        }
       });
     }
 
