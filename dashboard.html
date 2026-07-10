@@ -893,20 +893,26 @@
   <div id="crop-adjust-modal" class="no-print hidden fixed inset-0 bg-slate-900/70 backdrop-blur-sm z-[90] items-center justify-center p-4">
     <div class="bg-white rounded-2xl shadow-2xl max-w-sm w-full p-5">
       <h3 class="font-bold text-slate-900 text-sm mb-1 flex items-center gap-2"><i class="fa-solid fa-crop-simple text-indigo-600"></i> Laraskan Kedudukan Foto</h3>
-      <p class="text-xs text-slate-500 mb-3">Seret foto, atau guna anak panah di bawah untuk pilih bahagian yang nak dipaparkan.</p>
-      <div id="crop-frame" class="relative w-full aspect-square rounded-xl overflow-hidden border-2 border-indigo-400 bg-slate-100 cursor-grab select-none touch-none">
-        <div id="crop-drag-photo" class="absolute inset-0" style="background-size:cover; cursor:grab;"></div>
+      <p class="text-xs text-slate-500 mb-3">Ini foto PENUH anda. Seret kotak terang untuk pilih bahagian yang akan dipaparkan &mdash; bahagian gelap akan dipotong.</p>
+      <div id="crop-stage" class="relative bg-slate-900 rounded-xl overflow-hidden mx-auto select-none" style="max-height:360px;">
+        <img id="crop-source-img" class="block w-full h-auto select-none pointer-events-none" draggable="false" alt="Foto penuh">
+        <div id="crop-frame-overlay" class="absolute border-2 border-white rounded-md touch-none" style="box-shadow:0 0 0 2000px rgba(15,23,42,0.65); cursor:grab;">
+          <div class="absolute -top-1 -left-1 w-2.5 h-2.5 border-t-2 border-l-2 border-white"></div>
+          <div class="absolute -top-1 -right-1 w-2.5 h-2.5 border-t-2 border-r-2 border-white"></div>
+          <div class="absolute -bottom-1 -left-1 w-2.5 h-2.5 border-b-2 border-l-2 border-white"></div>
+          <div class="absolute -bottom-1 -right-1 w-2.5 h-2.5 border-b-2 border-r-2 border-white"></div>
+        </div>
       </div>
       <div class="flex items-center justify-center gap-2 mt-3">
         <div class="grid grid-cols-3 gap-1.5" style="width:132px;">
           <div></div>
-          <button onclick="nudgeCropPosition(0,-8)" class="bg-slate-100 hover:bg-indigo-100 text-slate-600 rounded-lg py-2 flex items-center justify-center" title="Ke atas"><i class="fa-solid fa-chevron-up text-xs"></i></button>
+          <button onclick="nudgeCropPosition(0,-16)" class="bg-slate-100 hover:bg-indigo-100 text-slate-600 rounded-lg py-2 flex items-center justify-center" title="Ke atas"><i class="fa-solid fa-chevron-up text-xs"></i></button>
           <div></div>
-          <button onclick="nudgeCropPosition(-8,0)" class="bg-slate-100 hover:bg-indigo-100 text-slate-600 rounded-lg py-2 flex items-center justify-center" title="Ke kiri"><i class="fa-solid fa-chevron-left text-xs"></i></button>
+          <button onclick="nudgeCropPosition(-16,0)" class="bg-slate-100 hover:bg-indigo-100 text-slate-600 rounded-lg py-2 flex items-center justify-center" title="Ke kiri"><i class="fa-solid fa-chevron-left text-xs"></i></button>
           <button onclick="nudgeCropPosition(0,0,true)" class="bg-slate-100 hover:bg-indigo-100 text-slate-500 rounded-lg py-2 flex items-center justify-center" title="Tengahkan semula"><i class="fa-solid fa-compress text-xs"></i></button>
-          <button onclick="nudgeCropPosition(8,0)" class="bg-slate-100 hover:bg-indigo-100 text-slate-600 rounded-lg py-2 flex items-center justify-center" title="Ke kanan"><i class="fa-solid fa-chevron-right text-xs"></i></button>
+          <button onclick="nudgeCropPosition(16,0)" class="bg-slate-100 hover:bg-indigo-100 text-slate-600 rounded-lg py-2 flex items-center justify-center" title="Ke kanan"><i class="fa-solid fa-chevron-right text-xs"></i></button>
           <div></div>
-          <button onclick="nudgeCropPosition(0,8)" class="bg-slate-100 hover:bg-indigo-100 text-slate-600 rounded-lg py-2 flex items-center justify-center" title="Ke bawah"><i class="fa-solid fa-chevron-down text-xs"></i></button>
+          <button onclick="nudgeCropPosition(0,16)" class="bg-slate-100 hover:bg-indigo-100 text-slate-600 rounded-lg py-2 flex items-center justify-center" title="Ke bawah"><i class="fa-solid fa-chevron-down text-xs"></i></button>
           <div></div>
         </div>
       </div>
@@ -2690,26 +2696,51 @@ window.onload = function(){
       }
     }
 
-    /* ===== Laras Kedudukan Foto (crop kawalan pengguna, seret untuk laraskan) ===== */
+    /* ===== Laras Kedudukan Foto (crop kawalan pengguna - bingkai boleh diseret atas foto PENUH) ===== */
     let cropAdjustIndex = null;
-    let cropDragPos = { x: 50, y: 50 }; // peratus semasa dalam modal (belum disimpan)
-    let cropDragState = null; // { startPointerX, startPointerY, startPosX, startPosY }
+    let cropDragPos = { x: 50, y: 50 }; // peratus AKHIR (pusat bingkai) - inilah yang disimpan
+    let cropFrameBox = null; // { stageW, stageH, size, left, top } - semua dalam PIKSEL, kedudukan bingkai semasa
+    let cropDragState = null; // { startPointerX, startPointerY, startLeft, startTop }
 
     function openCropAdjuster(index, event) {
       if(event) event.preventDefault();
       if(!state.photos[index]) return;
       cropAdjustIndex = index;
       if(!state.photoPositions) state.photoPositions = [];
-      const saved = state.photoPositions[index] || { x: 50, y: 50 };
-      cropDragPos = { x: saved.x, y: saved.y };
 
-      const photoEl = document.getElementById('crop-drag-photo');
-      photoEl.style.backgroundImage = `url('${state.photos[index]}')`;
-      photoEl.style.backgroundPosition = `${cropDragPos.x}% ${cropDragPos.y}%`;
+      const img = document.getElementById('crop-source-img');
+      img.src = state.photos[index];
+
+      const initFrame = () => {
+        const stage = document.getElementById('crop-stage');
+        const stageW = stage.clientWidth, stageH = stage.clientHeight;
+        const size = Math.round(Math.min(stageW, stageH) * 0.6);
+        const saved = state.photoPositions[index] || { x: 50, y: 50 };
+        const left = Math.max(0, Math.min(stageW - size, (saved.x/100) * stageW - size/2));
+        const top = Math.max(0, Math.min(stageH - size, (saved.y/100) * stageH - size/2));
+        cropFrameBox = { stageW, stageH, size, left, top };
+        applyCropFrameBox_();
+      };
+      if(img.complete && img.naturalWidth) initFrame();
+      else img.onload = initFrame;
 
       const modal = document.getElementById('crop-adjust-modal');
       modal.classList.remove('hidden');
       modal.classList.add('flex');
+    }
+
+    function applyCropFrameBox_() {
+      const frame = document.getElementById('crop-frame-overlay');
+      if(!frame || !cropFrameBox) return;
+      frame.style.left = cropFrameBox.left + 'px';
+      frame.style.top = cropFrameBox.top + 'px';
+      frame.style.width = cropFrameBox.size + 'px';
+      frame.style.height = cropFrameBox.size + 'px';
+      // Kira peratus PUSAT bingkai relatif kpd seluruh foto - inilah nilai yang disimpan/digunakan.
+      cropDragPos = {
+        x: ((cropFrameBox.left + cropFrameBox.size/2) / cropFrameBox.stageW) * 100,
+        y: ((cropFrameBox.top + cropFrameBox.size/2) / cropFrameBox.stageH) * 100
+      };
     }
 
     function closeCropAdjuster() {
@@ -2718,6 +2749,7 @@ window.onload = function(){
       modal.classList.remove('flex');
       cropAdjustIndex = null;
       cropDragState = null;
+      cropFrameBox = null;
     }
 
     function saveCropPosition() {
@@ -2731,55 +2763,45 @@ window.onload = function(){
 
     // Kawalan klik (bukan seret) - jaminan sentiasa berfungsi tanpa kira isu seretan.
     function nudgeCropPosition(dx, dy, reset) {
-      const photoEl = document.getElementById('crop-drag-photo');
-      if(!photoEl) return;
+      if(!cropFrameBox) return;
       if(reset){
-        cropDragPos = { x: 50, y: 50 };
+        cropFrameBox.left = (cropFrameBox.stageW - cropFrameBox.size) / 2;
+        cropFrameBox.top = (cropFrameBox.stageH - cropFrameBox.size) / 2;
       } else {
-        cropDragPos = {
-          x: Math.max(0, Math.min(100, cropDragPos.x + dx)),
-          y: Math.max(0, Math.min(100, cropDragPos.y + dy))
-        };
+        cropFrameBox.left = Math.max(0, Math.min(cropFrameBox.stageW - cropFrameBox.size, cropFrameBox.left + dx));
+        cropFrameBox.top = Math.max(0, Math.min(cropFrameBox.stageH - cropFrameBox.size, cropFrameBox.top + dy));
       }
-      photoEl.style.backgroundPosition = `${cropDragPos.x}% ${cropDragPos.y}%`;
+      applyCropFrameBox_();
     }
 
     // Guna Pointer Events (API standard moden, gabung tetikus+sentuhan dalam satu)
     // dengan setPointerCapture supaya seretan sentiasa dikesan walaupun kursor
     // bergerak pantas/keluar sempadan bingkai - kaedah paling mantap untuk seretan begini.
     document.addEventListener('pointerdown', function(e){
-      const frame = e.target.closest('#crop-frame');
-      if(!frame) return;
-      cropDragState = { startX: e.clientX, startY: e.clientY, startPosX: cropDragPos.x, startPosY: cropDragPos.y };
+      const frame = e.target.closest('#crop-frame-overlay');
+      if(!frame || !cropFrameBox) return;
+      cropDragState = { startX: e.clientX, startY: e.clientY, startLeft: cropFrameBox.left, startTop: cropFrameBox.top };
       try { frame.setPointerCapture(e.pointerId); } catch(err) {}
-      const photoEl = document.getElementById('crop-drag-photo');
-      if(photoEl) photoEl.style.cursor = 'grabbing';
+      frame.style.cursor = 'grabbing';
     });
 
     document.addEventListener('pointermove', function(e){
-      if(!cropDragState) return;
-      const frame = document.getElementById('crop-frame');
-      const photoEl = document.getElementById('crop-drag-photo');
-      if(!frame || !photoEl) return;
-      const rect = frame.getBoundingClientRect();
-      // Seret ke kanan -> tunjuk lebih bahagian KIRI foto (peratus berkurang), dan sebaliknya.
-      const deltaXPercent = ((e.clientX - cropDragState.startX) / rect.width) * 100;
-      const deltaYPercent = ((e.clientY - cropDragState.startY) / rect.height) * 100;
-      let newX = cropDragState.startPosX - deltaXPercent;
-      let newY = cropDragState.startPosY - deltaYPercent;
-      newX = Math.max(0, Math.min(100, newX));
-      newY = Math.max(0, Math.min(100, newY));
-      cropDragPos = { x: newX, y: newY };
-      photoEl.style.backgroundPosition = `${newX}% ${newY}%`;
+      if(!cropDragState || !cropFrameBox) return;
+      const dx = e.clientX - cropDragState.startX;
+      const dy = e.clientY - cropDragState.startY;
+      cropFrameBox.left = Math.max(0, Math.min(cropFrameBox.stageW - cropFrameBox.size, cropDragState.startLeft + dx));
+      cropFrameBox.top = Math.max(0, Math.min(cropFrameBox.stageH - cropFrameBox.size, cropDragState.startTop + dy));
+      applyCropFrameBox_();
     });
 
     function endCropDrag_(e) {
       cropDragState = null;
-      const photoEl = document.getElementById('crop-drag-photo');
-      if(photoEl) photoEl.style.cursor = 'grab';
-      const frame = document.getElementById('crop-frame');
-      if(frame && e && e.pointerId !== undefined){
-        try { frame.releasePointerCapture(e.pointerId); } catch(err) {}
+      const frame = document.getElementById('crop-frame-overlay');
+      if(frame){
+        frame.style.cursor = 'grab';
+        if(e && e.pointerId !== undefined){
+          try { frame.releasePointerCapture(e.pointerId); } catch(err) {}
+        }
       }
     }
     document.addEventListener('pointerup', endCropDrag_);
