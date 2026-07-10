@@ -893,9 +893,22 @@
   <div id="crop-adjust-modal" class="no-print hidden fixed inset-0 bg-slate-900/70 backdrop-blur-sm z-[90] items-center justify-center p-4">
     <div class="bg-white rounded-2xl shadow-2xl max-w-sm w-full p-5">
       <h3 class="font-bold text-slate-900 text-sm mb-1 flex items-center gap-2"><i class="fa-solid fa-crop-simple text-indigo-600"></i> Laraskan Kedudukan Foto</h3>
-      <p class="text-xs text-slate-500 mb-3">Seret foto untuk pilih bahagian yang nak dipaparkan.</p>
+      <p class="text-xs text-slate-500 mb-3">Seret foto, atau guna anak panah di bawah untuk pilih bahagian yang nak dipaparkan.</p>
       <div id="crop-frame" class="relative w-full aspect-square rounded-xl overflow-hidden border-2 border-indigo-400 bg-slate-100 cursor-grab select-none touch-none">
         <div id="crop-drag-photo" class="absolute inset-0" style="background-size:cover; cursor:grab;"></div>
+      </div>
+      <div class="flex items-center justify-center gap-2 mt-3">
+        <div class="grid grid-cols-3 gap-1.5" style="width:132px;">
+          <div></div>
+          <button onclick="nudgeCropPosition(0,-8)" class="bg-slate-100 hover:bg-indigo-100 text-slate-600 rounded-lg py-2 flex items-center justify-center" title="Ke atas"><i class="fa-solid fa-chevron-up text-xs"></i></button>
+          <div></div>
+          <button onclick="nudgeCropPosition(-8,0)" class="bg-slate-100 hover:bg-indigo-100 text-slate-600 rounded-lg py-2 flex items-center justify-center" title="Ke kiri"><i class="fa-solid fa-chevron-left text-xs"></i></button>
+          <button onclick="nudgeCropPosition(0,0,true)" class="bg-slate-100 hover:bg-indigo-100 text-slate-500 rounded-lg py-2 flex items-center justify-center" title="Tengahkan semula"><i class="fa-solid fa-compress text-xs"></i></button>
+          <button onclick="nudgeCropPosition(8,0)" class="bg-slate-100 hover:bg-indigo-100 text-slate-600 rounded-lg py-2 flex items-center justify-center" title="Ke kanan"><i class="fa-solid fa-chevron-right text-xs"></i></button>
+          <div></div>
+          <button onclick="nudgeCropPosition(0,8)" class="bg-slate-100 hover:bg-indigo-100 text-slate-600 rounded-lg py-2 flex items-center justify-center" title="Ke bawah"><i class="fa-solid fa-chevron-down text-xs"></i></button>
+          <div></div>
+        </div>
       </div>
       <div class="grid grid-cols-2 gap-3 mt-4">
         <button onclick="closeCropAdjuster()" class="py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-xl text-xs">Batal</button>
@@ -2716,55 +2729,61 @@ window.onload = function(){
       closeCropAdjuster();
     }
 
-    function getCropPointer_(e) {
-      if(e.touches && e.touches[0]) return { x: e.touches[0].clientX, y: e.touches[0].clientY };
-      return { x: e.clientX, y: e.clientY };
+    // Kawalan klik (bukan seret) - jaminan sentiasa berfungsi tanpa kira isu seretan.
+    function nudgeCropPosition(dx, dy, reset) {
+      const photoEl = document.getElementById('crop-drag-photo');
+      if(!photoEl) return;
+      if(reset){
+        cropDragPos = { x: 50, y: 50 };
+      } else {
+        cropDragPos = {
+          x: Math.max(0, Math.min(100, cropDragPos.x + dx)),
+          y: Math.max(0, Math.min(100, cropDragPos.y + dy))
+        };
+      }
+      photoEl.style.backgroundPosition = `${cropDragPos.x}% ${cropDragPos.y}%`;
     }
 
-    // Guna pendelegasian peringkat dokumen (bukan lekat terus pada elemen) supaya
-    // sentiasa berfungsi tanpa kira bila modal/bingkai dicipta dalam DOM.
-    document.addEventListener('mousedown', function(e){
+    // Guna Pointer Events (API standard moden, gabung tetikus+sentuhan dalam satu)
+    // dengan setPointerCapture supaya seretan sentiasa dikesan walaupun kursor
+    // bergerak pantas/keluar sempadan bingkai - kaedah paling mantap untuk seretan begini.
+    document.addEventListener('pointerdown', function(e){
       const frame = e.target.closest('#crop-frame');
       if(!frame) return;
-      const p = getCropPointer_(e);
-      cropDragState = { startX: p.x, startY: p.y, startPosX: cropDragPos.x, startPosY: cropDragPos.y };
+      cropDragState = { startX: e.clientX, startY: e.clientY, startPosX: cropDragPos.x, startPosY: cropDragPos.y };
+      try { frame.setPointerCapture(e.pointerId); } catch(err) {}
       const photoEl = document.getElementById('crop-drag-photo');
       if(photoEl) photoEl.style.cursor = 'grabbing';
     });
-    document.addEventListener('touchstart', function(e){
-      const frame = e.target.closest('#crop-frame');
-      if(!frame) return;
-      const p = getCropPointer_(e);
-      cropDragState = { startX: p.x, startY: p.y, startPosX: cropDragPos.x, startPosY: cropDragPos.y };
-    }, { passive: true });
 
-    document.addEventListener('mousemove', handleCropMove_);
-    document.addEventListener('touchmove', handleCropMove_, { passive: false });
-    function handleCropMove_(e) {
+    document.addEventListener('pointermove', function(e){
       if(!cropDragState) return;
       const frame = document.getElementById('crop-frame');
       const photoEl = document.getElementById('crop-drag-photo');
       if(!frame || !photoEl) return;
-      if(e.cancelable) e.preventDefault();
-      const p = getCropPointer_(e);
       const rect = frame.getBoundingClientRect();
       // Seret ke kanan -> tunjuk lebih bahagian KIRI foto (peratus berkurang), dan sebaliknya.
-      const deltaXPercent = ((p.x - cropDragState.startX) / rect.width) * 100;
-      const deltaYPercent = ((p.y - cropDragState.startY) / rect.height) * 100;
+      const deltaXPercent = ((e.clientX - cropDragState.startX) / rect.width) * 100;
+      const deltaYPercent = ((e.clientY - cropDragState.startY) / rect.height) * 100;
       let newX = cropDragState.startPosX - deltaXPercent;
       let newY = cropDragState.startPosY - deltaYPercent;
       newX = Math.max(0, Math.min(100, newX));
       newY = Math.max(0, Math.min(100, newY));
       cropDragPos = { x: newX, y: newY };
       photoEl.style.backgroundPosition = `${newX}% ${newY}%`;
-    }
-    function endCropDrag_() {
+    });
+
+    function endCropDrag_(e) {
       cropDragState = null;
       const photoEl = document.getElementById('crop-drag-photo');
       if(photoEl) photoEl.style.cursor = 'grab';
+      const frame = document.getElementById('crop-frame');
+      if(frame && e && e.pointerId !== undefined){
+        try { frame.releasePointerCapture(e.pointerId); } catch(err) {}
+      }
     }
-    document.addEventListener('mouseup', endCropDrag_);
-    document.addEventListener('touchend', endCropDrag_);
+    document.addEventListener('pointerup', endCropDrag_);
+    document.addEventListener('pointercancel', endCropDrag_);
 
     // FUNGSI RENDER GRID GAMBAR DENGAN CROP PINTAR (guna background-image, serasi penuh dengan html2canvas)
     function renderPhotoGrid() {
