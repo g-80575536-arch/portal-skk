@@ -1829,14 +1829,14 @@ window.onload = function(){
             <div class="max-w-md mx-auto bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-xl staff-card" data-status="${s.status}">
                 <div class="h-28 rounded-t-3xl overflow-hidden ${curDetail.bg} relative flex items-start justify-center pt-5">
                     <p class="text-white/90 font-bold text-sm tracking-wide">${greeting}, ${firstName}!</p>
-                    <div class="absolute -bottom-10 left-1/2 -translate-x-1/2">
-                        <div class="w-20 h-20 rounded-full bg-white dark:bg-slate-900 border-[5px] border-white dark:border-slate-900 shadow-lg flex items-center justify-center overflow-hidden">
-                            ${avatarHtml}
-                        </div>
+                </div>
+                <div class="relative -mt-10 flex justify-center">
+                    <div class="w-20 h-20 rounded-full bg-white dark:bg-slate-900 border-[5px] border-white dark:border-slate-900 shadow-lg flex items-center justify-center overflow-hidden">
+                        ${avatarHtml}
                     </div>
                 </div>
 
-                <div class="pt-12 pb-7 px-7 text-center">
+                <div class="pt-2 pb-7 px-7 text-center">
                     <h3 class="text-xl font-extrabold text-slate-900 dark:text-white">${s.name}</h3>
                     <p class="text-xs text-indigo-600 dark:text-indigo-400 font-bold tracking-wider mt-1 uppercase">${s.position}</p>
 
