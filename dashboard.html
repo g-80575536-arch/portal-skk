@@ -430,6 +430,11 @@
                         <p class="text-xs text-slate-500 dark:text-slate-400">Pilih status harian anda dan klik butang hantar.</p>
                     </div>
                     <div class="w-full" id="staff-grid"></div>
+                    <div id="upcoming-dates-section" class="hidden max-w-md mx-auto bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-xl p-6">
+                        <h3 class="font-bold text-slate-900 dark:text-white flex items-center gap-2 mb-1"><i class="fa-solid fa-calendar-days text-indigo-600 dark:text-indigo-400"></i> Tarikh Akan Datang Anda</h3>
+                        <p class="text-xs text-slate-500 dark:text-slate-400 mb-4">Rancangan berubah? Batalkan mana-mana tarikh akan datang di bawah.</p>
+                        <div id="upcoming-dates-list" class="space-y-2"></div>
+                    </div>
                 </div>
 
                 <div id="tab-rekod" class="ehadir-tab space-y-6 hidden no-print">
@@ -896,13 +901,17 @@
             <div class="h-12 w-12 bg-indigo-100 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-400 rounded-2xl flex items-center justify-center text-xl mx-auto mb-3">
                 <i class="fa-solid fa-circle-check"></i>
             </div>
-            <h3 class="font-black text-slate-900 dark:text-white text-lg">Sahkan Status Hari Ini</h3>
-            <p class="text-xs text-amber-600 dark:text-amber-400 font-semibold mt-1 flex items-center justify-center gap-1.5"><i class="fa-solid fa-triangle-exclamation"></i> Hanya boleh dihantar SEKALI sahaja untuk hari ini</p>
+            <h3 id="confirm-modal-title" class="font-black text-slate-900 dark:text-white text-lg">Sahkan Status Hari Ini</h3>
+            <p id="confirm-modal-warning" class="text-xs text-amber-600 dark:text-amber-400 font-semibold mt-1 flex items-center justify-center gap-1.5"><i class="fa-solid fa-triangle-exclamation"></i> Hanya boleh dihantar SEKALI sahaja untuk hari ini</p>
             <p id="confirm-target-name" class="text-sm font-bold text-indigo-600 dark:text-indigo-400 mt-2"></p>
 
             <div class="mt-4 bg-slate-100 dark:bg-slate-800 px-4 py-3 rounded-2xl text-left">
               <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Status</p>
               <p id="confirm-target-status" class="text-sm font-extrabold text-slate-800 dark:text-white mb-2"></p>
+              <div id="confirm-target-range-wrap" class="hidden mb-2">
+                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Tempoh</p>
+                <p id="confirm-target-range" class="text-sm text-indigo-600 dark:text-indigo-400 font-bold"></p>
+              </div>
               <div id="confirm-target-note-wrap" class="hidden">
                 <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Catatan</p>
                 <p id="confirm-target-note" class="text-sm text-slate-600 dark:text-slate-300 italic"></p>
@@ -1551,7 +1560,7 @@ window.onload = function(){
 // ==========================================
         // FUNGSI SISTEM KEBERADAAN (EHADIR)
         // ==========================================
-        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxM_URXBzlX61m6i5SZoyK9gk2HWTjeo9vMWcVlLxtaiyA-cx8MnZcA-2M9cM7BBW4s7Q/exec";
+        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzb6HSLyq7VEPe9sVj1pLboaycrDR1NTG7yrAE0R0UfuJHR3gWqJQAPj6cUtukLW96mTQ/exec";
 
         // (staffData sudah ditakrifkan di bahagian atas skrip dashboard - satu sumber sahaja,
         // turut membawa maklumat delimaEmail & cmsUnits untuk sistem log masuk & CMS)
@@ -1692,6 +1701,26 @@ window.onload = function(){
             if(noteVal){ noteWrap.classList.remove('hidden'); noteEl.innerText = noteVal; }
             else { noteWrap.classList.add('hidden'); }
 
+            const endDateInput = document.getElementById(`enddate-input-${staffId}`);
+            const endDateVal = endDateInput ? endDateInput.value : '';
+            const rangeWrap = document.getElementById('confirm-target-range-wrap');
+            const rangeEl = document.getElementById('confirm-target-range');
+            const titleEl = document.getElementById('confirm-modal-title');
+            const warnEl = document.getElementById('confirm-modal-warning');
+            if(endDateVal){
+                const todayStr = getTodayDateStr_();
+                const endStr = isoToDdMmYyyy_(endDateVal);
+                const numDays = Math.round((ddMmYyyyToDate_(endStr) - ddMmYyyyToDate_(todayStr)) / 86400000) + 1;
+                rangeWrap.classList.remove('hidden');
+                rangeEl.innerText = `${todayStr} hingga ${endStr} (${numDays} hari)`;
+                titleEl.innerText = 'Sahkan Status Berbilang Hari';
+                warnEl.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> Status akan dihantar untuk ${numDays} hari sekali gus`;
+            } else {
+                rangeWrap.classList.add('hidden');
+                titleEl.innerText = 'Sahkan Status Hari Ini';
+                warnEl.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> Hanya boleh dihantar SEKALI sahaja untuk hari ini`;
+            }
+
             const modal = document.getElementById('confirm-submit-modal');
             modal.classList.remove('hidden');
             setTimeout(() => {
@@ -1752,6 +1781,11 @@ window.onload = function(){
                             <label class="block text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-1.5">Catatan <span class="normal-case font-medium text-slate-400">(pilihan)</span></label>
                             <textarea id="note-input-${s.id}" rows="2" placeholder="Cth: Mesyuarat di PPD Serian..." class="w-full text-sm p-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800 text-slate-800 dark:text-slate-200 outline-none focus:ring-2 focus:ring-indigo-500 placeholder-slate-400 dark:placeholder-slate-600 resize-none"></textarea>
                         </div>
+                        <div>
+                            <label class="block text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-1.5">Hingga Tarikh <span class="normal-case font-medium text-slate-400">(pilihan - untuk urusan berbilang hari)</span></label>
+                            <input type="date" id="enddate-input-${s.id}" min="${getTodayIsoDate_()}" class="w-full text-sm p-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800 text-slate-800 dark:text-slate-200 outline-none focus:ring-2 focus:ring-indigo-500">
+                            <p class="text-[10px] text-slate-400 mt-1">Isi jika status ini berterusan lebih dari 1 hari (cth. kursus seminggu). Biar kosong jika untuk hari ini sahaja.</p>
+                        </div>
                         <button id="btn-submit-${s.id}" onclick="triggerConfirmSubmit(${s.id}, '${s.name}')" class="w-full bg-slate-900 hover:bg-indigo-600 dark:bg-slate-800 dark:hover:bg-indigo-600 text-white font-extrabold py-3.5 rounded-xl text-sm flex items-center justify-center gap-2 transition-all shadow-md hover:scale-[1.02] active:scale-95">
                             <i class="fa-solid fa-cloud-arrow-up"></i> Hantar Status
                         </button>
@@ -1787,6 +1821,23 @@ window.onload = function(){
             return `${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}/${d.getFullYear()}`;
         }
 
+        function getTodayIsoDate_() {
+            const d = new Date();
+            return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+        }
+
+        // "yyyy-MM-dd" (input tarikh HTML) -> "dd/MM/yyyy" (format backend)
+        function isoToDdMmYyyy_(iso) {
+            const [y, m, d] = iso.split('-');
+            return `${d}/${m}/${y}`;
+        }
+
+        // "dd/MM/yyyy" -> objek Date (untuk pembandingan/pengiraan)
+        function ddMmYyyyToDate_(str) {
+            const [d, m, y] = String(str).split('/');
+            return new Date(parseInt(y,10), parseInt(m,10)-1, parseInt(d,10));
+        }
+
         // Bina peta {staffId: statusHariIni} daripada rekod SEBENAR backend (bukan nilai lalai statik).
         // Serasi ke belakang: jika rekod lama tiada 'id' (skrip lama), padan ikut nama sebagai gantian.
         function getTodayStatusMap_() {
@@ -1814,6 +1865,53 @@ window.onload = function(){
             return map;
         }
 
+        // Papar rekod AKAN DATANG (tarikh > hari ini) milik pengguna semasa, dengan butang Batalkan.
+        function renderUpcomingDates() {
+            const section = document.getElementById('upcoming-dates-section');
+            const list = document.getElementById('upcoming-dates-list');
+            if (!section || !list || !currentUser) return;
+
+            const todayD = ddMmYyyyToDate_(getTodayDateStr_());
+            const mine = (allRecords || []).filter(r => {
+                if (String(r.id) !== String(currentUser.id)) return false;
+                const rd = ddMmYyyyToDate_(r.date);
+                return rd.getTime() > todayD.getTime();
+            }).sort((a,b) => ddMmYyyyToDate_(a.date) - ddMmYyyyToDate_(b.date));
+
+            if (!mine.length) { section.classList.add('hidden'); list.innerHTML = ''; return; }
+
+            section.classList.remove('hidden');
+            const d = statusDetails;
+            list.innerHTML = mine.map(r => {
+                const detail = d[r.status] || { bg: 'bg-slate-400', text: 'text-slate-700' };
+                return `
+                <div class="flex items-center justify-between gap-3 bg-slate-50 dark:bg-slate-800 rounded-xl px-4 py-3">
+                    <div class="min-w-0">
+                        <p class="text-sm font-bold text-slate-800 dark:text-white">${r.date}</p>
+                        <p class="text-xs ${detail.text} font-semibold flex items-center gap-1.5 mt-0.5"><span class="h-2 w-2 rounded-full ${detail.bg}"></span>${r.status}</p>
+                    </div>
+                    <button onclick="cancelFutureDate('${r.date}')" class="shrink-0 text-xs font-bold text-rose-600 hover:text-white hover:bg-rose-600 border border-rose-200 dark:border-rose-900/40 px-3 py-2 rounded-lg transition-all">Batalkan</button>
+                </div>`;
+            }).join('');
+        }
+
+        async function cancelFutureDate(dateStr) {
+            if (!currentUser) return;
+            if (!confirm(`Batalkan status yang dihantar untuk ${dateStr}?`)) return;
+            try {
+                await fetch(GOOGLE_SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    body: JSON.stringify({ action: 'cancel', id: currentUser.id, date: dateStr })
+                });
+                showToast(`Tarikh ${dateStr} dibatalkan.`, 'success');
+                setTimeout(async () => { await fetchRecordsQuietly(); }, 800);
+            } catch (e) {
+                showToast('Gagal membatalkan. Sila cuba lagi.', 'error');
+            }
+        }
+
         function renderDashboard() {
             if(!currentUser) return;
             const todayMap = getTodayStatusMap_();
@@ -1826,6 +1924,7 @@ window.onload = function(){
                 const visibleStaff = staffData.filter(s => s.id === currentUser.id); // setiap pengguna hantar status diri sendiri sahaja
                 grid.innerHTML = visibleStaff.map(s => buildStaffCard({...s, status: myStatus}, myTodayRecord)).join('');
             }
+            renderUpcomingDates();
 
             // ---- Kad selamat datang (info sahaja) ----
             const hour = new Date().getHours();
@@ -1932,12 +2031,33 @@ window.onload = function(){
                 </div>`;
         }
 
+        // Sahkan rekod tersimpan di LATAR BELAKANG (tak sekat UI/buat staf tunggu).
+        // Hanya beri amaran jika benar-benar tiada rekod dijumpai selepas beberapa saat.
+        async function verifyStatusInBackground_(id, staffName) {
+            await new Promise(r => setTimeout(r, 2000)); // beri masa cukup Sheet proses, secara senyap
+            try {
+                const verifyRes = await fetch(GOOGLE_SCRIPT_URL);
+                if (!verifyRes.ok) return;
+                const verifyData = await verifyRes.json();
+                if (!Array.isArray(verifyData)) return;
+                const today = getTodayDateStr_();
+                const found = verifyData.some(r => String(r.id) === String(id) && r.date === today);
+                if (!found) {
+                    showToast(`Amaran: Tidak dapat disahkan status ${staffName} tersimpan. Sila semak semula & hantar sekali lagi jika perlu.`, 'error');
+                }
+            } catch (e) { /* senyap - jangan ganggu staf dgn ralat rangkaian latar belakang */ }
+        }
+
         async function submitStatus(id, staffName) {
             const btn = document.getElementById(`btn-submit-${id}`);
             const selectTrigger = document.getElementById(`status-trigger-${id}`);
             const selectedStatus = selectTrigger.innerText.trim();
             const noteInput = document.getElementById(`note-input-${id}`);
             const noteVal = noteInput ? noteInput.value.trim() : '';
+            const endDateInput = document.getElementById(`enddate-input-${id}`);
+            const endDateIso = endDateInput ? endDateInput.value : '';
+            const endDateVal = endDateIso ? isoToDdMmYyyy_(endDateIso) : '';
+            const isMultiDay = !!endDateVal;
             const staffRecord = staffData.find(s => s.id === id);
             const staffPosition = staffRecord ? staffRecord.position : '';
             const originalText = btn.innerHTML;
@@ -1948,7 +2068,7 @@ window.onload = function(){
 
             if (!navigator.onLine) {
                 let queue = JSON.parse(localStorage.getItem('sk_offline_queue')) || [];
-                queue.push({ id, name: staffName, position: staffPosition, status: selectedStatus, note: noteVal, date: new Date().toISOString().split('T')[0] });
+                queue.push({ id, name: staffName, position: staffPosition, status: selectedStatus, note: noteVal, endDate: endDateVal, date: new Date().toISOString().split('T')[0] });
                 localStorage.setItem('sk_offline_queue', JSON.stringify(queue));
                 
                 showToast("Talian internet terputus! Status disimpan secara luar talian & sedia disegerakkan.", "info");
@@ -1969,59 +2089,21 @@ window.onload = function(){
                     method: 'POST',
                     mode: 'no-cors',
                     headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-                    body: JSON.stringify({ id: id, name: staffName, position: staffPosition, status: selectedStatus, note: noteVal })
+                    body: JSON.stringify({ id: id, name: staffName, position: staffPosition, status: selectedStatus, note: noteVal, endDate: endDateVal || undefined })
                 });
 
-                // "no-cors" tak boleh baca respons POST langsung, jadi kita SAHKAN dengan
-                // GET semula & semak rekod hari ini wujud - elak paparan
-                // "berjaya" palsu jika backend sebenarnya gagal/belum dideploy dgn betul.
-                // (Padan ikut id+tarikh SAHAJA, bukan teks status tepat - elak gagal palsu
-                // disebabkan percanggahan kecil teks/pemasaan.)
-                btn.innerHTML = `<i class="fa-solid fa-circle-notch animate-spin"></i> Mengesahkan...`;
-                await new Promise(r => setTimeout(r, 1300)); // beri masa Sheet proses
-                let verified = false;
-                let foundRecord = null;
-                const diagLines = [];
-                const today = getTodayDateStr_();
-                diagLines.push(`Dicari: id=${id} tarikh=${today}`);
-                try {
-                    const verifyRes = await fetch(GOOGLE_SCRIPT_URL);
-                    diagLines.push(`GET status: ${verifyRes.status} (ok=${verifyRes.ok})`);
-                    if (verifyRes.ok) {
-                        const verifyData = await verifyRes.json();
-                        diagLines.push(`Jumlah rekod diterima: ${Array.isArray(verifyData) ? verifyData.length : 'BUKAN SENARAI - ' + JSON.stringify(verifyData).slice(0,150)}`);
-                        if(Array.isArray(verifyData)){
-                            const myRecordsAnyDate = verifyData.filter(r => String(r.id) === String(id));
-                            diagLines.push(`Rekod dgn id=${id} (semua tarikh): ${myRecordsAnyDate.length}`);
-                            if(myRecordsAnyDate.length) diagLines.push(`Tarikh rekod dijumpai: ${myRecordsAnyDate.map(r=>r.date).join(', ')}`);
-                            foundRecord = verifyData.find(r => String(r.id) === String(id) && r.date === today);
-                            verified = !!foundRecord;
-                            diagLines.push(`Padan tepat (id+tarikh hari ini): ${verified ? 'YA - ' + JSON.stringify(foundRecord) : 'TIDAK'}`);
-                        }
-                    } else {
-                        diagLines.push(`GET gagal - respons bukan OK`);
-                    }
-                } catch(e) { diagLines.push(`RALAT semasa sahkan: ${e.message || e}`); }
+                // Papar "Berjaya" SERTA-MERTA (jangan buat staf tunggu) - sahkan betul-betul
+                // tersimpan di LATAR BELAKANG selepas ini, bukan sebelum tunjuk kejayaan.
+                playChimeSound();
+                showToast(isMultiDay ? `Status ${staffName} dihantar untuk beberapa hari!` : `Status ${staffName} dihantar!`, 'success');
+                btn.innerHTML = `<i class="fa-solid fa-circle-check"></i> Berjaya!`;
+                btn.className = "w-full bg-emerald-600 text-white font-bold py-2.5 rounded-xl text-xs flex items-center justify-center gap-2";
+                setTimeout(async () => { await fetchRecordsQuietly(); switchTab('dashboard'); }, 500);
 
-                if (verified) {
-                    playChimeSound();
-                    showToast(`Status ${staffName} berjaya dihantar ke Google Sheets!`, 'success');
-                    btn.innerHTML = `<i class="fa-solid fa-circle-check"></i> Berjaya!`;
-                    btn.className = "w-full bg-emerald-600 text-white font-bold py-2.5 rounded-xl text-xs flex items-center justify-center gap-2";
-                    setTimeout(async () => { await fetchRecordsQuietly(); switchTab('dashboard'); }, 1200);
-                } else {
-                    showToast("Tidak dapat disahkan status tersimpan. Lihat butiran teknikal di bawah butang.", "error");
-                    btn.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> Gagal Disahkan`;
-                    btn.className = "w-full bg-rose-600 text-white font-bold py-2.5 rounded-xl text-xs flex items-center justify-center gap-2";
-                    const diagPanel = document.getElementById(`diag-panel-${id}`);
-                    if(diagPanel){
-                        diagPanel.innerText = diagLines.join('\n');
-                        diagPanel.classList.remove('hidden');
-                    }
-                }
+                verifyStatusInBackground_(id, staffName);
             } catch (err) {
                 let queue = JSON.parse(localStorage.getItem('sk_offline_queue')) || [];
-                queue.push({ id, name: staffName, position: staffPosition, status: selectedStatus, note: noteVal, date: new Date().toISOString().split('T')[0] });
+                queue.push({ id, name: staffName, position: staffPosition, status: selectedStatus, note: noteVal, endDate: endDateVal, date: new Date().toISOString().split('T')[0] });
                 localStorage.setItem('sk_offline_queue', JSON.stringify(queue));
                 
                 showToast("Penyambungan gagal. Data disimpan sebagai backup luar talian.", "error");
@@ -2046,7 +2128,7 @@ window.onload = function(){
                             method: "POST",
                             mode: "no-cors",
                             headers: { "Content-Type": "text/plain;charset=utf-8" },
-                            body: JSON.stringify({ id: item.id, name: item.name, position: item.position || '', status: item.status, note: item.note || '' })
+                            body: JSON.stringify({ id: item.id, name: item.name, position: item.position || '', status: item.status, note: item.note || '', endDate: item.endDate || undefined })
                         });
                     } catch (e) {}
                 }
