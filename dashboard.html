@@ -2040,19 +2040,26 @@ window.onload = function(){
                 });
 
                 // "no-cors" tak boleh baca respons POST langsung, jadi kita SAHKAN dengan
-                // GET semula & semak rekod hari ini betul-betul berubah - elak paparan
+                // GET semula & semak rekod hari ini wujud - elak paparan
                 // "berjaya" palsu jika backend sebenarnya gagal/belum dideploy dgn betul.
+                // (Padan ikut id+tarikh SAHAJA, bukan teks status tepat - elak gagal palsu
+                // disebabkan percanggahan kecil teks/pemasaan.)
                 btn.innerHTML = `<i class="fa-solid fa-circle-notch animate-spin"></i> Mengesahkan...`;
                 await new Promise(r => setTimeout(r, 1300)); // beri masa Sheet proses
                 let verified = false;
+                let foundRecord = null;
                 try {
                     const verifyRes = await fetch(GOOGLE_SCRIPT_URL);
+                    console.log('[eHadir] status GET semasa sahkan:', verifyRes.status, verifyRes.ok);
                     if (verifyRes.ok) {
                         const verifyData = await verifyRes.json();
                         const today = getTodayDateStr_();
-                        verified = verifyData.some(r => String(r.id) === String(id) && r.date === today && r.status === selectedStatus);
+                        console.log('[eHadir] mencari id=', id, 'tarikh=', today, '| jumlah rekod diterima:', verifyData.length);
+                        foundRecord = verifyData.find(r => String(r.id) === String(id) && r.date === today);
+                        verified = !!foundRecord;
+                        console.log('[eHadir] rekod dijumpai:', foundRecord);
                     }
-                } catch(e) { /* pengesahan gagal - anggap tak disahkan, bukan ranap */ }
+                } catch(e) { console.log('[eHadir] ralat semasa sahkan:', e); }
 
                 if (verified) {
                     playChimeSound();
@@ -2061,7 +2068,7 @@ window.onload = function(){
                     btn.className = "w-full bg-emerald-600 text-white font-bold py-2.5 rounded-xl text-xs flex items-center justify-center gap-2";
                     setTimeout(async () => { await fetchRecordsQuietly(); switchTab('dashboard'); }, 1200);
                 } else {
-                    showToast("Tidak dapat disahkan status tersimpan. Sila semak skrip backend BAHARU telah di-deploy (Manage deployments > New version).", "error");
+                    showToast("Tidak dapat disahkan status tersimpan. Sila semak Google Sheet 'RekodKehadiran' terus, atau buka Console pelayar (F12) untuk butiran.", "error");
                     btn.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> Gagal Disahkan`;
                     btn.className = "w-full bg-rose-600 text-white font-bold py-2.5 rounded-xl text-xs flex items-center justify-center gap-2";
                 }
