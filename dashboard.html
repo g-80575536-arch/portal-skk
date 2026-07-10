@@ -305,9 +305,6 @@
                         <button onclick="showModule('picker')" class="p-3 rounded-xl bg-rose-600 hover:bg-rose-700 text-white border border-rose-700 transition-all shadow-md hover:scale-105 active:scale-95" title="Kembali ke Papan Pemuka">
                             <i class="fa-solid fa-arrow-left"></i> Kembali
                         </button>
-                        <button onclick="toggleDarkMode()" class="p-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-amber-400 dark:text-gold border border-slate-700 transition-all shadow-md hover:scale-105 active:scale-95" title="Tukar Tema Warna">
-                            <i id="theme-icon" class="fa-solid fa-moon text-lg"></i>
-                        </button>
                         <div class="bg-slate-800/80 border border-slate-700 rounded-xl px-5 py-2.5 text-right flex flex-col items-center md:items-end min-w-[200px] shadow-lg">
                             <div id="live-date" class="text-[10px] font-bold text-gold tracking-wider uppercase">Memuatkan tarikh...</div>
                             <div id="live-time" class="text-2xl font-black tracking-widest text-white mt-0.5 font-mono">00:00:00 AM</div>
@@ -347,7 +344,7 @@
                                 <p id="dash-greeting" class="text-lg sm:text-xl font-extrabold">Selamat Datang!</p>
                                 <p id="dash-live-datetime" class="text-xs text-indigo-100 mt-0.5 font-medium">-</p>
                             </div>
-                            <div class="flex items-center gap-3">
+                            <div class="flex items-center gap-3" id="dash-status-cta-wrap">
                                 <div class="text-right">
                                     <p class="text-[10px] uppercase tracking-wider text-indigo-200 font-bold">Status Hari Ini</p>
                                     <p id="dash-my-status-badge" class="text-sm font-extrabold">-</p>
@@ -359,7 +356,7 @@
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4" id="dash-personal-stats-row">
                         <div class="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm text-center">
                             <p class="text-2xl font-black text-emerald-600" id="dash-my-school-days">0</p>
                             <p class="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mt-1">Hari Di Sekolah (Bulan Ini)</p>
@@ -576,7 +573,7 @@
             </div>
 
             <footer class="bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 py-6 text-center text-xs text-slate-400 dark:text-slate-500 no-print transition-colors">
-                <p>&copy; 2026 Portal Keberadaan Staf SK Krangan (YBB8240). Selamat &bull; Automatik.</p>
+                <p>&copy; 2026 Portal Keberadaan Staf SK Krangan (YBB8240).</p>
             </footer>
         </div>
 
@@ -964,7 +961,7 @@ let staffData = [
   { id: 13, name: 'Nur Syuhada binti Abdul Razak',       position: 'Guru Akademik',                                pin: '4545', status: 'Di Sekolah', delimaEmail: 'PLACEHOLDER.syuhada@moe-dl.edu.my',      cmsUnits: [] },
   { id: 14, name: 'Liminang anak Sabang',                position: 'Pembantu Tadbir',                              pin: '5656', status: 'Di Sekolah', delimaEmail: 'liminangsabang@gmail.com',               cmsUnits: [] },
   { id: 15, name: 'Ajek anak Sumping',                   position: 'Pembantu Pengurusan Murid Prasekolah',         pin: '6767', status: 'Di Sekolah', delimaEmail: 'PLACEHOLDER.ajek@moe-dl.edu.my',         cmsUnits: ['Prasekolah'], cmsRoleLabel: 'Penyelaras Prasekolah' },
-  { id: 17, name: 'SK Krangan (Akaun Pentadbir)',        position: 'Akaun Pentadbir Sistem Sekolah',               pin: '7000', status: 'Di Sekolah', delimaEmail: 'sekolah-8173@moe-dl.edu.my',             cmsUnits: ['Pentadbiran','Kurikulum','Kokurikulum','Hal Ehwal Murid','Prasekolah'], cmsRoleLabel: 'Pentadbir Sistem', canViewAttendanceDashboard: true }
+  { id: 17, name: 'SK Krangan (Akaun Pentadbir)',        position: 'Akaun Pentadbir Sistem Sekolah',               pin: '7000', status: 'Di Sekolah', delimaEmail: 'sekolah-8173@moe-dl.edu.my',             cmsUnits: ['Pentadbiran','Kurikulum','Kokurikulum','Hal Ehwal Murid','Prasekolah'], cmsRoleLabel: 'Pentadbir Sistem', canViewAttendanceDashboard: true, excludeFromAttendance: true }
 ];
 
 const ALLOWED_DELIMA_DOMAINS = ['moe-dl.edu.my', 'moe.gov.my'];
@@ -1021,13 +1018,20 @@ function enterDashboard(){
   renderModuleGrid();
   showModule('picker');
 
-  // "Kemas Kini Status" (borang peribadi) sentiasa dipaparkan untuk SEMUA staf.
+  // "Kemas Kini Status" (borang peribadi) dipaparkan untuk SEMUA staf KECUALI akaun
+  // yang ditanda excludeFromAttendance (cth. Akaun Pentadbir Sistem - bukan orang sebenar).
   // Bahagian pentadbir dalam Dashboard, "Rekod", "Laporan Bulanan" & "Log Audit" dihadkan mengikut peranan.
   const canViewFullDashboard = !!currentUser.canViewAttendanceDashboard;
+  const btnStatus = document.getElementById('btn-status');
   const btnRekod = document.getElementById('btn-rekod');
   const btnLaporan = document.getElementById('btn-laporan');
   const btnAudit = document.getElementById('btn-audit');
   const adminDashSection = document.getElementById('admin-dashboard-section');
+  if(btnStatus) btnStatus.classList.toggle('hidden', !!currentUser.excludeFromAttendance);
+  const dashStatusCta = document.getElementById('dash-status-cta-wrap');
+  const dashPersonalStats = document.getElementById('dash-personal-stats-row');
+  if(dashStatusCta) dashStatusCta.classList.toggle('hidden', !!currentUser.excludeFromAttendance);
+  if(dashPersonalStats) dashPersonalStats.classList.toggle('hidden', !!currentUser.excludeFromAttendance);
   if(btnRekod) btnRekod.classList.toggle('hidden', !canViewFullDashboard);
   if(btnLaporan) btnLaporan.classList.toggle('hidden', !canViewFullDashboard);
   if(btnAudit) btnAudit.classList.toggle('hidden', !canViewFullDashboard);
@@ -1507,17 +1511,8 @@ window.onload = function(){
     }
   }catch(e){}
 
-  const savedTheme = localStorage.getItem('theme');
-  const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-  if (savedTheme === 'dark' || (!savedTheme && systemPrefersDark)) {
-      document.documentElement.classList.add('dark');
-      const themeIcon = document.getElementById('theme-icon');
-      if(themeIcon) themeIcon.className = "fa-solid fa-sun text-lg text-amber-400";
-  } else {
-      document.documentElement.classList.remove('dark');
-      const themeIcon = document.getElementById('theme-icon');
-      if(themeIcon) themeIcon.className = "fa-solid fa-moon text-lg";
-  }
+  // Mod Terang sahaja - mod Gelap dibuang sepenuhnya
+  document.documentElement.classList.remove('dark');
   setInterval(updateClock, 1000);
   updateClock();
 
@@ -1581,72 +1576,9 @@ window.onload = function(){
         let activeGraphFilterStatus = null;
         let audioCtx = null;
 
-        function initAudio() {
-            if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        }
-
-        function playPopSound() {
-            try {
-                initAudio();
-                if (!audioCtx) return;
-                const osc = audioCtx.createOscillator();
-                const gain = audioCtx.createGain();
-                osc.connect(gain);
-                gain.connect(audioCtx.destination);
-                osc.type = 'sine';
-                osc.frequency.setValueAtTime(600, audioCtx.currentTime);
-                osc.frequency.exponentialRampToValueAtTime(150, audioCtx.currentTime + 0.1);
-                gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
-                gain.gain.linearRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
-                osc.start();
-                osc.stop(audioCtx.currentTime + 0.1);
-            } catch (e) {}
-        }
-
-        function playChimeSound() {
-            try {
-                initAudio();
-                if (!audioCtx) return;
-                const now = audioCtx.currentTime;
-                playTone(659.25, 0.1, now);
-                playTone(830.61, 0.12, now + 0.1);
-                playTone(987.77, 0.25, now + 0.2);
-            } catch (e) {}
-        }
-
-        function playTone(freq, duration, startTime) {
-            if (!audioCtx) return;
-            const osc = audioCtx.createOscillator();
-            const gain = audioCtx.createGain();
-            osc.connect(gain);
-            gain.connect(audioCtx.destination);
-            osc.type = 'triangle';
-            osc.frequency.setValueAtTime(freq, startTime);
-            gain.gain.setValueAtTime(0, startTime);
-            gain.gain.linearRampToValueAtTime(0.08, startTime + 0.02);
-            gain.gain.exponentialRampToValueAtTime(0.001, startTime + duration);
-            osc.start(startTime);
-            osc.stop(startTime + duration);
-        }
-
-        function toggleDarkMode() {
-            const html = document.documentElement;
-            const icon = document.getElementById('theme-icon');
-            playPopSound();
-            
-            if (html.classList.contains('dark')) {
-                html.classList.remove('dark');
-                icon.className = "fa-solid fa-moon text-lg";
-                localStorage.setItem('theme', 'light');
-                showToast("Mod Cahaya diaktifkan", "info");
-            } else {
-                html.classList.add('dark');
-                icon.className = "fa-solid fa-sun text-lg text-amber-400";
-                localStorage.setItem('theme', 'dark');
-                showToast("Mod Gelap diaktifkan", "info");
-            }
-            initChart();
-        }
+        function initAudio() { /* kesan bunyi dibuang */ }
+        function playPopSound() { /* kesan bunyi dibuang */ }
+        function playChimeSound() { /* kesan bunyi dibuang */ }
 
         function showToast(message, type = 'success') {
             const container = document.getElementById('toast-container');
@@ -1823,6 +1755,7 @@ window.onload = function(){
                         <button id="btn-submit-${s.id}" onclick="triggerConfirmSubmit(${s.id}, '${s.name}')" class="w-full bg-slate-900 hover:bg-indigo-600 dark:bg-slate-800 dark:hover:bg-indigo-600 text-white font-extrabold py-3.5 rounded-xl text-sm flex items-center justify-center gap-2 transition-all shadow-md hover:scale-[1.02] active:scale-95">
                             <i class="fa-solid fa-cloud-arrow-up"></i> Hantar Status
                         </button>
+                        <div id="diag-panel-${s.id}" class="hidden bg-slate-900 dark:bg-black border border-slate-700 rounded-xl p-3 text-[10px] font-mono text-emerald-400 whitespace-pre-wrap break-all"></div>
                     </div>`;
 
             return `
@@ -1939,7 +1872,7 @@ window.onload = function(){
             let countSchool = 0, countSchoolMesy = 0, countWfh = 0, countOutsideRasmi = 0, countOutsidePeribadi = 0, countCutiRehat = 0, countCutiSakit = 0, countCutiLain = 0, countBelumKemasKini = 0;
 
             const belumKemasKiniList = [];
-            staffData.forEach(s => {
+            staffData.filter(s => !s.excludeFromAttendance).forEach(s => {
                 const status = todayMap[s.id] || 'Belum Kemas Kini';
                 if (status === 'Di Sekolah') { school++; countSchool++; }
                 else if (status === 'Di Sekolah : Mesy/Bengkel') { school++; countSchoolMesy++; }
@@ -2048,18 +1981,27 @@ window.onload = function(){
                 await new Promise(r => setTimeout(r, 1300)); // beri masa Sheet proses
                 let verified = false;
                 let foundRecord = null;
+                const diagLines = [];
+                const today = getTodayDateStr_();
+                diagLines.push(`Dicari: id=${id} tarikh=${today}`);
                 try {
                     const verifyRes = await fetch(GOOGLE_SCRIPT_URL);
-                    console.log('[eHadir] status GET semasa sahkan:', verifyRes.status, verifyRes.ok);
+                    diagLines.push(`GET status: ${verifyRes.status} (ok=${verifyRes.ok})`);
                     if (verifyRes.ok) {
                         const verifyData = await verifyRes.json();
-                        const today = getTodayDateStr_();
-                        console.log('[eHadir] mencari id=', id, 'tarikh=', today, '| jumlah rekod diterima:', verifyData.length);
-                        foundRecord = verifyData.find(r => String(r.id) === String(id) && r.date === today);
-                        verified = !!foundRecord;
-                        console.log('[eHadir] rekod dijumpai:', foundRecord);
+                        diagLines.push(`Jumlah rekod diterima: ${Array.isArray(verifyData) ? verifyData.length : 'BUKAN SENARAI - ' + JSON.stringify(verifyData).slice(0,150)}`);
+                        if(Array.isArray(verifyData)){
+                            const myRecordsAnyDate = verifyData.filter(r => String(r.id) === String(id));
+                            diagLines.push(`Rekod dgn id=${id} (semua tarikh): ${myRecordsAnyDate.length}`);
+                            if(myRecordsAnyDate.length) diagLines.push(`Tarikh rekod dijumpai: ${myRecordsAnyDate.map(r=>r.date).join(', ')}`);
+                            foundRecord = verifyData.find(r => String(r.id) === String(id) && r.date === today);
+                            verified = !!foundRecord;
+                            diagLines.push(`Padan tepat (id+tarikh hari ini): ${verified ? 'YA - ' + JSON.stringify(foundRecord) : 'TIDAK'}`);
+                        }
+                    } else {
+                        diagLines.push(`GET gagal - respons bukan OK`);
                     }
-                } catch(e) { console.log('[eHadir] ralat semasa sahkan:', e); }
+                } catch(e) { diagLines.push(`RALAT semasa sahkan: ${e.message || e}`); }
 
                 if (verified) {
                     playChimeSound();
@@ -2068,9 +2010,14 @@ window.onload = function(){
                     btn.className = "w-full bg-emerald-600 text-white font-bold py-2.5 rounded-xl text-xs flex items-center justify-center gap-2";
                     setTimeout(async () => { await fetchRecordsQuietly(); switchTab('dashboard'); }, 1200);
                 } else {
-                    showToast("Tidak dapat disahkan status tersimpan. Sila semak Google Sheet 'RekodKehadiran' terus, atau buka Console pelayar (F12) untuk butiran.", "error");
+                    showToast("Tidak dapat disahkan status tersimpan. Lihat butiran teknikal di bawah butang.", "error");
                     btn.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> Gagal Disahkan`;
                     btn.className = "w-full bg-rose-600 text-white font-bold py-2.5 rounded-xl text-xs flex items-center justify-center gap-2";
+                    const diagPanel = document.getElementById(`diag-panel-${id}`);
+                    if(diagPanel){
+                        diagPanel.innerText = diagLines.join('\n');
+                        diagPanel.classList.remove('hidden');
+                    }
                 }
             } catch (err) {
                 let queue = JSON.parse(localStorage.getItem('sk_offline_queue')) || [];
@@ -2131,7 +2078,7 @@ window.onload = function(){
             const titleEl = document.getElementById('status-table-title');
             if(!tbody) return;
             todayMap = todayMap || getTodayStatusMap_();
-            const withStatus = staffData.map(s => ({ ...s, status: todayMap[s.id] || 'Belum Kemas Kini' }));
+            const withStatus = staffData.filter(s => !s.excludeFromAttendance).map(s => ({ ...s, status: todayMap[s.id] || 'Belum Kemas Kini' }));
             const list = statusName ? withStatus.filter(s => s.status === statusName) : withStatus.slice().sort((a,b) => a.name.localeCompare(b.name));
             if(titleEl) titleEl.innerText = statusName ? `Senarai Staf — ${statusName} (${list.length})` : `Senarai Semua Staf (${list.length})`;
             if(!list.length){
@@ -2343,7 +2290,7 @@ window.onload = function(){
             }
 
             let reportHTML = '';
-            staffData.forEach((staff, index) => {
+            staffData.filter(staff => !staff.excludeFromAttendance).forEach((staff, index) => {
                 const staffLogs = monthlyData.filter(r => r.name === staff.name);
                 let countSchool = 0, countMesy = 0, countLuarRasmi = 0, countLuarPeribadi = 0, countCutiRehat = 0, countCutiSakitLain = 0;
 
