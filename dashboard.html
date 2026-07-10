@@ -320,7 +320,10 @@
                 <div class="max-w-7xl mx-auto px-4">
                     <div class="flex space-x-1 sm:space-x-4">
                         <button onclick="switchTab('dashboard')" id="btn-dashboard" class="py-4 px-3 sm:px-5 font-bold text-sm border-b-4 border-navy text-navy dark:text-indigo-400 flex items-center gap-2 transition-all">
-                            <i class="fa-solid fa-gauge-high"></i> Dashboard Keberadaan
+                            <i class="fa-solid fa-gauge-high"></i> Dashboard
+                        </button>
+                        <button onclick="switchTab('status')" id="btn-status" class="py-4 px-3 sm:px-5 font-semibold text-sm border-b-4 border-transparent text-slate-500 dark:text-slate-400 hover:text-navy dark:hover:text-indigo-400 hover:border-slate-300 flex items-center gap-2 transition-all">
+                            <i class="fa-solid fa-pen-to-square"></i> Kemas Kini Status
                         </button>
                         <button onclick="switchTab('rekod')" id="btn-rekod" class="py-4 px-3 sm:px-5 font-semibold text-sm border-b-4 border-transparent text-slate-500 dark:text-slate-400 hover:text-navy dark:hover:text-indigo-400 hover:border-slate-300 flex items-center gap-2 transition-all">
                             <i class="fa-solid fa-folder-open"></i> Rekod
@@ -328,59 +331,108 @@
                         <button onclick="switchTab('laporan')" id="btn-laporan" class="py-4 px-3 sm:px-5 font-semibold text-sm border-b-4 border-transparent text-slate-500 dark:text-slate-400 hover:text-navy dark:hover:text-indigo-400 hover:border-slate-300 flex items-center gap-2 transition-all">
                             <i class="fa-solid fa-file-invoice"></i> Laporan Bulanan
                         </button>
+                        <button onclick="switchTab('audit')" id="btn-audit" class="py-4 px-3 sm:px-5 font-semibold text-sm border-b-4 border-transparent text-slate-500 dark:text-slate-400 hover:text-navy dark:hover:text-indigo-400 hover:border-slate-300 flex items-center gap-2 transition-all">
+                            <i class="fa-solid fa-clock-rotate-left"></i> Log Audit
+                        </button>
                     </div>
                 </div>
             </nav>
 
             <div class="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8 flex-1 w-full">
 
-                <div id="tab-dashboard" class="ehadir-tab active space-y-8 no-print">
-                    <div class="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm text-center">
-                        <h2 class="text-xl font-extrabold text-slate-900 dark:text-white">Keberadaan Staf Hari Ini</h2>
-                        <p class="text-xs text-slate-500 dark:text-slate-400">Pilih status harian anda dan klik butang hantar.</p>
-                        <div id="active-graph-filter" class="hidden bg-indigo-50 dark:bg-indigo-950/50 border border-indigo-200 dark:border-indigo-800 px-3 py-1.5 rounded-xl text-xs text-indigo-600 dark:text-indigo-300 font-semibold items-center gap-2 mt-3 mx-auto w-fit">
+                <div id="tab-dashboard" class="ehadir-tab active space-y-6 no-print">
+                    <div class="bg-gradient-to-br from-indigo-600 to-indigo-800 dark:from-indigo-700 dark:to-indigo-950 rounded-2xl p-6 sm:p-7 shadow-sm text-white relative overflow-hidden">
+                        <div class="relative z-10 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                            <div>
+                                <p id="dash-greeting" class="text-lg sm:text-xl font-extrabold">Selamat Datang!</p>
+                                <p id="dash-live-datetime" class="text-xs text-indigo-100 mt-0.5 font-medium">-</p>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <div class="text-right">
+                                    <p class="text-[10px] uppercase tracking-wider text-indigo-200 font-bold">Status Hari Ini</p>
+                                    <p id="dash-my-status-badge" class="text-sm font-extrabold">-</p>
+                                </div>
+                                <button onclick="switchTab('status')" class="bg-white text-indigo-700 font-extrabold px-5 py-2.5 rounded-xl text-sm flex items-center gap-2 shadow-md hover:scale-[1.03] active:scale-95 transition-all whitespace-nowrap">
+                                    <i class="fa-solid fa-pen-to-square"></i> Kemas Kini Status
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <div class="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm text-center">
+                            <p class="text-2xl font-black text-emerald-600" id="dash-my-school-days">0</p>
+                            <p class="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mt-1">Hari Di Sekolah (Bulan Ini)</p>
+                        </div>
+                        <div class="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm text-center">
+                            <p class="text-2xl font-black text-amber-600" id="dash-my-leave-days">0</p>
+                            <p class="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mt-1">Luar Pejabat/Cuti (Bulan Ini)</p>
+                        </div>
+                        <div class="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm text-center">
+                            <p class="text-2xl font-black text-indigo-600" id="dash-my-rate">0%</p>
+                            <p class="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mt-1">Peratus Kehadiran</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm">
+                        <h3 class="font-bold text-slate-900 dark:text-white flex items-center gap-2 mb-3"><i class="fa-solid fa-bullhorn text-indigo-600 dark:text-indigo-400"></i> Pengumuman</h3>
+                        <p class="text-xs text-slate-400 dark:text-slate-500 italic">Tiada pengumuman baharu buat masa ini.</p>
+                    </div>
+
+                    <div id="admin-dashboard-section" class="space-y-6">
+                        <div id="active-graph-filter" class="hidden bg-indigo-50 dark:bg-indigo-950/50 border border-indigo-200 dark:border-indigo-800 px-3 py-1.5 rounded-xl text-xs text-indigo-600 dark:text-indigo-300 font-semibold items-center gap-2 mx-auto w-fit">
                             <span>Menapis: <strong id="filter-status-label">-</strong></span>
                             <button onclick="clearGraphFilter()" class="hover:text-red-500 font-bold ml-1" title="Padam Penapis"><i class="fa-solid fa-circle-xmark"></i></button>
                         </div>
-                    </div>
 
-                    <div class="w-full" id="staff-grid"></div>
+                        <div id="belum-kemaskini-box" class="bg-amber-50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-900/40 rounded-2xl p-5"></div>
 
-                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 pt-4">
-                        <div class="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col justify-between">
-                            <div>
-                                <h3 class="font-bold text-slate-900 dark:text-white border-b border-slate-100 dark:border-slate-800 pb-3 mb-4 flex items-center gap-2"><i class="fa-solid fa-list-check text-indigo-600 dark:text-indigo-400"></i> Ringkasan Keberadaan Staf</h3>
-                                <div class="space-y-3 text-sm">
-                                    <div class="flex justify-between items-center py-1 hover:bg-slate-50 dark:hover:bg-slate-800/50 p-1.5 rounded-lg cursor-pointer" onclick="filterByStatusName('Di Sekolah')"><span class="text-slate-600 dark:text-slate-300 flex items-center gap-2"><span class="h-2.5 w-2.5 rounded-full bg-emerald-500"></span> Di Sekolah</span><span class="font-bold text-slate-950 dark:text-white" id="stat-school">0</span></div>
-                                    <div class="flex justify-between items-center py-1 hover:bg-slate-50 dark:hover:bg-slate-800/50 p-1.5 rounded-lg cursor-pointer" onclick="filterByStatusName('Di Sekolah : Mesy/Bengkel')"><span class="text-slate-600 dark:text-slate-300 flex items-center gap-2"><span class="h-2.5 w-2.5 rounded-full bg-emerald-400"></span> Di Sekolah : Mesy/Bengkel</span><span class="font-bold text-slate-950 dark:text-white" id="stat-school-mesy">0</span></div>
-                                    <div class="flex justify-between items-center py-1 hover:bg-slate-50 dark:hover:bg-slate-800/50 p-1.5 rounded-lg cursor-pointer" onclick="filterByStatusName('Bekerja Dari Rumah')"><span class="text-slate-600 dark:text-slate-300 flex items-center gap-2"><span class="h-2.5 w-2.5 rounded-full bg-blue-500"></span> Bekerja Dari Rumah</span><span class="font-bold text-slate-950 dark:text-white" id="stat-wfh">0</span></div>
-                                    <div class="flex justify-between items-center py-1 hover:bg-slate-50 dark:hover:bg-slate-800/50 p-1.5 rounded-lg cursor-pointer" onclick="filterByStatusName('Luar Pejabat : Urusan Rasmi')"><span class="text-slate-600 dark:text-slate-300 flex items-center gap-2"><span class="h-2.5 w-2.5 rounded-full bg-amber-500"></span> Luar Pejabat : Urusan Rasmi</span><span class="font-bold text-slate-950 dark:text-white" id="stat-outside-rasmi">0</span></div>
-                                    <div class="flex justify-between items-center py-1 hover:bg-slate-50 dark:hover:bg-slate-800/50 p-1.5 rounded-lg cursor-pointer" onclick="filterByStatusName('Luar Pejabat : Urusan Peribadi')"><span class="text-slate-600 dark:text-slate-300 flex items-center gap-2"><span class="h-2.5 w-2.5 rounded-full bg-amber-400"></span> Luar Pejabat : Urusan Peribadi</span><span class="font-bold text-slate-950 dark:text-white" id="stat-outside-peribadi">0</span></div>
-                                    <div class="flex justify-between items-center py-1 hover:bg-slate-50 dark:hover:bg-slate-800/50 p-1.5 rounded-lg cursor-pointer" onclick="filterByStatusName('Cuti Rehat')"><span class="text-slate-600 dark:text-slate-300 flex items-center gap-2"><span class="h-2.5 w-2.5 rounded-full bg-rose-600"></span> Cuti Rehat</span><span class="font-bold text-slate-950 dark:text-white" id="stat-cuti-rehat">0</span></div>
-                                    <div class="flex justify-between items-center py-1 hover:bg-slate-50 dark:hover:bg-slate-800/50 p-1.5 rounded-lg cursor-pointer" onclick="filterByStatusName('Cuti Sakit')"><span class="text-slate-600 dark:text-slate-300 flex items-center gap-2"><span class="h-2.5 w-2.5 rounded-full bg-rose-500"></span> Cuti Sakit</span><span class="font-bold text-slate-950 dark:text-white" id="stat-cuti-sakit">0</span></div>
-                                    <div class="flex justify-between items-center py-1 hover:bg-slate-50 dark:hover:bg-slate-800/50 p-1.5 rounded-lg cursor-pointer" onclick="filterByStatusName('Cuti : Lain-lain')"><span class="text-slate-600 dark:text-slate-300 flex items-center gap-2"><span class="h-2.5 w-2.5 rounded-full bg-rose-400"></span> Cuti : Lain-lain</span><span class="font-bold text-slate-950 dark:text-white" id="stat-cuti-lain">0</span></div>
+                        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                            <div class="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col justify-between">
+                                <div>
+                                    <h3 class="font-bold text-slate-900 dark:text-white border-b border-slate-100 dark:border-slate-800 pb-3 mb-4 flex items-center gap-2"><i class="fa-solid fa-list-check text-indigo-600 dark:text-indigo-400"></i> Ringkasan Keberadaan Staf</h3>
+                                    <div class="space-y-3 text-sm">
+                                        <div class="flex justify-between items-center py-1 hover:bg-slate-50 dark:hover:bg-slate-800/50 p-1.5 rounded-lg cursor-pointer" onclick="filterByStatusName('Belum Kemas Kini')"><span class="text-slate-600 dark:text-slate-300 flex items-center gap-2"><span class="h-2.5 w-2.5 rounded-full bg-slate-400"></span> Belum Kemas Kini</span><span class="font-bold text-slate-950 dark:text-white" id="stat-belum-kemaskini">0</span></div>
+                                        <div class="flex justify-between items-center py-1 hover:bg-slate-50 dark:hover:bg-slate-800/50 p-1.5 rounded-lg cursor-pointer" onclick="filterByStatusName('Di Sekolah')"><span class="text-slate-600 dark:text-slate-300 flex items-center gap-2"><span class="h-2.5 w-2.5 rounded-full bg-emerald-500"></span> Di Sekolah</span><span class="font-bold text-slate-950 dark:text-white" id="stat-school">0</span></div>
+                                        <div class="flex justify-between items-center py-1 hover:bg-slate-50 dark:hover:bg-slate-800/50 p-1.5 rounded-lg cursor-pointer" onclick="filterByStatusName('Di Sekolah : Mesy/Bengkel')"><span class="text-slate-600 dark:text-slate-300 flex items-center gap-2"><span class="h-2.5 w-2.5 rounded-full bg-emerald-400"></span> Di Sekolah : Mesy/Bengkel</span><span class="font-bold text-slate-950 dark:text-white" id="stat-school-mesy">0</span></div>
+                                        <div class="flex justify-between items-center py-1 hover:bg-slate-50 dark:hover:bg-slate-800/50 p-1.5 rounded-lg cursor-pointer" onclick="filterByStatusName('Bekerja Dari Rumah')"><span class="text-slate-600 dark:text-slate-300 flex items-center gap-2"><span class="h-2.5 w-2.5 rounded-full bg-blue-500"></span> Bekerja Dari Rumah</span><span class="font-bold text-slate-950 dark:text-white" id="stat-wfh">0</span></div>
+                                        <div class="flex justify-between items-center py-1 hover:bg-slate-50 dark:hover:bg-slate-800/50 p-1.5 rounded-lg cursor-pointer" onclick="filterByStatusName('Luar Pejabat : Urusan Rasmi')"><span class="text-slate-600 dark:text-slate-300 flex items-center gap-2"><span class="h-2.5 w-2.5 rounded-full bg-amber-500"></span> Luar Pejabat : Urusan Rasmi</span><span class="font-bold text-slate-950 dark:text-white" id="stat-outside-rasmi">0</span></div>
+                                        <div class="flex justify-between items-center py-1 hover:bg-slate-50 dark:hover:bg-slate-800/50 p-1.5 rounded-lg cursor-pointer" onclick="filterByStatusName('Luar Pejabat : Urusan Peribadi')"><span class="text-slate-600 dark:text-slate-300 flex items-center gap-2"><span class="h-2.5 w-2.5 rounded-full bg-amber-400"></span> Luar Pejabat : Urusan Peribadi</span><span class="font-bold text-slate-950 dark:text-white" id="stat-outside-peribadi">0</span></div>
+                                        <div class="flex justify-between items-center py-1 hover:bg-slate-50 dark:hover:bg-slate-800/50 p-1.5 rounded-lg cursor-pointer" onclick="filterByStatusName('Cuti Rehat')"><span class="text-slate-600 dark:text-slate-300 flex items-center gap-2"><span class="h-2.5 w-2.5 rounded-full bg-rose-600"></span> Cuti Rehat</span><span class="font-bold text-slate-950 dark:text-white" id="stat-cuti-rehat">0</span></div>
+                                        <div class="flex justify-between items-center py-1 hover:bg-slate-50 dark:hover:bg-slate-800/50 p-1.5 rounded-lg cursor-pointer" onclick="filterByStatusName('Cuti Sakit')"><span class="text-slate-600 dark:text-slate-300 flex items-center gap-2"><span class="h-2.5 w-2.5 rounded-full bg-rose-500"></span> Cuti Sakit</span><span class="font-bold text-slate-950 dark:text-white" id="stat-cuti-sakit">0</span></div>
+                                        <div class="flex justify-between items-center py-1 hover:bg-slate-50 dark:hover:bg-slate-800/50 p-1.5 rounded-lg cursor-pointer" onclick="filterByStatusName('Cuti : Lain-lain')"><span class="text-slate-600 dark:text-slate-300 flex items-center gap-2"><span class="h-2.5 w-2.5 rounded-full bg-rose-400"></span> Cuti : Lain-lain</span><span class="font-bold text-slate-950 dark:text-white" id="stat-cuti-lain">0</span></div>
+                                    </div>
+                                </div>
+                                <button onclick="switchTab('laporan')" class="mt-4 w-full bg-slate-900 hover:bg-indigo-600 dark:bg-slate-800 dark:hover:bg-indigo-600 text-white font-bold py-2.5 rounded-xl text-xs flex items-center justify-center gap-2 transition-all"><i class="fa-solid fa-file-invoice"></i> Jana Laporan Bulanan</button>
+                            </div>
+                            <div class="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm lg:col-span-2">
+                                <div class="flex justify-between items-center border-b border-slate-100 dark:border-slate-800 pb-3 mb-4">
+                                    <h3 class="font-bold text-slate-900 dark:text-white flex items-center gap-2"><i class="fa-solid fa-table-list text-indigo-600 dark:text-indigo-400"></i> <span id="status-table-title">Senarai Staf</span></h3>
+                                    <span class="text-[10px] bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 px-2 py-1 rounded-md font-semibold uppercase tracking-wider">Klik status di kiri untuk tapis</span>
+                                </div>
+                                <div class="max-h-72 overflow-y-auto">
+                                    <table class="w-full text-sm">
+                                        <thead class="sticky top-0 bg-white dark:bg-slate-900">
+                                            <tr class="text-left text-[10px] uppercase tracking-wider text-slate-400 dark:text-slate-500 border-b border-slate-100 dark:border-slate-800">
+                                                <th class="pb-2 pr-2 font-bold">Nama</th>
+                                                <th class="pb-2 pr-2 font-bold">Jawatan</th>
+                                                <th class="pb-2 font-bold">Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="status-name-table"></tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div>
-                        <div class="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm lg:col-span-2">
-                            <div class="flex justify-between items-center border-b border-slate-100 dark:border-slate-800 pb-3 mb-4">
-                                <h3 class="font-bold text-slate-900 dark:text-white flex items-center gap-2"><i class="fa-solid fa-table-list text-indigo-600 dark:text-indigo-400"></i> <span id="status-table-title">Senarai Staf</span></h3>
-                                <span class="text-[10px] bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 px-2 py-1 rounded-md font-semibold uppercase tracking-wider">Klik status di kiri untuk tapis</span>
-                            </div>
-                            <div class="max-h-72 overflow-y-auto">
-                                <table class="w-full text-sm">
-                                    <thead class="sticky top-0 bg-white dark:bg-slate-900">
-                                        <tr class="text-left text-[10px] uppercase tracking-wider text-slate-400 dark:text-slate-500 border-b border-slate-100 dark:border-slate-800">
-                                            <th class="pb-2 pr-2 font-bold">Nama</th>
-                                            <th class="pb-2 pr-2 font-bold">Jawatan</th>
-                                            <th class="pb-2 font-bold">Status</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="status-name-table"></tbody>
-                                </table>
-                            </div>
-                        </div>
                     </div>
+                </div>
+
+                <div id="tab-status" class="ehadir-tab space-y-6 hidden no-print">
+                    <div class="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm text-center">
+                        <h2 class="text-xl font-extrabold text-slate-900 dark:text-white">Kemas Kini Status Keberadaan</h2>
+                        <p class="text-xs text-slate-500 dark:text-slate-400">Pilih status harian anda dan klik butang hantar.</p>
+                    </div>
+                    <div class="w-full" id="staff-grid"></div>
                 </div>
 
                 <div id="tab-rekod" class="ehadir-tab space-y-6 hidden no-print">
@@ -395,7 +447,7 @@
                                 <button onclick="fetchRecords()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold px-5 py-2.5 rounded-xl text-sm flex items-center gap-2 shadow-sm transition-all hover:scale-[1.02] active:scale-95"><i class="fa-solid fa-sync"></i> Muat Semula Data</button>
                             </div>
                         </div>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
                             <div>
                                 <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">Cari Nama Staf</label>
                                 <div class="relative"><span class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-slate-400"><i class="fa-solid fa-magnifying-glass"></i></span><input type="text" id="filter-name" onkeyup="applyFilters()" placeholder="Taip nama di sini..." class="w-full pl-10 pr-4 py-2 border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none text-sm transition-all"></div>
@@ -404,18 +456,31 @@
                                 <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">Pilih Tarikh Rekod</label>
                                 <div class="relative"><span class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-slate-400"><i class="fa-solid fa-calendar"></i></span><input type="date" id="filter-date" onchange="applyFilters()" class="w-full pl-10 pr-4 py-2 border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none text-sm transition-all"></div>
                             </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">Status</label>
+                                <select id="filter-status" onchange="applyFilters()" class="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none text-sm transition-all">
+                                    <option value="">Semua Status</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">Jawatan</label>
+                                <select id="filter-position" onchange="applyFilters()" class="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none text-sm transition-all">
+                                    <option value="">Semua Jawatan</option>
+                                </select>
+                            </div>
                         </div>
                         <div class="overflow-x-auto rounded-xl border border-slate-200 dark:border-slate-800">
                             <table class="w-full text-left border-collapse">
                                 <thead>
                                     <tr class="bg-slate-50 dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700">
-                                        <th class="p-4 text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Tarikh Log</th>
+                                        <th class="p-4 text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Tarikh</th>
                                         <th class="p-4 text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Nama Staf</th>
+                                        <th class="p-4 text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Jawatan</th>
                                         <th class="p-4 text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Status Diisytihar</th>
                                     </tr>
                                 </thead>
                                 <tbody id="records-body" class="divide-y divide-slate-100 dark:divide-slate-800 text-sm">
-                                    <tr><td colspan="3" class="p-8 text-center text-slate-400 dark:text-slate-500 font-medium"><i class="fa-solid fa-download text-2xl mb-2 block text-indigo-400 dark:text-indigo-600 animate-bounce"></i> Sila tekan butang "Muat Semula Data" untuk mengambil rekod dari Google Sheets.</td></tr>
+                                    <tr><td colspan="4" class="p-8 text-center text-slate-400 dark:text-slate-500 font-medium"><i class="fa-solid fa-download text-2xl mb-2 block text-indigo-400 dark:text-indigo-600 animate-bounce"></i> Sila tekan butang "Muat Semula Data" untuk mengambil rekod dari Google Sheets.</td></tr>
                                 </tbody>
                             </table>
                         </div>
@@ -450,6 +515,7 @@
                             <h2 class="report-title-text text-sm font-black tracking-wide uppercase text-slate-950">LAPORAN BULANAN KEBERADAAN BARISAN PENTADBIR & GURU</h2>
                             <p class="text-[10px] text-slate-500 mt-0.5 uppercase font-bold">Sesi Bulan: <span id="report-selected-label" class="underline">Julai 2026</span></p>
                         </div>
+                        <div id="report-analytics-summary" class="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-4"></div>
                         <div class="overflow-x-auto">
                             <table class="w-full text-left border border-slate-300 border-collapse">
                                 <thead>
@@ -478,6 +544,31 @@
                                     <p class="text-slate-400 text-[9px] mt-1 font-semibold">SK Krangan (YBB8240)</p>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="tab-audit" class="ehadir-tab space-y-6 hidden no-print">
+                    <div class="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm">
+                        <div class="flex flex-wrap items-center justify-between gap-3 mb-1">
+                            <h2 class="text-xl font-bold text-slate-900 dark:text-white flex items-center gap-2"><i class="fa-solid fa-clock-rotate-left text-indigo-600 dark:text-indigo-400"></i> Log Audit &ndash; Sejarah Perubahan Status</h2>
+                            <button onclick="fetchAuditTrail()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold px-4 py-2 rounded-xl text-sm flex items-center gap-2 shadow-sm transition-all hover:scale-[1.02] active:scale-95"><i class="fa-solid fa-sync"></i> Muat Semula</button>
+                        </div>
+                        <p class="text-xs text-slate-500 dark:text-slate-400 mb-5">Setiap perubahan status direkod di sini untuk tujuan ketelusan dan semakan &mdash; siapa mengubah, bila, dan status sebelum/selepas.</p>
+                        <div class="overflow-x-auto rounded-xl border border-slate-200 dark:border-slate-800">
+                            <table class="w-full text-left border-collapse">
+                                <thead>
+                                    <tr class="bg-slate-50 dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700">
+                                        <th class="p-4 text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Tarikh</th>
+                                        <th class="p-4 text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Nama Staf</th>
+                                        <th class="p-4 text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Status Sebelum</th>
+                                        <th class="p-4 text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Status Selepas</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="audit-body" class="divide-y divide-slate-100 dark:divide-slate-800 text-sm">
+                                    <tr><td colspan="4" class="p-8 text-center text-slate-400 dark:text-slate-500 font-medium"><i class="fa-solid fa-circle-notch animate-spin text-2xl mb-2 block text-indigo-400"></i> Memuatkan log audit...</td></tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -810,6 +901,10 @@
             <h3 class="font-black text-slate-900 dark:text-white text-lg">PIN Keselamatan</h3>
             <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Sila masukkan 4-digit PIN keselamatan bagi:</p>
             <p id="pin-target-name" class="text-sm font-bold text-indigo-600 dark:text-indigo-400 mt-1"></p>
+            <div class="mt-3 inline-flex items-center gap-2 bg-slate-100 dark:bg-slate-800 px-4 py-2 rounded-full">
+              <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Status dihantar:</span>
+              <span id="pin-target-status" class="text-xs font-extrabold text-slate-800 dark:text-white"></span>
+            </div>
 
             <div class="flex justify-center gap-3 my-6">
                 <input type="password" id="pin-digit-1" maxlength="1" readonly class="w-12 h-14 text-center text-xl font-bold bg-slate-100 dark:bg-slate-800 border-2 border-transparent focus:border-indigo-500 rounded-xl outline-none">
@@ -937,13 +1032,17 @@ function enterDashboard(){
   renderModuleGrid();
   showModule('picker');
 
-  // "Dashboard Keberadaan" (rumusan & carta) sentiasa dipaparkan untuk SEMUA staf.
-  // Hanya "Rekod" & "Laporan Bulanan" (fungsi pentadbiran) dihadkan mengikut peranan.
+  // "Kemas Kini Status" (borang peribadi) sentiasa dipaparkan untuk SEMUA staf.
+  // Bahagian pentadbir dalam Dashboard, "Rekod", "Laporan Bulanan" & "Log Audit" dihadkan mengikut peranan.
   const canViewFullDashboard = !!currentUser.canViewAttendanceDashboard;
   const btnRekod = document.getElementById('btn-rekod');
   const btnLaporan = document.getElementById('btn-laporan');
+  const btnAudit = document.getElementById('btn-audit');
+  const adminDashSection = document.getElementById('admin-dashboard-section');
   if(btnRekod) btnRekod.classList.toggle('hidden', !canViewFullDashboard);
   if(btnLaporan) btnLaporan.classList.toggle('hidden', !canViewFullDashboard);
+  if(btnAudit) btnAudit.classList.toggle('hidden', !canViewFullDashboard);
+  if(adminDashSection) adminDashSection.classList.toggle('hidden', !canViewFullDashboard);
 
   if(typeof initChart === 'function'){
     renderDashboard();
@@ -1468,7 +1567,7 @@ window.onload = function(){
 // ==========================================
         // FUNGSI SISTEM KEBERADAAN (EHADIR)
         // ==========================================
-        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxCubmogvZCIYx4GDaZUmzHDoIPu2bhq-5DZTam93DSNkRP9EA7lC5aopSwHjJ0B4wWXg/exec";
+        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzoxqVwIpAcCZ5DIoyJrCSKr-SeS6LMn-jkdc9VaAPTi_mhAqudkJ_XPhWDh63lEYC32A/exec";
 
         // (staffData sudah ditakrifkan di bahagian atas skrip dashboard - satu sumber sahaja,
         // turut membawa maklumat delimaEmail & cmsUnits untuk sistem log masuk & CMS)
@@ -1485,6 +1584,9 @@ window.onload = function(){
         };
 
         const statusOptions = Object.keys(statusDetails);
+        // "Belum Kemas Kini" sengaja BUKAN sebahagian statusDetails - ia status TERBITAN (belum hantar),
+        // bukan pilihan yang staf patut boleh "hantar" secara manual.
+        const belumKemasKiniDetail = { bg: 'bg-slate-400', text: 'text-slate-600 dark:text-slate-400', icon: 'fa-circle-question', badge: 'bg-slate-100 dark:bg-slate-800' };
         let allRecords = [];
         let summaryChartInstance = null;
         let activeGraphFilterStatus = null;
@@ -1575,11 +1677,14 @@ window.onload = function(){
             const timeEl = document.getElementById('live-time');
             if(dateEl) dateEl.innerText = now.toLocaleDateString('ms-MY', dateOptions).toUpperCase();
             if(timeEl) timeEl.innerText = now.toLocaleTimeString('ms-MY', { hour12: true });
+
+            const dashDtEl = document.getElementById('dash-live-datetime');
+            if(dashDtEl) dashDtEl.innerText = `${now.toLocaleDateString('ms-MY', dateOptions)} \u2022 ${now.toLocaleTimeString('ms-MY', { hour12: true })}`;
         }
 
         function switchTab(tabId) {
             playPopSound();
-            ['dashboard', 'rekod', 'laporan'].forEach(t => {
+            ['dashboard', 'status', 'rekod', 'laporan', 'audit'].forEach(t => {
                 const tab = document.getElementById(`tab-${t}`);
                 if(tab) tab.classList.remove('active', 'hidden');
                 if(t !== tabId && tab) tab.classList.add('hidden');
@@ -1600,6 +1705,15 @@ window.onload = function(){
             } else {
                  const reportArea = document.getElementById('print-area-monthly');
                  if(reportArea) reportArea.classList.add('hidden');
+            }
+            if (tabId === 'rekod') {
+                populateFilterDropdowns();
+            }
+            if (tabId === 'audit') {
+                fetchAuditTrail();
+            }
+            if (tabId === 'dashboard' || tabId === 'status') {
+                renderDashboard();
             }
         }
 
@@ -1648,6 +1762,9 @@ window.onload = function(){
             selectedStaffNameForPin = name;
             currentPinInput = "";
             document.getElementById('pin-target-name').innerText = name;
+            const trigger = document.getElementById(`status-trigger-${staffId}`);
+            const statusEl = document.getElementById('pin-target-status');
+            if(trigger && statusEl) statusEl.innerText = trigger.innerText.trim();
             clearPinDisplay();
             
             const modal = document.getElementById('pin-modal');
@@ -1717,7 +1834,7 @@ window.onload = function(){
         }
 
         function buildStaffCard(s) {
-            const curDetail = statusDetails[s.status] || { bg: 'bg-slate-500', text: 'text-slate-700', icon: 'fa-circle' };
+            const curDetail = s.status === 'Belum Kemas Kini' ? belumKemasKiniDetail : (statusDetails[s.status] || { bg: 'bg-slate-500', text: 'text-slate-700', icon: 'fa-circle' });
             const hour = new Date().getHours();
             const greeting = hour < 12 ? 'Selamat Pagi' : hour < 15 ? 'Selamat Tengah Hari' : hour < 19 ? 'Selamat Petang' : 'Selamat Malam';
             const firstName = s.name.split(' ')[0];
@@ -1769,28 +1886,92 @@ window.onload = function(){
             </div>`;
         }
 
+        function getTodayDateStr_() {
+            const d = new Date();
+            return `${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}/${d.getFullYear()}`;
+        }
+
+        // Bina peta {staffId: statusHariIni} daripada rekod SEBENAR backend (bukan nilai lalai statik).
+        // Serasi ke belakang: jika rekod lama tiada 'id' (skrip lama), padan ikut nama sebagai gantian.
+        function getTodayStatusMap_() {
+            const today = getTodayDateStr_();
+            const map = {};
+            (allRecords || []).forEach(r => {
+                if (r.date !== today) return;
+                if (r.name && r.name.includes('Sariah binti Mos')) return;
+                const staff = r.id ? staffData.find(s => String(s.id) === String(r.id)) : staffData.find(s => s.name === r.name);
+                if (staff) map[staff.id] = r.status;
+            });
+            return map;
+        }
+
         function renderDashboard() {
+            if(!currentUser) return;
+            const todayMap = getTodayStatusMap_();
+            const myStatus = todayMap[currentUser.id] || 'Belum Kemas Kini';
+
             const grid = document.getElementById('staff-grid');
-            if(!grid || !currentUser) return;
-            const visibleStaff = staffData.filter(s => s.id === currentUser.id); // setiap pengguna hantar status diri sendiri sahaja
-            grid.innerHTML = visibleStaff.map(s => buildStaffCard(s)).join('');
-            updateLocalStats(); // kiraan & rumusan sentiasa berdasarkan SEMUA staf, untuk semua pengguna
+            if(grid){
+                const visibleStaff = staffData.filter(s => s.id === currentUser.id); // setiap pengguna hantar status diri sendiri sahaja
+                grid.innerHTML = visibleStaff.map(s => buildStaffCard({...s, status: myStatus})).join('');
+            }
+
+            // ---- Kad selamat datang (info sahaja) ----
+            const hour = new Date().getHours();
+            const greeting = hour < 12 ? 'Selamat Pagi' : hour < 15 ? 'Selamat Tengah Hari' : hour < 19 ? 'Selamat Petang' : 'Selamat Malam';
+            const firstName = currentUser.name ? currentUser.name.split(' ')[0] : '';
+            const greetEl = document.getElementById('dash-greeting');
+            if(greetEl) greetEl.innerText = `${greeting}, ${firstName}!`;
+            updateClock(); // segerakkan dash-live-datetime serta-merta (bukan tunggu interval seterusnya)
+
+            const badgeEl = document.getElementById('dash-my-status-badge');
+            if(badgeEl) badgeEl.innerText = myStatus;
+
+            // ---- Ringkasan peribadi bulan ini (daripada rekod SEBENAR) ----
+            const now2 = new Date();
+            const thisMonth = String(now2.getMonth()+1).padStart(2,'0');
+            const thisYear = String(now2.getFullYear());
+            const myMonthRecords = (allRecords || []).filter(r => {
+                if (r.name && r.name.includes('Sariah binti Mos')) return false;
+                const matchStaff = r.id ? String(r.id) === String(currentUser.id) : r.name === currentUser.name;
+                if(!matchStaff) return false;
+                const [, month, year] = r.date.split('/');
+                return month === thisMonth && year === thisYear;
+            });
+            let mySchoolDays = 0, myLeaveDays = 0;
+            myMonthRecords.forEach(r => {
+                if(r.status === 'Di Sekolah' || r.status === 'Di Sekolah : Mesy/Bengkel') mySchoolDays++;
+                else myLeaveDays++;
+            });
+            const myRate = myMonthRecords.length > 0 ? Math.round((mySchoolDays / myMonthRecords.length) * 100) : 0;
+            const elSchool = document.getElementById('dash-my-school-days');
+            const elLeave = document.getElementById('dash-my-leave-days');
+            const elRate = document.getElementById('dash-my-rate');
+            if(elSchool) elSchool.innerText = mySchoolDays;
+            if(elLeave) elLeave.innerText = myLeaveDays;
+            if(elRate) elRate.innerText = myRate + '%';
+
+            updateLocalStats(); // kiraan & rumusan pentadbir sentiasa berdasarkan SEMUA staf
         }
 
         let lastCounts = { school: 0, outside: 0, leave: 0 };
         function updateLocalStats() {
+            const todayMap = getTodayStatusMap_();
             let school = 0, outside = 0, leave = 0;
-            let countSchool = 0, countSchoolMesy = 0, countWfh = 0, countOutsideRasmi = 0, countOutsidePeribadi = 0, countCutiRehat = 0, countCutiSakit = 0, countCutiLain = 0;
+            let countSchool = 0, countSchoolMesy = 0, countWfh = 0, countOutsideRasmi = 0, countOutsidePeribadi = 0, countCutiRehat = 0, countCutiSakit = 0, countCutiLain = 0, countBelumKemasKini = 0;
 
+            const belumKemasKiniList = [];
             staffData.forEach(s => {
-                if (s.status === 'Di Sekolah') { school++; countSchool++; }
-                else if (s.status === 'Di Sekolah : Mesy/Bengkel') { school++; countSchoolMesy++; }
-                else if (s.status === 'Bekerja Dari Rumah') { outside++; countWfh++; }
-                else if (s.status === 'Luar Pejabat : Urusan Rasmi') { outside++; countOutsideRasmi++; }
-                else if (s.status === 'Luar Pejabat : Urusan Peribadi') { outside++; countOutsidePeribadi++; }
-                else if (s.status === 'Cuti Rehat') { leave++; countCutiRehat++; }
-                else if (s.status === 'Cuti Sakit') { leave++; countCutiSakit++; }
-                else if (s.status === 'Cuti : Lain-lain') { leave++; countCutiLain++; }
+                const status = todayMap[s.id] || 'Belum Kemas Kini';
+                if (status === 'Di Sekolah') { school++; countSchool++; }
+                else if (status === 'Di Sekolah : Mesy/Bengkel') { school++; countSchoolMesy++; }
+                else if (status === 'Bekerja Dari Rumah') { outside++; countWfh++; }
+                else if (status === 'Luar Pejabat : Urusan Rasmi') { outside++; countOutsideRasmi++; }
+                else if (status === 'Luar Pejabat : Urusan Peribadi') { outside++; countOutsidePeribadi++; }
+                else if (status === 'Cuti Rehat') { leave++; countCutiRehat++; }
+                else if (status === 'Cuti Sakit') { leave++; countCutiSakit++; }
+                else if (status === 'Cuti : Lain-lain') { leave++; countCutiLain++; }
+                else { countBelumKemasKini++; belumKemasKiniList.push(s); }
             });
 
             const schoolEl = document.getElementById('count-school');
@@ -1814,18 +1995,38 @@ window.onload = function(){
                 document.getElementById('stat-cuti-sakit').innerText = countCutiSakit;
                 document.getElementById('stat-cuti-lain').innerText = countCutiLain;
             }
+            const eBelum = document.getElementById('stat-belum-kemaskini');
+            if(eBelum) eBelum.innerText = countBelumKemasKini;
+
+            renderBelumKemasKiniList_(belumKemasKiniList);
 
             if (summaryChartInstance) {
                 summaryChartInstance.data.datasets[0].data = [countSchool, countSchoolMesy, countOutsideRasmi, countOutsidePeribadi, countCutiRehat, countCutiSakit, countCutiLain];
                 summaryChartInstance.update();
             }
-            renderStatusNameTable(activeGraphFilterStatus);
+            renderStatusNameTable(activeGraphFilterStatus, todayMap);
+        }
+
+        function renderBelumKemasKiniList_(list) {
+            const box = document.getElementById('belum-kemaskini-box');
+            if(!box) return;
+            if(!list.length){
+                box.innerHTML = `<p class="text-xs text-emerald-600 dark:text-emerald-400 font-semibold flex items-center gap-2"><i class="fa-solid fa-circle-check"></i> Semua staf telah kemas kini status hari ini.</p>`;
+                return;
+            }
+            box.innerHTML = `
+                <p class="text-xs font-bold text-amber-700 dark:text-amber-400 uppercase tracking-wider mb-2 flex items-center gap-2"><i class="fa-solid fa-triangle-exclamation"></i> ${list.length} staf belum kemas kini status hari ini:</p>
+                <div class="flex flex-wrap gap-1.5">
+                    ${list.map(s => `<span class="text-xs font-semibold bg-amber-50 dark:bg-amber-950/30 text-amber-700 dark:text-amber-400 px-2.5 py-1 rounded-full">${s.name}</span>`).join('')}
+                </div>`;
         }
 
         async function submitStatus(id, staffName) {
             const btn = document.getElementById(`btn-submit-${id}`);
             const selectTrigger = document.getElementById(`status-trigger-${id}`);
             const selectedStatus = selectTrigger.innerText.trim();
+            const staffRecord = staffData.find(s => s.id === id);
+            const staffPosition = staffRecord ? staffRecord.position : '';
             const originalText = btn.innerHTML;
             
             btn.disabled = true;
@@ -1834,7 +2035,7 @@ window.onload = function(){
 
             if (!navigator.onLine) {
                 let queue = JSON.parse(localStorage.getItem('sk_offline_queue')) || [];
-                queue.push({ id, name: staffName, status: selectedStatus, date: new Date().toISOString().split('T')[0] });
+                queue.push({ id, name: staffName, position: staffPosition, status: selectedStatus, date: new Date().toISOString().split('T')[0] });
                 localStorage.setItem('sk_offline_queue', JSON.stringify(queue));
                 
                 showToast("Talian internet terputus! Status disimpan secara luar talian & sedia disegerakkan.", "info");
@@ -1855,7 +2056,7 @@ window.onload = function(){
                     method: 'POST',
                     mode: 'no-cors',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ id: id, name: staffName, status: selectedStatus })
+                    body: JSON.stringify({ id: id, name: staffName, position: staffPosition, status: selectedStatus })
                 });
 
                 playChimeSound();
@@ -1863,7 +2064,7 @@ window.onload = function(){
                 btn.innerHTML = `<i class="fa-solid fa-circle-check"></i> Berjaya!`;
                 btn.className = "w-full bg-emerald-600 text-white font-bold py-2.5 rounded-xl text-xs flex items-center justify-center gap-2";
 
-                setTimeout(() => { fetchRecordsQuietly(); }, 1000);
+                setTimeout(async () => { await fetchRecordsQuietly(); switchTab('dashboard'); }, 1200);
             } catch (err) {
                 let queue = JSON.parse(localStorage.getItem('sk_offline_queue')) || [];
                 queue.push({ id, name: staffName, status: selectedStatus, date: new Date().toISOString().split('T')[0] });
@@ -1891,7 +2092,7 @@ window.onload = function(){
                             method: "POST",
                             mode: "no-cors",
                             headers: { "Content-Type": "application/json" },
-                            body: JSON.stringify({ id: item.id, name: item.name, status: item.status })
+                            body: JSON.stringify({ id: item.id, name: item.name, position: item.position || '', status: item.status })
                         });
                     } catch (e) {}
                 }
@@ -1907,7 +2108,7 @@ window.onload = function(){
             document.getElementById('active-graph-filter').classList.remove('hidden');
             document.getElementById('active-graph-filter').classList.add('flex');
             document.getElementById('filter-status-label').innerText = statusName;
-            renderStatusNameTable(statusName);
+            renderStatusNameTable(statusName, getTodayStatusMap_());
         }
 
         function clearGraphFilter() {
@@ -1915,21 +2116,23 @@ window.onload = function(){
             activeGraphFilterStatus = null;
             document.getElementById('active-graph-filter').classList.add('hidden');
             document.getElementById('active-graph-filter').classList.remove('flex');
-            renderStatusNameTable(null);
+            renderStatusNameTable(null, getTodayStatusMap_());
         }
 
-        function renderStatusNameTable(statusName) {
+        function renderStatusNameTable(statusName, todayMap) {
             const tbody = document.getElementById('status-name-table');
             const titleEl = document.getElementById('status-table-title');
             if(!tbody) return;
-            const list = statusName ? staffData.filter(s => s.status === statusName) : staffData.slice().sort((a,b) => a.name.localeCompare(b.name));
+            todayMap = todayMap || getTodayStatusMap_();
+            const withStatus = staffData.map(s => ({ ...s, status: todayMap[s.id] || 'Belum Kemas Kini' }));
+            const list = statusName ? withStatus.filter(s => s.status === statusName) : withStatus.slice().sort((a,b) => a.name.localeCompare(b.name));
             if(titleEl) titleEl.innerText = statusName ? `Senarai Staf — ${statusName} (${list.length})` : `Senarai Semua Staf (${list.length})`;
             if(!list.length){
                 tbody.innerHTML = `<tr><td colspan="3" class="py-6 text-center text-slate-400 text-xs">Tiada staf dengan status ini.</td></tr>`;
                 return;
             }
             tbody.innerHTML = list.map(s => {
-                const d = statusDetails[s.status] || { bg: 'bg-slate-400' };
+                const d = s.status === 'Belum Kemas Kini' ? belumKemasKiniDetail : (statusDetails[s.status] || { bg: 'bg-slate-400' });
                 return `
                 <tr class="border-b border-slate-50 dark:border-slate-800/60 last:border-0">
                     <td class="py-2 pr-2 font-semibold text-slate-800 dark:text-white">${s.name}</td>
@@ -1967,17 +2170,66 @@ window.onload = function(){
                     const data = await response.json();
                     allRecords = data.reverse();
                     applyFilters();
+                    // Data kehadiran hari ini baru sampai - segar semula kad & rumusan
+                    // (renderDashboard/updateLocalStats mungkin dah jalan lebih awal semasa allRecords masih kosong)
+                    if(currentUser) renderDashboard();
                 }
             } catch (e) {}
+        }
+
+        async function fetchAuditTrail() {
+            const tbody = document.getElementById('audit-body');
+            if(!tbody) return;
+            tbody.innerHTML = `<tr><td colspan="4" class="p-8 text-center text-slate-400 dark:text-slate-500 font-medium"><i class="fa-solid fa-circle-notch animate-spin text-2xl mb-2 block text-indigo-400"></i> Memuatkan log audit...</td></tr>`;
+            try {
+                const response = await fetch(GOOGLE_SCRIPT_URL + '?action=audit');
+                if (!response.ok) throw new Error('Gagal menyambung.');
+                const data = await response.json();
+                if(!data.length){
+                    tbody.innerHTML = `<tr><td colspan="4" class="p-8 text-center text-slate-400 dark:text-slate-500 font-medium">Tiada log audit lagi.</td></tr>`;
+                    return;
+                }
+                tbody.innerHTML = data.filter(r => !(r.name && r.name.includes('Sariah binti Mos'))).map(r => `
+                    <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+                        <td class="p-4 text-slate-600 dark:text-slate-400 font-medium font-mono">${r.date}</td>
+                                                <td class="p-4 text-slate-900 dark:text-white font-extrabold">${r.name}</td>
+                        <td class="p-4 text-slate-400 dark:text-slate-500 text-xs italic">${r.oldStatus}</td>
+                        <td class="p-4 text-slate-800 dark:text-slate-200 text-xs font-bold">${r.newStatus}</td>
+                    </tr>`).join('');
+            } catch (err) {
+                tbody.innerHTML = `<tr><td colspan="4" class="p-8 text-center text-rose-600 font-bold"><i class="fa-solid fa-circle-exclamation text-xl mb-2 block"></i> Gagal memuatkan log audit. Pastikan skrip backend BAHARU telah dideploy.</td></tr>`;
+            }
+        }
+
+        function populateFilterDropdowns() {
+            const statusSel = document.getElementById('filter-status');
+            const posSel = document.getElementById('filter-position');
+            if(statusSel && statusSel.options.length <= 1){
+                Object.keys(statusDetails).forEach(s => {
+                    const opt = document.createElement('option'); opt.value = s; opt.innerText = s;
+                    statusSel.appendChild(opt);
+                });
+            }
+            if(posSel && posSel.options.length <= 1){
+                const positions = [...new Set(staffData.map(s => s.position))].sort();
+                positions.forEach(p => {
+                    const opt = document.createElement('option'); opt.value = p; opt.innerText = p;
+                    posSel.appendChild(opt);
+                });
+            }
         }
 
         function applyFilters() {
             const filterName = document.getElementById('filter-name').value.toLowerCase();
             const filterDate = document.getElementById('filter-date').value;
+            const filterStatusEl = document.getElementById('filter-status');
+            const filterPositionEl = document.getElementById('filter-position');
+            const filterStatus = filterStatusEl ? filterStatusEl.value : '';
+            const filterPosition = filterPositionEl ? filterPositionEl.value : '';
             const tbody = document.getElementById('records-body');
 
             if (allRecords.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="3" class="p-8 text-center text-slate-400 font-medium">Tiada rekod tersimpan di Google Sheets.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="4" class="p-8 text-center text-slate-400 font-medium">Tiada rekod tersimpan di Google Sheets.</td></tr>`;
                 return;
             }
 
@@ -1990,11 +2242,13 @@ window.onload = function(){
                     const formattedRecordDate = `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
                     matchDate = (formattedRecordDate === filterDate);
                 }
-                return matchName && matchDate;
+                const matchStatus = !filterStatus || r.status === filterStatus;
+                const matchPosition = !filterPosition || r.position === filterPosition;
+                return matchName && matchDate && matchStatus && matchPosition;
             });
 
             if (filtered.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="3" class="p-8 text-center text-slate-400 dark:text-slate-500 font-medium">Tiada rekod yang sepadan dengan penapisan.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="4" class="p-8 text-center text-slate-400 dark:text-slate-500 font-medium">Tiada rekod yang sepadan dengan penapisan.</td></tr>`;
                 return;
             }
 
@@ -2003,7 +2257,8 @@ window.onload = function(){
                 return `
                 <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
                     <td class="p-4 text-slate-600 dark:text-slate-400 font-medium font-mono">${r.date}</td>
-                    <td class="p-4 text-slate-900 dark:text-white font-extrabold">${r.name}</td>
+                                        <td class="p-4 text-slate-900 dark:text-white font-extrabold">${r.name}</td>
+                    <td class="p-4 text-slate-500 dark:text-slate-400 text-xs">${r.position || '-'}</td>
                     <td class="p-4">
                         <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold ${curDetail.badge} ${curDetail.text}">
                             <span class="h-2 w-2 rounded-full ${curDetail.bg}"></span>${r.status}
@@ -2049,6 +2304,8 @@ window.onload = function(){
             const tbody = document.getElementById('monthly-report-table-body');
             if (allRecords.length === 0) {
                 tbody.innerHTML = `<tr><td colspan="8" class="p-8 text-center text-rose-600 font-semibold italic">Sila pastikan anda telah memuat turun rekod dari tab "Rekod" terlebih dahulu.</td></tr>`;
+                const summaryBoxEmpty = document.getElementById('report-analytics-summary');
+                if(summaryBoxEmpty) summaryBoxEmpty.innerHTML = '';
                 return;
             }
 
@@ -2057,6 +2314,25 @@ window.onload = function(){
                 const [day, month, year] = r.date.split('/');
                 return (month.padStart(2, '0') === monthFilter && year === yearFilter);
             });
+
+            // ---- Ringkasan analitik keseluruhan (jumlah SEMUA staf bagi bulan ini) ----
+            let totalSchoolDays = 0, totalLeaveDays = 0, totalRasmiDays = 0, totalSubmittedDays = 0;
+            monthlyData.forEach(log => {
+                totalSubmittedDays++;
+                if (log.status === 'Di Sekolah' || log.status === 'Di Sekolah : Mesy/Bengkel') totalSchoolDays++;
+                else if (log.status === 'Luar Pejabat : Urusan Rasmi') totalRasmiDays++;
+                else if (log.status === 'Cuti Rehat' || log.status === 'Cuti Sakit' || log.status === 'Cuti : Lain-lain') totalLeaveDays++;
+            });
+            const attendanceRate = totalSubmittedDays > 0 ? Math.round((totalSchoolDays / totalSubmittedDays) * 100) : 0;
+            const summaryBox = document.getElementById('report-analytics-summary');
+            if(summaryBox){
+                summaryBox.innerHTML = `
+                    <div class="bg-emerald-50 border border-emerald-200 rounded-lg p-2.5 text-center"><p class="text-lg font-black text-emerald-700">${totalSchoolDays}</p><p class="text-[8px] font-bold text-emerald-700 uppercase tracking-wide">Jumlah Hari Di Sekolah</p></div>
+                    <div class="bg-indigo-50 border border-indigo-200 rounded-lg p-2.5 text-center"><p class="text-lg font-black text-indigo-700">${attendanceRate}%</p><p class="text-[8px] font-bold text-indigo-700 uppercase tracking-wide">Purata Kehadiran</p></div>
+                    <div class="bg-amber-50 border border-amber-200 rounded-lg p-2.5 text-center"><p class="text-lg font-black text-amber-700">${totalRasmiDays}</p><p class="text-[8px] font-bold text-amber-700 uppercase tracking-wide">Jumlah Urusan Rasmi</p></div>
+                    <div class="bg-rose-50 border border-rose-200 rounded-lg p-2.5 text-center"><p class="text-lg font-black text-rose-700">${totalLeaveDays}</p><p class="text-[8px] font-bold text-rose-700 uppercase tracking-wide">Jumlah Cuti</p></div>
+                `;
+            }
 
             let reportHTML = '';
             staffData.forEach((staff, index) => {
