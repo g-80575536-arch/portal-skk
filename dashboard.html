@@ -2716,48 +2716,55 @@ window.onload = function(){
       closeCropAdjuster();
     }
 
-    (function setupCropDrag() {
-      const frame = document.getElementById('crop-frame');
+    function getCropPointer_(e) {
+      if(e.touches && e.touches[0]) return { x: e.touches[0].clientX, y: e.touches[0].clientY };
+      return { x: e.clientX, y: e.clientY };
+    }
+
+    // Guna pendelegasian peringkat dokumen (bukan lekat terus pada elemen) supaya
+    // sentiasa berfungsi tanpa kira bila modal/bingkai dicipta dalam DOM.
+    document.addEventListener('mousedown', function(e){
+      const frame = e.target.closest('#crop-frame');
       if(!frame) return;
+      const p = getCropPointer_(e);
+      cropDragState = { startX: p.x, startY: p.y, startPosX: cropDragPos.x, startPosY: cropDragPos.y };
       const photoEl = document.getElementById('crop-drag-photo');
+      if(photoEl) photoEl.style.cursor = 'grabbing';
+    });
+    document.addEventListener('touchstart', function(e){
+      const frame = e.target.closest('#crop-frame');
+      if(!frame) return;
+      const p = getCropPointer_(e);
+      cropDragState = { startX: p.x, startY: p.y, startPosX: cropDragPos.x, startPosY: cropDragPos.y };
+    }, { passive: true });
 
-      function getPointer(e) {
-        if(e.touches && e.touches[0]) return { x: e.touches[0].clientX, y: e.touches[0].clientY };
-        return { x: e.clientX, y: e.clientY };
-      }
-
-      function onDown(e) {
-        const p = getPointer(e);
-        cropDragState = { startX: p.x, startY: p.y, startPosX: cropDragPos.x, startPosY: cropDragPos.y };
-        photoEl.style.cursor = 'grabbing';
-      }
-      function onMove(e) {
-        if(!cropDragState) return;
-        e.preventDefault();
-        const p = getPointer(e);
-        const rect = frame.getBoundingClientRect();
-        // Seret ke kanan -> tunjuk lebih bahagian KIRI foto (peratus berkurang), dan sebaliknya.
-        const deltaXPercent = ((p.x - cropDragState.startX) / rect.width) * 100;
-        const deltaYPercent = ((p.y - cropDragState.startY) / rect.height) * 100;
-        let newX = cropDragState.startPosX - deltaXPercent;
-        let newY = cropDragState.startPosY - deltaYPercent;
-        newX = Math.max(0, Math.min(100, newX));
-        newY = Math.max(0, Math.min(100, newY));
-        cropDragPos = { x: newX, y: newY };
-        photoEl.style.backgroundPosition = `${newX}% ${newY}%`;
-      }
-      function onUp() {
-        cropDragState = null;
-        if(photoEl) photoEl.style.cursor = 'grab';
-      }
-
-      frame.addEventListener('mousedown', onDown);
-      window.addEventListener('mousemove', onMove);
-      window.addEventListener('mouseup', onUp);
-      frame.addEventListener('touchstart', onDown, { passive: true });
-      window.addEventListener('touchmove', onMove, { passive: false });
-      window.addEventListener('touchend', onUp);
-    })();
+    document.addEventListener('mousemove', handleCropMove_);
+    document.addEventListener('touchmove', handleCropMove_, { passive: false });
+    function handleCropMove_(e) {
+      if(!cropDragState) return;
+      const frame = document.getElementById('crop-frame');
+      const photoEl = document.getElementById('crop-drag-photo');
+      if(!frame || !photoEl) return;
+      if(e.cancelable) e.preventDefault();
+      const p = getCropPointer_(e);
+      const rect = frame.getBoundingClientRect();
+      // Seret ke kanan -> tunjuk lebih bahagian KIRI foto (peratus berkurang), dan sebaliknya.
+      const deltaXPercent = ((p.x - cropDragState.startX) / rect.width) * 100;
+      const deltaYPercent = ((p.y - cropDragState.startY) / rect.height) * 100;
+      let newX = cropDragState.startPosX - deltaXPercent;
+      let newY = cropDragState.startPosY - deltaYPercent;
+      newX = Math.max(0, Math.min(100, newX));
+      newY = Math.max(0, Math.min(100, newY));
+      cropDragPos = { x: newX, y: newY };
+      photoEl.style.backgroundPosition = `${newX}% ${newY}%`;
+    }
+    function endCropDrag_() {
+      cropDragState = null;
+      const photoEl = document.getElementById('crop-drag-photo');
+      if(photoEl) photoEl.style.cursor = 'grab';
+    }
+    document.addEventListener('mouseup', endCropDrag_);
+    document.addEventListener('touchend', endCropDrag_);
 
     // FUNGSI RENDER GRID GAMBAR DENGAN CROP PINTAR (guna background-image, serasi penuh dengan html2canvas)
     function renderPhotoGrid() {
