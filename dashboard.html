@@ -1580,6 +1580,10 @@ window.onload = function(){
         // "Belum Kemas Kini" sengaja BUKAN sebahagian statusDetails - ia status TERBITAN (belum hantar),
         // bukan pilihan yang staf patut boleh "hantar" secara manual.
         const belumKemasKiniDetail = { bg: 'bg-slate-400', text: 'text-slate-600 dark:text-slate-400', icon: 'fa-circle-question', badge: 'bg-slate-100 dark:bg-slate-800' };
+
+        // Medan "Hingga Tarikh" (hantar berbilang hari) hanya masuk akal untuk status
+        // jenis cuti/urusan rasmi - BUKAN "Di Sekolah" (tak boleh pra-isytihar hadir hari akan datang).
+        const MULTI_DAY_ELIGIBLE_STATUSES = ['Cuti Rehat', 'Cuti Sakit', 'Cuti : Lain-lain', 'Luar Pejabat : Urusan Rasmi', 'Luar Pejabat : Urusan Peribadi'];
         let allRecords = [];
         let summaryChartInstance = null;
         let activeGraphFilterStatus = null;
@@ -1671,6 +1675,17 @@ window.onload = function(){
                     <i class="fa-solid fa-chevron-down text-[10px] text-slate-400"></i>
                 `;
                 document.getElementById(`status-menu-${staffId}`).classList.add('hidden');
+
+                const enddateWrap = document.getElementById(`enddate-wrap-${staffId}`);
+                if (enddateWrap) {
+                    const eligible = MULTI_DAY_ELIGIBLE_STATUSES.includes(statusText);
+                    enddateWrap.classList.toggle('hidden', !eligible);
+                    if (!eligible) {
+                        const enddateInput = document.getElementById(`enddate-input-${staffId}`);
+                        if (enddateInput) enddateInput.value = ''; // kosongkan supaya tak terhantar senyap utk status tak layak
+                    }
+                }
+
                 updateLocalStats();
             }
         }
@@ -1781,8 +1796,8 @@ window.onload = function(){
                             <label class="block text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-1.5">Catatan <span class="normal-case font-medium text-slate-400">(pilihan)</span></label>
                             <textarea id="note-input-${s.id}" rows="2" placeholder="Cth: Mesyuarat di PPD Serian..." class="w-full text-sm p-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800 text-slate-800 dark:text-slate-200 outline-none focus:ring-2 focus:ring-indigo-500 placeholder-slate-400 dark:placeholder-slate-600 resize-none"></textarea>
                         </div>
-                        <div>
-                            <label class="block text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-1.5">Hingga Tarikh <span class="normal-case font-medium text-slate-400">(pilihan - untuk urusan berbilang hari)</span></label>
+                        <div id="enddate-wrap-${s.id}" class="${MULTI_DAY_ELIGIBLE_STATUSES.includes(s.status) ? '' : 'hidden'}">
+                            <label class="block text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-1.5">Tarikh Akhir <span class="normal-case font-medium text-slate-400">(Pilihan bagi urusan melebihi satu hari)</span></label>
                             <input type="date" id="enddate-input-${s.id}" min="${getTodayIsoDate_()}" class="w-full text-sm p-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800 text-slate-800 dark:text-slate-200 outline-none focus:ring-2 focus:ring-indigo-500">
                             <p class="text-[10px] text-slate-400 mt-1">Isi jika status ini berterusan lebih daripada 1 hari (cth. kursus seminggu). Biar kosong jika untuk hari ini sahaja.</p>
                         </div>
