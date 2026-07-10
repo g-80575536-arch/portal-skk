@@ -630,15 +630,9 @@
       </div>
 
       <div class="space-y-6">
-        <div class="grid grid-cols-2 gap-4">
-          <div>
-            <label class="block text-xs font-bold text-slate-600 uppercase mb-1">Nama Sekolah</label>
-            <input type="text" id="input-school" oninput="updatePreview()" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none" placeholder="Contoh: SK KRANGAN">
-          </div>
-          <div>
-            <label class="block text-xs font-bold text-slate-600 uppercase mb-1">Tahun Laporan</label>
-            <input type="text" id="input-year" oninput="updatePreview()" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none" value="2026">
-          </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-600 uppercase mb-1">Tahun Laporan</label>
+          <input type="text" id="input-year" oninput="updatePreview()" class="w-full max-w-[200px] border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none" value="2026">
         </div>
 
         <div>
@@ -893,6 +887,21 @@
   <div id="toast" class="no-print fixed bottom-6 right-6 transform translate-y-10 opacity-0 pointer-events-none bg-slate-900 text-white text-xs font-semibold px-4 py-3 rounded-xl shadow-xl flex items-center gap-3 transition-all duration-300 z-50">
     <div class="bg-emerald-500 text-white p-1 rounded-full"><i data-lucide="check" class="w-4 h-4"></i></div>
     <span id="toast-message">Mesej</span>
+  </div>
+
+  <!-- Modal Laras Kedudukan Foto (crop) -->
+  <div id="crop-adjust-modal" class="no-print hidden fixed inset-0 bg-slate-900/70 backdrop-blur-sm z-[90] items-center justify-center p-4">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-sm w-full p-5">
+      <h3 class="font-bold text-slate-900 text-sm mb-1 flex items-center gap-2"><i class="fa-solid fa-crop-simple text-indigo-600"></i> Laraskan Kedudukan Foto</h3>
+      <p class="text-xs text-slate-500 mb-3">Seret foto untuk pilih bahagian yang nak dipaparkan.</p>
+      <div id="crop-frame" class="relative w-full aspect-square rounded-xl overflow-hidden border-2 border-indigo-400 bg-slate-100 cursor-grab select-none touch-none">
+        <div id="crop-drag-photo" class="absolute inset-0" style="background-size:cover; cursor:grab;"></div>
+      </div>
+      <div class="grid grid-cols-2 gap-3 mt-4">
+        <button onclick="closeCropAdjuster()" class="py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-xl text-xs">Batal</button>
+        <button onclick="saveCropPosition()" class="py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl text-xs">Simpan Kedudukan</button>
+      </div>
+    </div>
   </div>
 
       </div>
@@ -1206,7 +1215,7 @@ async function selectCmsUnit(unit){
   currentUser.cmsUnits.forEach(u => {
     const tab = document.getElementById('cms-tab-' + u.replace(/\s+/g,''));
     if(!tab) return;
-    tab.className = 'text-left px-4 py-3 rounded-xl text-sm font-bold whitespace-nowrap md:whitespace-normal transition-all ' + (u===unit ? 'bg-gradient-to-r from-blue to-cyan text-white' : 'bg-white/5 text-white/60 hover:bg-white/10');
+    tab.className = 'text-left px-4 py-3 rounded-xl text-sm font-bold whitespace-nowrap md:whitespace-normal transition-all ' + (u===unit ? 'bg-gradient-to-r from-blue to-cyan text-white' : 'bg-mist text-ink-soft hover:bg-navy-50');
   });
   const statusEl = document.getElementById('cms-save-status');
 
@@ -1600,6 +1609,9 @@ window.onload = function(){
                 <img id="img-preview-${i}" class="hidden w-full h-full object-cover relative z-0">
                 <button onclick="removeImage(${i}, event)" class="hidden absolute top-1 right-1 bg-red-500 hover:bg-red-600 text-white p-0.5 rounded-full shadow z-20" title="Buang">
                   <svg class="w-3 h-3" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+                </button>
+                <button onclick="openCropAdjuster(${i}, event)" id="adjust-btn-${i}" class="hidden absolute bottom-1 left-1 right-1 bg-slate-900/80 hover:bg-indigo-600 text-white text-[9px] font-bold py-1 rounded shadow z-20 flex items-center justify-center gap-1" title="Laraskan kedudukan potongan">
+                  <i class="fa-solid fa-crop-simple"></i> Laraskan
                 </button>
               </div>
           `;
@@ -2647,27 +2659,121 @@ window.onload = function(){
       const preview = document.getElementById(`img-preview-${index}`);
       const placeholder = document.getElementById(`img-placeholder-${index}`);
       if(!placeholder || !preview) return;
-      const removeBtn = placeholder.parentElement.querySelector('button');
+      const removeBtn = placeholder.parentElement.querySelector('button[onclick^="removeImage"]');
+      const adjustBtn = document.getElementById(`adjust-btn-${index}`);
 
       if(src) {
         preview.src = src;
         preview.classList.remove('hidden');
         placeholder.classList.add('hidden');
         if(removeBtn) removeBtn.classList.remove('hidden');
+        if(adjustBtn) adjustBtn.classList.remove('hidden');
       } else {
         preview.src = '';
         preview.classList.add('hidden');
         placeholder.classList.remove('hidden');
         if(removeBtn) removeBtn.classList.add('hidden');
+        if(adjustBtn) adjustBtn.classList.add('hidden');
       }
     }
+
+    /* ===== Laras Kedudukan Foto (crop kawalan pengguna, seret untuk laraskan) ===== */
+    let cropAdjustIndex = null;
+    let cropDragPos = { x: 50, y: 50 }; // peratus semasa dalam modal (belum disimpan)
+    let cropDragState = null; // { startPointerX, startPointerY, startPosX, startPosY }
+
+    function openCropAdjuster(index, event) {
+      if(event) event.preventDefault();
+      if(!state.photos[index]) return;
+      cropAdjustIndex = index;
+      if(!state.photoPositions) state.photoPositions = [];
+      const saved = state.photoPositions[index] || { x: 50, y: 50 };
+      cropDragPos = { x: saved.x, y: saved.y };
+
+      const photoEl = document.getElementById('crop-drag-photo');
+      photoEl.style.backgroundImage = `url('${state.photos[index]}')`;
+      photoEl.style.backgroundPosition = `${cropDragPos.x}% ${cropDragPos.y}%`;
+
+      const modal = document.getElementById('crop-adjust-modal');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    }
+
+    function closeCropAdjuster() {
+      const modal = document.getElementById('crop-adjust-modal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+      cropAdjustIndex = null;
+      cropDragState = null;
+    }
+
+    function saveCropPosition() {
+      if(cropAdjustIndex === null) return;
+      if(!state.photoPositions) state.photoPositions = [];
+      state.photoPositions[cropAdjustIndex] = { x: cropDragPos.x, y: cropDragPos.y };
+      showToastOPR('Kedudukan foto disimpan.');
+      renderPhotoGrid();
+      closeCropAdjuster();
+    }
+
+    (function setupCropDrag() {
+      const frame = document.getElementById('crop-frame');
+      if(!frame) return;
+      const photoEl = document.getElementById('crop-drag-photo');
+
+      function getPointer(e) {
+        if(e.touches && e.touches[0]) return { x: e.touches[0].clientX, y: e.touches[0].clientY };
+        return { x: e.clientX, y: e.clientY };
+      }
+
+      function onDown(e) {
+        const p = getPointer(e);
+        cropDragState = { startX: p.x, startY: p.y, startPosX: cropDragPos.x, startPosY: cropDragPos.y };
+        photoEl.style.cursor = 'grabbing';
+      }
+      function onMove(e) {
+        if(!cropDragState) return;
+        e.preventDefault();
+        const p = getPointer(e);
+        const rect = frame.getBoundingClientRect();
+        // Seret ke kanan -> tunjuk lebih bahagian KIRI foto (peratus berkurang), dan sebaliknya.
+        const deltaXPercent = ((p.x - cropDragState.startX) / rect.width) * 100;
+        const deltaYPercent = ((p.y - cropDragState.startY) / rect.height) * 100;
+        let newX = cropDragState.startPosX - deltaXPercent;
+        let newY = cropDragState.startPosY - deltaYPercent;
+        newX = Math.max(0, Math.min(100, newX));
+        newY = Math.max(0, Math.min(100, newY));
+        cropDragPos = { x: newX, y: newY };
+        photoEl.style.backgroundPosition = `${newX}% ${newY}%`;
+      }
+      function onUp() {
+        cropDragState = null;
+        if(photoEl) photoEl.style.cursor = 'grab';
+      }
+
+      frame.addEventListener('mousedown', onDown);
+      window.addEventListener('mousemove', onMove);
+      window.addEventListener('mouseup', onUp);
+      frame.addEventListener('touchstart', onDown, { passive: true });
+      window.addEventListener('touchmove', onMove, { passive: false });
+      window.addEventListener('touchend', onUp);
+    })();
 
     // FUNGSI RENDER GRID GAMBAR DENGAN CROP PINTAR (guna background-image, serasi penuh dengan html2canvas)
     function renderPhotoGrid() {
       const grid = document.getElementById('view-photo-grid');
       if(!grid) return;
       
-      const activePhotos = state.photos.filter(p => p !== null && p !== undefined && p !== '');
+      const activeEntries = state.photos
+        .map((p, idx) => ({ src: p, idx }))
+        .filter(e => e.src !== null && e.src !== undefined && e.src !== '');
+      const activePhotos = activeEntries.map(e => e.src);
+      if(!state.photoPositions) state.photoPositions = [];
+      const posFor = (n) => {
+        const origIdx = activeEntries[n] ? activeEntries[n].idx : null;
+        const pos = (origIdx !== null && state.photoPositions[origIdx]) ? state.photoPositions[origIdx] : { x: 50, y: 50 };
+        return `${pos.x}% ${pos.y}%`;
+      };
 
       if (activePhotos.length === 0) {
         grid.innerHTML = `<div class="w-full h-full bg-slate-50 flex items-center justify-center text-slate-300 font-semibold text-xs border border-dashed border-slate-200">Tiada Foto Aktiviti Dimuat Naik</div>`;
@@ -2679,41 +2785,42 @@ window.onload = function(){
       
       // photoDiv: background-image + background-size:cover mengekalkan nisbah asal & serasi eksport html2canvas
       // (elak <img object-fit>, yang sering "pecah"/teregang semasa eksport JPG)
-      const photoDiv = (src) => `<div class="w-full h-full bg-slate-100" style="background-image:url('${src}'); background-size:cover; background-position:center;"></div>`;
+      // n = indeks dalam activePhotos (BUKAN indeks asal state.photos) - guna posFor(n) utk kedudukan tersimpan.
+      const photoDiv = (n) => `<div class="w-full h-full bg-slate-100" style="background-image:url('${activePhotos[n]}'); background-size:cover; background-position:${posFor(n)};"></div>`;
       const wrapClass = "overflow-hidden w-full h-full bg-slate-100";
 
       if (total === 1) {
-        html = `<div class="${wrapClass}">${photoDiv(activePhotos[0])}</div>`;
+        html = `<div class="${wrapClass}">${photoDiv(0)}</div>`;
       } 
       else if (total === 2) {
         html = `<div class="w-full h-full grid grid-cols-2 gap-1 bg-white border border-slate-100">
-                  <div class="${wrapClass}">${photoDiv(activePhotos[0])}</div>
-                  <div class="${wrapClass}">${photoDiv(activePhotos[1])}</div>
+                  <div class="${wrapClass}">${photoDiv(0)}</div>
+                  <div class="${wrapClass}">${photoDiv(1)}</div>
                 </div>`;
       } 
       else if (total === 3) {
         html = `<div class="w-full h-full grid grid-cols-3 gap-1 bg-white border border-slate-100">
-                  <div class="${wrapClass}">${photoDiv(activePhotos[0])}</div>
-                  <div class="${wrapClass}">${photoDiv(activePhotos[1])}</div>
-                  <div class="${wrapClass}">${photoDiv(activePhotos[2])}</div>
+                  <div class="${wrapClass}">${photoDiv(0)}</div>
+                  <div class="${wrapClass}">${photoDiv(1)}</div>
+                  <div class="${wrapClass}">${photoDiv(2)}</div>
                 </div>`;
       } 
       else if (total === 4) {
         html = `<div class="w-full h-full grid grid-cols-2 grid-rows-2 gap-1 bg-white border border-slate-100">
-                  <div class="${wrapClass}">${photoDiv(activePhotos[0])}</div>
-                  <div class="${wrapClass}">${photoDiv(activePhotos[1])}</div>
-                  <div class="${wrapClass}">${photoDiv(activePhotos[2])}</div>
-                  <div class="${wrapClass}">${photoDiv(activePhotos[3])}</div>
+                  <div class="${wrapClass}">${photoDiv(0)}</div>
+                  <div class="${wrapClass}">${photoDiv(1)}</div>
+                  <div class="${wrapClass}">${photoDiv(2)}</div>
+                  <div class="${wrapClass}">${photoDiv(3)}</div>
                 </div>`;
       } 
       else if (total === 5) {
         html = `
           <div class="w-full h-full grid grid-cols-6 grid-rows-2 gap-1 bg-white border border-slate-100">
-             <div class="col-span-3 ${wrapClass}">${photoDiv(activePhotos[0])}</div>
-             <div class="col-span-3 ${wrapClass}">${photoDiv(activePhotos[1])}</div>
-             <div class="col-span-2 ${wrapClass}">${photoDiv(activePhotos[2])}</div>
-             <div class="col-span-2 ${wrapClass}">${photoDiv(activePhotos[3])}</div>
-             <div class="col-span-2 ${wrapClass}">${photoDiv(activePhotos[4])}</div>
+             <div class="col-span-3 ${wrapClass}">${photoDiv(0)}</div>
+             <div class="col-span-3 ${wrapClass}">${photoDiv(1)}</div>
+             <div class="col-span-2 ${wrapClass}">${photoDiv(2)}</div>
+             <div class="col-span-2 ${wrapClass}">${photoDiv(3)}</div>
+             <div class="col-span-2 ${wrapClass}">${photoDiv(4)}</div>
           </div>
         `;
       }
@@ -2722,7 +2829,6 @@ window.onload = function(){
     }
 
     function updatePreview() {
-      const inputSchool = document.getElementById('input-school');
       const inputYear = document.getElementById('input-year');
       const inputTitle = document.getElementById('input-title');
       const inputDatetime = document.getElementById('input-datetime');
@@ -2731,7 +2837,7 @@ window.onload = function(){
       const inputKra = document.getElementById('input-kra');
       const inputAuthor = document.getElementById('input-author');
 
-      if(inputSchool) state.school = inputSchool.value;
+      state.school = 'SEKOLAH KEBANGSAAN KRANGAN'; // tetap, tak lagi boleh diedit
       if(inputYear) state.year = inputYear.value;
       if(inputTitle) state.title = inputTitle.value;
       if(inputDatetime) state.datetime = inputDatetime.value;
@@ -2834,9 +2940,6 @@ window.onload = function(){
     }
 
     function loadTemplate() {
-      const inputSchool = document.getElementById('input-school');
-      if(inputSchool) inputSchool.value = 'Sekolah Kebangsaan Krangan';
-      
       state.photos = [];
       for(let i=0; i<5; i++) refreshUploaderBox(i, null);
       
