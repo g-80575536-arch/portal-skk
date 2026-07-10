@@ -893,28 +893,26 @@
   <div id="crop-adjust-modal" class="no-print hidden fixed inset-0 bg-slate-900/70 backdrop-blur-sm z-[90] items-center justify-center p-4">
     <div class="bg-white rounded-2xl shadow-2xl max-w-sm w-full p-5">
       <h3 class="font-bold text-slate-900 text-sm mb-1 flex items-center gap-2"><i class="fa-solid fa-crop-simple text-indigo-600"></i> Laraskan Kedudukan Foto</h3>
-      <p class="text-xs text-slate-500 mb-3">Ini foto PENUH anda. Seret kotak terang untuk pilih bahagian yang akan dipaparkan &mdash; bahagian gelap akan dipotong.</p>
-      <div id="crop-stage" class="relative bg-slate-900 rounded-xl overflow-hidden mx-auto select-none" style="max-height:360px;">
+      <p class="text-xs text-slate-500 mb-3">Ini foto PENUH anda. Guna gelangsar di bawah untuk pilih bahagian yang akan dipaparkan &mdash; bahagian gelap akan dipotong.</p>
+      <div id="crop-stage" class="relative bg-slate-900 rounded-xl overflow-hidden mx-auto select-none" style="max-height:320px;">
         <img id="crop-source-img" class="block w-full h-auto select-none pointer-events-none" draggable="false" alt="Foto penuh">
-        <div id="crop-frame-overlay" class="absolute border-2 border-white rounded-md touch-none" style="box-shadow:0 0 0 2000px rgba(15,23,42,0.65); cursor:grab;">
+        <div id="crop-frame-overlay" class="absolute border-2 border-white rounded-md pointer-events-none" style="box-shadow:0 0 0 2000px rgba(15,23,42,0.65);">
           <div class="absolute -top-1 -left-1 w-2.5 h-2.5 border-t-2 border-l-2 border-white"></div>
           <div class="absolute -top-1 -right-1 w-2.5 h-2.5 border-t-2 border-r-2 border-white"></div>
           <div class="absolute -bottom-1 -left-1 w-2.5 h-2.5 border-b-2 border-l-2 border-white"></div>
           <div class="absolute -bottom-1 -right-1 w-2.5 h-2.5 border-b-2 border-r-2 border-white"></div>
         </div>
       </div>
-      <div class="flex items-center justify-center gap-2 mt-3">
-        <div class="grid grid-cols-3 gap-1.5" style="width:132px;">
-          <div></div>
-          <button onclick="nudgeCropPosition(0,-16)" class="bg-slate-100 hover:bg-indigo-100 text-slate-600 rounded-lg py-2 flex items-center justify-center" title="Ke atas"><i class="fa-solid fa-chevron-up text-xs"></i></button>
-          <div></div>
-          <button onclick="nudgeCropPosition(-16,0)" class="bg-slate-100 hover:bg-indigo-100 text-slate-600 rounded-lg py-2 flex items-center justify-center" title="Ke kiri"><i class="fa-solid fa-chevron-left text-xs"></i></button>
-          <button onclick="nudgeCropPosition(0,0,true)" class="bg-slate-100 hover:bg-indigo-100 text-slate-500 rounded-lg py-2 flex items-center justify-center" title="Tengahkan semula"><i class="fa-solid fa-compress text-xs"></i></button>
-          <button onclick="nudgeCropPosition(16,0)" class="bg-slate-100 hover:bg-indigo-100 text-slate-600 rounded-lg py-2 flex items-center justify-center" title="Ke kanan"><i class="fa-solid fa-chevron-right text-xs"></i></button>
-          <div></div>
-          <button onclick="nudgeCropPosition(0,16)" class="bg-slate-100 hover:bg-indigo-100 text-slate-600 rounded-lg py-2 flex items-center justify-center" title="Ke bawah"><i class="fa-solid fa-chevron-down text-xs"></i></button>
-          <div></div>
+      <div class="mt-4 space-y-3">
+        <div>
+          <label class="flex items-center gap-2 text-xs font-bold text-slate-600 mb-1.5"><i class="fa-solid fa-arrows-left-right text-indigo-500"></i> Kedudukan Mendatar</label>
+          <input type="range" id="crop-slider-x" min="0" max="100" value="50" oninput="onCropSliderInput()" class="w-full accent-indigo-600 cursor-pointer">
         </div>
+        <div>
+          <label class="flex items-center gap-2 text-xs font-bold text-slate-600 mb-1.5"><i class="fa-solid fa-arrows-up-down text-indigo-500"></i> Kedudukan Menegak</label>
+          <input type="range" id="crop-slider-y" min="0" max="100" value="50" oninput="onCropSliderInput()" class="w-full accent-indigo-600 cursor-pointer">
+        </div>
+        <button onclick="nudgeCropPosition(0,0,true)" class="w-full text-xs font-bold text-slate-500 hover:text-indigo-600 py-1">Tengahkan Semula</button>
       </div>
       <div class="grid grid-cols-2 gap-3 mt-4">
         <button onclick="closeCropAdjuster()" class="py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-xl text-xs">Batal</button>
@@ -2698,9 +2696,7 @@ window.onload = function(){
 
     /* ===== Laras Kedudukan Foto (crop kawalan pengguna - bingkai boleh diseret atas foto PENUH) ===== */
     let cropAdjustIndex = null;
-    let cropDragPos = { x: 50, y: 50 }; // peratus AKHIR (pusat bingkai) - inilah yang disimpan
-    let cropFrameBox = null; // { stageW, stageH, size, left, top } - semua dalam PIKSEL, kedudukan bingkai semasa
-    let cropDragState = null; // { startPointerX, startPointerY, startLeft, startTop }
+    let cropDragPos = { x: 50, y: 50 }; // peratus semasa (pusat bingkai) - dikemaskini oleh slider
 
     function openCropAdjuster(index, event) {
       if(event) event.preventDefault();
@@ -2711,36 +2707,43 @@ window.onload = function(){
       const img = document.getElementById('crop-source-img');
       img.src = state.photos[index];
 
-      const initFrame = () => {
-        const stage = document.getElementById('crop-stage');
-        const stageW = stage.clientWidth, stageH = stage.clientHeight;
-        const size = Math.round(Math.min(stageW, stageH) * 0.6);
-        const saved = state.photoPositions[index] || { x: 50, y: 50 };
-        const left = Math.max(0, Math.min(stageW - size, (saved.x/100) * stageW - size/2));
-        const top = Math.max(0, Math.min(stageH - size, (saved.y/100) * stageH - size/2));
-        cropFrameBox = { stageW, stageH, size, left, top };
-        applyCropFrameBox_();
-      };
-      if(img.complete && img.naturalWidth) initFrame();
-      else img.onload = initFrame;
+      const saved = state.photoPositions[index] || { x: 50, y: 50 };
+      cropDragPos = { x: saved.x, y: saved.y };
+      document.getElementById('crop-slider-x').value = saved.x;
+      document.getElementById('crop-slider-y').value = saved.y;
+
+      const applyWhenReady = () => applyCropFrameBox_();
+      if(img.complete && img.naturalWidth) applyWhenReady();
+      else img.onload = applyWhenReady;
 
       const modal = document.getElementById('crop-adjust-modal');
       modal.classList.remove('hidden');
       modal.classList.add('flex');
     }
 
+    // Slider (gelangsar) ialah kawalan input BINAAN PELAYAR - dijamin berfungsi
+    // di semua peranti/pelayar tanpa perlu urus event seret secara manual.
+    function onCropSliderInput() {
+      cropDragPos = {
+        x: Number(document.getElementById('crop-slider-x').value),
+        y: Number(document.getElementById('crop-slider-y').value)
+      };
+      applyCropFrameBox_();
+    }
+
     function applyCropFrameBox_() {
       const frame = document.getElementById('crop-frame-overlay');
-      if(!frame || !cropFrameBox) return;
-      frame.style.left = cropFrameBox.left + 'px';
-      frame.style.top = cropFrameBox.top + 'px';
-      frame.style.width = cropFrameBox.size + 'px';
-      frame.style.height = cropFrameBox.size + 'px';
-      // Kira peratus PUSAT bingkai relatif kpd seluruh foto - inilah nilai yang disimpan/digunakan.
-      cropDragPos = {
-        x: ((cropFrameBox.left + cropFrameBox.size/2) / cropFrameBox.stageW) * 100,
-        y: ((cropFrameBox.top + cropFrameBox.size/2) / cropFrameBox.stageH) * 100
-      };
+      const stage = document.getElementById('crop-stage');
+      if(!frame || !stage) return;
+      const stageW = stage.clientWidth, stageH = stage.clientHeight;
+      if(!stageW || !stageH) return;
+      const size = Math.round(Math.min(stageW, stageH) * 0.6);
+      const left = Math.max(0, Math.min(stageW - size, (cropDragPos.x/100) * stageW - size/2));
+      const top = Math.max(0, Math.min(stageH - size, (cropDragPos.y/100) * stageH - size/2));
+      frame.style.left = left + 'px';
+      frame.style.top = top + 'px';
+      frame.style.width = size + 'px';
+      frame.style.height = size + 'px';
     }
 
     function closeCropAdjuster() {
@@ -2748,8 +2751,6 @@ window.onload = function(){
       modal.classList.add('hidden');
       modal.classList.remove('flex');
       cropAdjustIndex = null;
-      cropDragState = null;
-      cropFrameBox = null;
     }
 
     function saveCropPosition() {
@@ -2761,51 +2762,14 @@ window.onload = function(){
       closeCropAdjuster();
     }
 
-    // Kawalan klik (bukan seret) - jaminan sentiasa berfungsi tanpa kira isu seretan.
     function nudgeCropPosition(dx, dy, reset) {
-      if(!cropFrameBox) return;
       if(reset){
-        cropFrameBox.left = (cropFrameBox.stageW - cropFrameBox.size) / 2;
-        cropFrameBox.top = (cropFrameBox.stageH - cropFrameBox.size) / 2;
-      } else {
-        cropFrameBox.left = Math.max(0, Math.min(cropFrameBox.stageW - cropFrameBox.size, cropFrameBox.left + dx));
-        cropFrameBox.top = Math.max(0, Math.min(cropFrameBox.stageH - cropFrameBox.size, cropFrameBox.top + dy));
+        cropDragPos = { x: 50, y: 50 };
       }
+      document.getElementById('crop-slider-x').value = cropDragPos.x;
+      document.getElementById('crop-slider-y').value = cropDragPos.y;
       applyCropFrameBox_();
     }
-
-    // Guna Pointer Events (API standard moden, gabung tetikus+sentuhan dalam satu)
-    // dengan setPointerCapture supaya seretan sentiasa dikesan walaupun kursor
-    // bergerak pantas/keluar sempadan bingkai - kaedah paling mantap untuk seretan begini.
-    document.addEventListener('pointerdown', function(e){
-      const frame = e.target.closest('#crop-frame-overlay');
-      if(!frame || !cropFrameBox) return;
-      cropDragState = { startX: e.clientX, startY: e.clientY, startLeft: cropFrameBox.left, startTop: cropFrameBox.top };
-      try { frame.setPointerCapture(e.pointerId); } catch(err) {}
-      frame.style.cursor = 'grabbing';
-    });
-
-    document.addEventListener('pointermove', function(e){
-      if(!cropDragState || !cropFrameBox) return;
-      const dx = e.clientX - cropDragState.startX;
-      const dy = e.clientY - cropDragState.startY;
-      cropFrameBox.left = Math.max(0, Math.min(cropFrameBox.stageW - cropFrameBox.size, cropDragState.startLeft + dx));
-      cropFrameBox.top = Math.max(0, Math.min(cropFrameBox.stageH - cropFrameBox.size, cropDragState.startTop + dy));
-      applyCropFrameBox_();
-    });
-
-    function endCropDrag_(e) {
-      cropDragState = null;
-      const frame = document.getElementById('crop-frame-overlay');
-      if(frame){
-        frame.style.cursor = 'grab';
-        if(e && e.pointerId !== undefined){
-          try { frame.releasePointerCapture(e.pointerId); } catch(err) {}
-        }
-      }
-    }
-    document.addEventListener('pointerup', endCropDrag_);
-    document.addEventListener('pointercancel', endCropDrag_);
 
     // FUNGSI RENDER GRID GAMBAR DENGAN CROP PINTAR (guna background-image, serasi penuh dengan html2canvas)
     function renderPhotoGrid() {
