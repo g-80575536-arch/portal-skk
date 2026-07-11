@@ -218,21 +218,65 @@
                 <label class="text-xs font-bold uppercase tracking-wider text-ink-soft block mb-1.5">Pengenalan</label>
                 <p class="text-[11px] text-ink-faint mb-2">Apa unit ini, siapa ketuai.</p>
                 <textarea id="cms-field-pengenalan" oninput="updateCmsContentPreview()" rows="3" class="w-full bg-mist border border-line rounded-2xl p-4 text-sm leading-relaxed text-ink focus:ring-2 focus:ring-navy focus:outline-none"></textarea>
+                <div class="mt-2">
+                  <button id="ai-btn-cms-field-pengenalan" onclick="aiAssist('cms-field-pengenalan','Bahagian Pengenalan unit sekolah')" class="text-[11px] font-bold text-navy hover:text-navy-deep bg-navy-50 hover:bg-navy-100 px-3 py-1.5 rounded-full transition-all inline-flex items-center gap-1.5"><i data-lucide="sparkles" class="w-3 h-3"></i> Bantu Tulis dengan AI</button>
+                  <div id="ai-suggestion-cms-field-pengenalan" class="hidden mt-2 bg-navy-50 border border-navy-100 rounded-xl p-3">
+                    <p class="text-[10px] font-bold uppercase tracking-wider text-navy mb-1">Cadangan AI</p>
+                    <p class="ai-suggestion-text text-xs text-ink-soft leading-relaxed whitespace-pre-line"></p>
+                    <div class="flex gap-2 mt-2">
+                      <button onclick="acceptAiSuggestion('cms-field-pengenalan')" class="text-[11px] font-bold text-white bg-navy hover:bg-navy-deep px-3 py-1.5 rounded-full">Guna Cadangan Ini</button>
+                      <button onclick="dismissAiSuggestion('cms-field-pengenalan')" class="text-[11px] font-bold text-ink-soft hover:text-ink px-3 py-1.5">Buang</button>
+                    </div>
+                  </div>
+                </div>
               </div>
               <div>
                 <label class="text-xs font-bold uppercase tracking-wider text-ink-soft block mb-1.5">Objektif Utama</label>
                 <p class="text-[11px] text-ink-faint mb-2">2&ndash;4 matlamat utama unit tahun ini.</p>
                 <textarea id="cms-field-objektif" oninput="updateCmsContentPreview()" rows="3" class="w-full bg-mist border border-line rounded-2xl p-4 text-sm leading-relaxed text-ink focus:ring-2 focus:ring-navy focus:outline-none"></textarea>
+                <div class="mt-2">
+                  <button id="ai-btn-cms-field-objektif" onclick="aiAssist('cms-field-objektif','Bahagian Objektif Utama unit sekolah')" class="text-[11px] font-bold text-navy hover:text-navy-deep bg-navy-50 hover:bg-navy-100 px-3 py-1.5 rounded-full transition-all inline-flex items-center gap-1.5"><i data-lucide="sparkles" class="w-3 h-3"></i> Bantu Tulis dengan AI</button>
+                  <div id="ai-suggestion-cms-field-objektif" class="hidden mt-2 bg-navy-50 border border-navy-100 rounded-xl p-3">
+                    <p class="text-[10px] font-bold uppercase tracking-wider text-navy mb-1">Cadangan AI</p>
+                    <p class="ai-suggestion-text text-xs text-ink-soft leading-relaxed whitespace-pre-line"></p>
+                    <div class="flex gap-2 mt-2">
+                      <button onclick="acceptAiSuggestion('cms-field-objektif')" class="text-[11px] font-bold text-white bg-navy hover:bg-navy-deep px-3 py-1.5 rounded-full">Guna Cadangan Ini</button>
+                      <button onclick="dismissAiSuggestion('cms-field-objektif')" class="text-[11px] font-bold text-ink-soft hover:text-ink px-3 py-1.5">Buang</button>
+                    </div>
+                  </div>
+                </div>
               </div>
               <div>
                 <label class="text-xs font-bold uppercase tracking-wider text-ink-soft block mb-1.5">Program &amp; Aktiviti Sepanjang Tahun</label>
                 <p class="text-[11px] text-ink-faint mb-2">Apa yang dijalankan secara berkala.</p>
                 <textarea id="cms-field-program" oninput="updateCmsContentPreview()" rows="3" class="w-full bg-mist border border-line rounded-2xl p-4 text-sm leading-relaxed text-ink focus:ring-2 focus:ring-navy focus:outline-none"></textarea>
+                <div class="mt-2">
+                  <button id="ai-btn-cms-field-program" onclick="aiAssist('cms-field-program','Bahagian Program & Aktiviti Sepanjang Tahun unit sekolah')" class="text-[11px] font-bold text-navy hover:text-navy-deep bg-navy-50 hover:bg-navy-100 px-3 py-1.5 rounded-full transition-all inline-flex items-center gap-1.5"><i data-lucide="sparkles" class="w-3 h-3"></i> Bantu Tulis dengan AI</button>
+                  <div id="ai-suggestion-cms-field-program" class="hidden mt-2 bg-navy-50 border border-navy-100 rounded-xl p-3">
+                    <p class="text-[10px] font-bold uppercase tracking-wider text-navy mb-1">Cadangan AI</p>
+                    <p class="ai-suggestion-text text-xs text-ink-soft leading-relaxed whitespace-pre-line"></p>
+                    <div class="flex gap-2 mt-2">
+                      <button onclick="acceptAiSuggestion('cms-field-program')" class="text-[11px] font-bold text-white bg-navy hover:bg-navy-deep px-3 py-1.5 rounded-full">Guna Cadangan Ini</button>
+                      <button onclick="dismissAiSuggestion('cms-field-program')" class="text-[11px] font-bold text-ink-soft hover:text-ink px-3 py-1.5">Buang</button>
+                    </div>
+                  </div>
+                </div>
               </div>
               <div>
                 <label class="text-xs font-bold uppercase tracking-wider text-ink-soft block mb-1.5">Fokus Semasa <span class="text-ink-faint normal-case font-normal">(pilihan)</span></label>
                 <p class="text-[11px] text-ink-faint mb-2">Inisiatif/tumpuan istimewa tahun ini, jika ada.</p>
                 <textarea id="cms-field-fokus" oninput="updateCmsContentPreview()" rows="2" class="w-full bg-mist border border-line rounded-2xl p-4 text-sm leading-relaxed text-ink focus:ring-2 focus:ring-navy focus:outline-none"></textarea>
+                <div class="mt-2">
+                  <button id="ai-btn-cms-field-fokus" onclick="aiAssist('cms-field-fokus','Bahagian Fokus Semasa unit sekolah')" class="text-[11px] font-bold text-navy hover:text-navy-deep bg-navy-50 hover:bg-navy-100 px-3 py-1.5 rounded-full transition-all inline-flex items-center gap-1.5"><i data-lucide="sparkles" class="w-3 h-3"></i> Bantu Tulis dengan AI</button>
+                  <div id="ai-suggestion-cms-field-fokus" class="hidden mt-2 bg-navy-50 border border-navy-100 rounded-xl p-3">
+                    <p class="text-[10px] font-bold uppercase tracking-wider text-navy mb-1">Cadangan AI</p>
+                    <p class="ai-suggestion-text text-xs text-ink-soft leading-relaxed whitespace-pre-line"></p>
+                    <div class="flex gap-2 mt-2">
+                      <button onclick="acceptAiSuggestion('cms-field-fokus')" class="text-[11px] font-bold text-white bg-navy hover:bg-navy-deep px-3 py-1.5 rounded-full">Guna Cadangan Ini</button>
+                      <button onclick="dismissAiSuggestion('cms-field-fokus')" class="text-[11px] font-bold text-ink-soft hover:text-ink px-3 py-1.5">Buang</button>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
             <div class="lg:sticky lg:top-6 lg:self-start">
@@ -831,6 +875,17 @@
         <div>
           <label class="block text-xs font-bold text-slate-600 uppercase mb-1">Tajuk / Nama Program</label>
           <textarea id="input-title" oninput="updatePreview()" rows="2" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none" placeholder="Contoh: Pertandingan Projek Mini Buku..."></textarea>
+          <div class="mt-2">
+            <button id="ai-btn-input-title" onclick="aiAssist('input-title','Tajuk rasmi program/aktiviti sekolah')" class="text-[11px] font-bold text-indigo-600 hover:text-indigo-800 bg-indigo-50 hover:bg-indigo-100 px-3 py-1.5 rounded-full transition-all inline-flex items-center gap-1.5"><i data-lucide="sparkles" class="w-3 h-3"></i> Bantu Tulis dengan AI</button>
+            <div id="ai-suggestion-input-title" class="hidden mt-2 bg-indigo-50 border border-indigo-100 rounded-xl p-3">
+              <p class="text-[10px] font-bold uppercase tracking-wider text-indigo-700 mb-1">Cadangan AI</p>
+              <p class="ai-suggestion-text text-xs text-slate-700 leading-relaxed whitespace-pre-line"></p>
+              <div class="flex gap-2 mt-2">
+                <button onclick="acceptAiSuggestion('input-title')" class="text-[11px] font-bold text-white bg-indigo-600 hover:bg-indigo-700 px-3 py-1.5 rounded-full">Guna Cadangan Ini</button>
+                <button onclick="dismissAiSuggestion('input-title')" class="text-[11px] font-bold text-slate-500 hover:text-slate-700 px-3 py-1.5">Buang</button>
+              </div>
+            </div>
+          </div>
         </div>
 
         <div>
@@ -873,6 +928,17 @@
             </select>
           </label>
           <textarea id="input-kra" oninput="updatePreview()" rows="3" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none" placeholder="Pilih KRA dari menu dropdown atau taip manual..."></textarea>
+          <div class="mt-2">
+            <button id="ai-btn-input-kra" onclick="aiAssist('input-kra','KRA (Kawasan Hasil Utama) bagi program sekolah')" class="text-[11px] font-bold text-indigo-600 hover:text-indigo-800 bg-indigo-50 hover:bg-indigo-100 px-3 py-1.5 rounded-full transition-all inline-flex items-center gap-1.5"><i data-lucide="sparkles" class="w-3 h-3"></i> Bantu Tulis dengan AI</button>
+            <div id="ai-suggestion-input-kra" class="hidden mt-2 bg-indigo-50 border border-indigo-100 rounded-xl p-3">
+              <p class="text-[10px] font-bold uppercase tracking-wider text-indigo-700 mb-1">Cadangan AI</p>
+              <p class="ai-suggestion-text text-xs text-slate-700 leading-relaxed whitespace-pre-line"></p>
+              <div class="flex gap-2 mt-2">
+                <button onclick="acceptAiSuggestion('input-kra')" class="text-[11px] font-bold text-white bg-indigo-600 hover:bg-indigo-700 px-3 py-1.5 rounded-full">Guna Cadangan Ini</button>
+                <button onclick="dismissAiSuggestion('input-kra')" class="text-[11px] font-bold text-slate-500 hover:text-slate-700 px-3 py-1.5">Buang</button>
+              </div>
+            </div>
+          </div>
         </div>
 
         <div>
@@ -1345,7 +1411,7 @@ function showModule(id){
    atau rangkaian gagal - sistem tetap berfungsi (macam sebelum ini) dalam
    keadaan tersebut, cuma tidak berkongsi merentasi peranti.
    ===================================================================== */
-const CMS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyJ80UNMOBTdCfYqWmjEIT0Z5oZrpl1EIGjsDgLaq_qguQfUOI6pbw9BGxNHBYx8JDE/exec";
+const CMS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbypJbiN7WhcGZvII2P21z5THtfMMOAi0FG33kD3Xmc-LYLlhUsKyBSVfZ4zoYD6y7JY/exec";
 
 const cmsUnitMeta = {
   'Pentadbiran':      'Sila edit kandungan carta organisasi, dasar dan peraturan sekolah di sini.',
@@ -1449,6 +1515,67 @@ function parseContentSections(text){
   if(!found) result.pengenalan = text.trim(); // teks lama/bebas format - letak dalam Pengenalan supaya tidak hilang
   return result;
 }
+/* ===== Bantuan Penulisan AI (Google Gemini, melalui backend CMS) =====
+   Guna medan yang sedia ada sebagai "nota kasar": SU taip pointer ringkas,
+   klik butang, AI kembangkan jadi ayat kemas. SU MESTI tekan "Guna Cadangan
+   Ini" secara manual - AI tidak sekali-kali menulis terus ke medan atau
+   menyimpan tanpa semakan SU. */
+async function aiAssist(fieldId, contextLabel){
+  const el = document.getElementById(fieldId);
+  const btn = document.getElementById('ai-btn-' + fieldId);
+  if(!el) return;
+  const roughText = el.value.trim();
+  if(!roughText){
+    aiToastAny('Taip beberapa nota/pointer ringkas dalam kotak ini dulu, kemudian klik butang AI.', 'error');
+    return;
+  }
+  if(!isCmsBackendConfigured()){
+    aiToastAny('Storan dikongsi (CMS) belum disediakan - AI perlukan sambungan ini.', 'error');
+    return;
+  }
+  const originalBtnHtml = btn ? btn.innerHTML : '';
+  if(btn){ btn.disabled = true; btn.innerHTML = '<i data-lucide="loader-2" class="w-3 h-3 animate-spin"></i> Menjana...'; lucide.createIcons(); }
+  try{
+    const res = await fetch(CMS_SCRIPT_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify({ action: 'aiGenerate', context: contextLabel, roughText: roughText })
+    });
+    const data = await res.json();
+    if(data && data.text){
+      const box = document.getElementById('ai-suggestion-' + fieldId);
+      if(box){
+        box.classList.remove('hidden');
+        box.querySelector('.ai-suggestion-text').innerText = data.text.trim();
+        box.dataset.suggestion = data.text.trim();
+      }
+    } else {
+      aiToastAny((data && data.error) || 'AI gagal menjana teks. Cuba lagi.', 'error');
+    }
+  }catch(e){
+    aiToastAny('Ralat sambungan ke AI. Pastikan skrip CMS ada fungsi aiGenerate.', 'error');
+  }finally{
+    if(btn){ btn.disabled = false; btn.innerHTML = originalBtnHtml; lucide.createIcons(); }
+  }
+}
+function acceptAiSuggestion(fieldId){
+  const box = document.getElementById('ai-suggestion-' + fieldId);
+  const el = document.getElementById(fieldId);
+  if(!box || !el) return;
+  el.value = box.dataset.suggestion || '';
+  box.classList.add('hidden');
+  if(typeof updateCmsContentPreview === 'function') updateCmsContentPreview();
+  if(typeof updatePreview === 'function') updatePreview();
+}
+function dismissAiSuggestion(fieldId){
+  const box = document.getElementById('ai-suggestion-' + fieldId);
+  if(box) box.classList.add('hidden');
+}
+function aiToastAny(msg, type){
+  if(typeof showToast === 'function') showToast(msg, type);
+  else if(typeof showToastOPR === 'function') showToastOPR(msg, type === 'error' ? 'bg-rose-600' : 'bg-slate-900');
+}
+
 function fillCmsFields(unit, text){
   const hasRealContent = typeof text === 'string' && text.trim() !== '';
   const parsed = hasRealContent ? parseContentSections(text) : { pengenalan:'', objektif:'', program:'', fokus:'' };
