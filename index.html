@@ -600,7 +600,7 @@
   ]);
 
   // ---- Kandungan Unit (tarik daripada storan DIKONGSI, sandaran localStorage/lalai) ----
-  const CMS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxAd0OPE1d12Qp7_Z0epI8CoxsxibmNtc6Bnm-exq80AKPKh1eK-Y0Nu_UkLoomS6Mq/exec";
+  const CMS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyJ80UNMOBTdCfYqWmjEIT0Z5oZrpl1EIGjsDgLaq_qguQfUOI6pbw9BGxNHBYx8JDE/exec";
 
   const defaultDb = {
     'Pentadbiran':      { icon:'briefcase',    desc:'Carta organisasi, dasar & peraturan sekolah.',       content:'Sila rujuk pihak pentadbiran sekolah untuk maklumat lanjut mengenai carta organisasi dan dasar sekolah.' },
@@ -801,7 +801,11 @@
     const p = galeriPhotosCache[index];
     if(!p) return;
     document.getElementById('galeri-lightbox-img').src = p.urlFoto;
-    document.getElementById('galeri-lightbox-caption').innerText = p.kapsyen || '';
+    const parts = [];
+    if(p.namaProgram) parts.push(p.namaProgram);
+    if(p.tarikh) parts.push(formatTarikhMy(p.tarikh));
+    if(p.tempat) parts.push(p.tempat);
+    document.getElementById('galeri-lightbox-caption').innerText = parts.join(' &bull; ').replace(/&bull;/g, '\u2022');
     const lb = document.getElementById('galeri-lightbox');
     lb.classList.remove('hidden'); lb.classList.add('flex');
   }
