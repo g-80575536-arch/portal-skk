@@ -1412,6 +1412,10 @@ function showModule(id){
    keadaan tersebut, cuma tidak berkongsi merentasi peranti.
    ===================================================================== */
 const CMS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbypJbiN7WhcGZvII2P21z5THtfMMOAi0FG33kD3Xmc-LYLlhUsKyBSVfZ4zoYD6y7JY/exec";
+// Skrip AI Proxy berasingan (berdiri sendiri, akaun peribadi) - khusus untuk
+// ciri "Bantu Tulis dengan AI". Berasingan daripada CMS_SCRIPT_URL supaya tiada
+// konflik kebenaran dengan akaun DELIMA yang memiliki Sheet CMS.
+const AI_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw4QdeYhpP2fDG5yJYDl4vcEc4qBGN12rXB3fvpwwsaQEusXmQzZuD3qtbEu62A9lrQNw/exec";
 
 const cmsUnitMeta = {
   'Pentadbiran':      'Sila edit kandungan carta organisasi, dasar dan peraturan sekolah di sini.',
@@ -1529,14 +1533,14 @@ async function aiAssist(fieldId, contextLabel){
     aiToastAny('Taip beberapa nota/pointer ringkas dalam kotak ini dulu, kemudian klik butang AI.', 'error');
     return;
   }
-  if(!isCmsBackendConfigured()){
-    aiToastAny('Storan dikongsi (CMS) belum disediakan - AI perlukan sambungan ini.', 'error');
+  if(!AI_SCRIPT_URL || AI_SCRIPT_URL.includes('PLACEHOLDER')){
+    aiToastAny('Skrip AI belum disediakan.', 'error');
     return;
   }
   const originalBtnHtml = btn ? btn.innerHTML : '';
   if(btn){ btn.disabled = true; btn.innerHTML = '<i data-lucide="loader-2" class="w-3 h-3 animate-spin"></i> Menjana...'; lucide.createIcons(); }
   try{
-    const res = await fetch(CMS_SCRIPT_URL, {
+    const res = await fetch(AI_SCRIPT_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'text/plain;charset=utf-8' },
       body: JSON.stringify({ action: 'aiGenerate', context: contextLabel, roughText: roughText })
@@ -1553,7 +1557,7 @@ async function aiAssist(fieldId, contextLabel){
       aiToastAny((data && data.error) || 'AI gagal menjana teks. Cuba lagi.', 'error');
     }
   }catch(e){
-    aiToastAny('Ralat sambungan ke AI. Pastikan skrip CMS ada fungsi aiGenerate.', 'error');
+    aiToastAny('Ralat sambungan ke AI. Semak skrip AI Proxy sudah di-deploy dengan betul.', 'error');
   }finally{
     if(btn){ btn.disabled = false; btn.innerHTML = originalBtnHtml; lucide.createIcons(); }
   }
