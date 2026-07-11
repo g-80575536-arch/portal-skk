@@ -202,7 +202,7 @@
       <p class="text-sm text-ink-soft mb-8">Kemas kini terus terbit ke laman awam sebaik sahaja disimpan.</p>
       <div class="grid md:grid-cols-4 gap-8">
         <div class="md:col-span-1 flex md:flex-col gap-2 overflow-x-auto">
-          <button onclick="selectCmsHomepage()" id="cms-tab-lamanutama" class="text-left px-4 py-3 rounded-xl text-sm font-bold whitespace-nowrap md:whitespace-normal transition-all bg-mist text-ink-soft hover:bg-navy-50 flex items-center gap-2">
+          <button onclick="selectCmsHomepage()" id="cms-tab-lamanutama" class="text-left px-4 py-3 rounded-xl text-base font-bold whitespace-nowrap md:whitespace-normal transition-all bg-mist text-ink-soft hover:bg-navy-50 flex items-center gap-2">
             <i data-lucide="home" class="w-4 h-4"></i> Laman Utama
           </button>
           <div class="hidden md:block border-t border-line my-1"></div>
@@ -404,6 +404,22 @@
               <i data-lucide="upload" class="w-3.5 h-3.5"></i> Muat Naik Foto Hero
               <input type="file" accept="image/*" class="hidden" onchange="uploadHpHeroPhoto(event)">
             </label>
+          </div>
+
+          <div class="border-t border-line"></div>
+
+          <!-- Galeri Sekolah -->
+          <div>
+            <h3 class="font-bold text-ink mb-1">Galeri Sekolah</h3>
+            <p class="text-[11px] text-ink-faint mb-3">Koleksi foto aktiviti/kemudahan sekolah dipaparkan di menu "Galeri Sekolah" laman utama.</p>
+            <div id="hp-galeri-grid" class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-3"></div>
+            <div class="flex flex-col sm:flex-row gap-2">
+              <input type="text" id="hp-galeri-kapsyen" placeholder="Kapsyen foto (pilihan)" class="flex-1 bg-mist border border-line rounded-full px-4 py-2.5 text-xs text-ink focus:ring-2 focus:ring-navy focus:outline-none">
+              <label class="inline-flex items-center justify-center gap-2 text-xs font-bold bg-mist hover:bg-navy-50 text-ink px-4 py-2.5 rounded-full cursor-pointer transition-all whitespace-nowrap">
+                <i data-lucide="upload" class="w-3.5 h-3.5"></i> Muat Naik Foto Galeri
+                <input type="file" accept="image/*" class="hidden" onchange="uploadHpGaleriPhoto(event)">
+              </label>
+            </div>
           </div>
 
         </div>
@@ -1268,7 +1284,7 @@ function showModule(id){
    atau rangkaian gagal - sistem tetap berfungsi (macam sebelum ini) dalam
    keadaan tersebut, cuma tidak berkongsi merentasi peranti.
    ===================================================================== */
-const CMS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycby23oWraKfCNUD8tIecHwnEARPTFnu3H0Cy18NIpmxyazzlUKLsAH4TxAgrztH4WWQu/exec";
+const CMS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxAd0OPE1d12Qp7_Z0epI8CoxsxibmNtc6Bnm-exq80AKPKh1eK-Y0Nu_UkLoomS6Mq/exec";
 
 const cmsUnitMeta = {
   'Pentadbiran':      'Sila edit kandungan carta organisasi, dasar dan peraturan sekolah di sini.',
@@ -1348,7 +1364,7 @@ async function selectCmsUnit(unit){
   document.getElementById('cms-unit-panel').classList.remove('hidden');
   document.getElementById('cms-homepage-panel').classList.add('hidden');
   const lamanUtamaTab = document.getElementById('cms-tab-lamanutama');
-  if(lamanUtamaTab) lamanUtamaTab.className = 'text-left px-4 py-3 rounded-xl text-sm font-bold whitespace-nowrap md:whitespace-normal transition-all bg-mist text-ink-soft hover:bg-navy-50 flex items-center gap-2';
+  if(lamanUtamaTab) lamanUtamaTab.className = 'text-left px-4 py-3 rounded-xl text-base font-bold whitespace-nowrap md:whitespace-normal transition-all bg-mist text-ink-soft hover:bg-navy-50 flex items-center gap-2';
 
   currentUser.cmsUnits.forEach(u => {
     const tab = document.getElementById('cms-tab-' + u.replace(/\s+/g,''));
@@ -1524,7 +1540,7 @@ let hpCartaData = [];
 async function selectCmsHomepage(){
   document.getElementById('cms-unit-panel').classList.add('hidden');
   document.getElementById('cms-homepage-panel').classList.remove('hidden');
-  document.getElementById('cms-tab-lamanutama').className = 'text-left px-4 py-3 rounded-xl text-sm font-bold whitespace-nowrap md:whitespace-normal transition-all bg-gradient-to-r from-blue to-cyan text-white flex items-center gap-2';
+  document.getElementById('cms-tab-lamanutama').className = 'text-left px-4 py-3 rounded-xl text-base font-bold whitespace-nowrap md:whitespace-normal transition-all bg-gradient-to-r from-blue to-cyan text-white flex items-center gap-2';
   currentUser.cmsUnits.forEach(u => {
     const tab = document.getElementById('cms-tab-' + u.replace(/\s+/g,''));
     if(tab) tab.className = 'text-left px-4 py-3 rounded-xl text-sm font-bold whitespace-nowrap md:whitespace-normal transition-all bg-mist text-ink-soft hover:bg-navy-50';
@@ -1535,6 +1551,7 @@ async function selectCmsHomepage(){
   loadHpTakwim();
   loadHpCartaUtama();
   loadHpHeroPhotos();
+  loadHpGaleri();
 }
 
 /* ---- Statistik ---- */
@@ -1789,6 +1806,65 @@ async function deleteHpHeroPhoto(urlFoto){
     showToast('Foto hero dipadam.', 'success');
     setTimeout(loadHpHeroPhotos, 1000);
   }catch(e){ showToast('Gagal padam foto hero.', 'error'); }
+}
+
+/* ---- Galeri Sekolah ---- */
+async function loadHpGaleri(){
+  try{
+    const res = await fetch(CMS_SCRIPT_URL + '?action=galeri');
+    if(!res.ok) return;
+    const d = await res.json();
+    renderHpGaleriGrid(Array.isArray(d) ? d : []);
+  }catch(e){ /* senyap */ }
+}
+function renderHpGaleriGrid(photos){
+  const grid = document.getElementById('hp-galeri-grid');
+  if(!grid) return;
+  if(!photos.length){
+    grid.innerHTML = `<p class="col-span-full text-xs text-ink-faint italic">Tiada foto galeri dimuat naik lagi.</p>`;
+    return;
+  }
+  grid.innerHTML = photos.map(p => `
+    <div class="relative group aspect-square rounded-xl overflow-hidden border border-line" style="background-image:url('${p.urlFoto}'); background-size:cover; background-position:center;">
+      ${p.kapsyen ? `<div class="absolute bottom-0 left-0 right-0 bg-black/60 text-white text-[10px] px-2 py-1 truncate">${p.kapsyen}</div>` : ''}
+      <button onclick="deleteHpGaleriPhoto('${p.urlFoto}')" class="absolute top-1 right-1 w-6 h-6 rounded-full bg-slate-900/80 hover:bg-rose-600 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all">
+        <i data-lucide="trash-2" class="w-3 h-3"></i>
+      </button>
+    </div>
+  `).join('');
+  lucide.createIcons();
+}
+function uploadHpGaleriPhoto(event){
+  const file = event.target.files[0];
+  if(!file) return;
+  const kapsyen = document.getElementById('hp-galeri-kapsyen').value.trim();
+  const reader = new FileReader();
+  reader.onload = async function(e){
+    showToast('Memuat naik foto galeri...', 'info');
+    try{
+      await fetch(CMS_SCRIPT_URL, {
+        method: 'POST', mode: 'no-cors',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify({ action: 'uploadGaleri', imageBase64: e.target.result, kapsyen: kapsyen, editor: currentUser.name })
+      });
+      showToast('Foto galeri berjaya dimuat naik.', 'success');
+      document.getElementById('hp-galeri-kapsyen').value = '';
+      setTimeout(loadHpGaleri, 1200);
+    }catch(err){ showToast('Gagal muat naik foto galeri.', 'error'); }
+  };
+  reader.readAsDataURL(file);
+}
+async function deleteHpGaleriPhoto(urlFoto){
+  if(!confirm('Padam foto galeri ini?')) return;
+  try{
+    await fetch(CMS_SCRIPT_URL, {
+      method: 'POST', mode: 'no-cors',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify({ action: 'deleteGaleri', urlFoto: urlFoto })
+    });
+    showToast('Foto galeri dipadam.', 'success');
+    setTimeout(loadHpGaleri, 1000);
+  }catch(e){ showToast('Gagal padam foto galeri.', 'error'); }
 }
 
 

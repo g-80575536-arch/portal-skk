@@ -94,7 +94,7 @@
     <img src="logo.png" alt="Logo" class="w-full h-full object-contain" onerror="this.style.display='none'">
   </div>
   <div class="loader-ring"></div>
-  <p class="font-display font-semibold text-sm tracking-wide text-navy">SK Krangan</p>
+  <p class="font-display font-semibold text-base tracking-wide text-navy">SK Krangan</p>
 </div>
 
 <!-- ============ NAV ============ -->
@@ -105,20 +105,20 @@
         <img src="logo.png" alt="Logo SK Krangan" class="w-full h-full object-contain" onerror="this.parentElement.innerHTML='<i data-lucide=school class=\'w-5 h-5 text-navy\'></i>'; lucide.createIcons();">
       </div>
       <div class="leading-tight">
-        <p class="font-display font-semibold text-lg text-ink">SK Krangan</p>
-        <p class="text-[10px] uppercase tracking-widest text-ink-faint font-bold">Portal Digital</p>
+        <p class="font-display font-semibold text-xl text-ink">SK Krangan</p>
+        <p class="text-[11px] uppercase tracking-widest text-ink-faint font-bold">Portal Digital</p>
       </div>
     </a>
 
-    <div class="hidden lg:flex items-center gap-8 text-sm font-semibold">
+    <div class="hidden lg:flex items-center gap-8 text-base font-semibold">
       <a href="#utama" class="nav-link">Utama</a>
 
       <div class="relative group">
         <a href="#profil" class="nav-link inline-flex items-center gap-1">Profil Sekolah <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-ink-faint"></i></a>
         <div class="absolute left-1/2 -translate-x-1/2 top-full pt-3 hidden group-hover:block z-30">
           <div class="bg-white border border-line rounded-2xl shadow-xl p-2 w-56">
-            <a href="#profil" class="block px-4 py-2.5 rounded-xl text-ink-soft hover:bg-mist hover:text-ink text-sm font-semibold">Ringkasan, Visi &amp; Misi</a>
-            <a href="#carta" class="block px-4 py-2.5 rounded-xl text-ink-soft hover:bg-mist hover:text-ink text-sm font-semibold">Carta Organisasi</a>
+            <a href="#profil" class="block px-4 py-2.5 rounded-xl text-ink-soft hover:bg-mist hover:text-ink text-base font-semibold">Ringkasan, Visi &amp; Misi</a>
+            <a href="#carta" class="block px-4 py-2.5 rounded-xl text-ink-soft hover:bg-mist hover:text-ink text-base font-semibold">Carta Organisasi</a>
           </div>
         </div>
       </div>
@@ -131,11 +131,12 @@
       </div>
 
       <a href="#kalendar" class="nav-link">Takwim Sekolah</a>
+      <a href="#galeri" class="nav-link">Galeri Sekolah</a>
     </div>
 
     <div class="flex items-center gap-2">
       <button onclick="toggleSearch()" class="w-10 h-10 rounded-full hover:bg-mist flex items-center justify-center text-ink-soft" title="Carian Pantas"><i data-lucide="search" class="w-4.5 h-4.5"></i></button>
-      <a href="dashboard.html" class="btn-primary hidden sm:flex items-center gap-2 text-sm font-bold px-5 py-2.5 rounded-full transition-all">
+      <a href="dashboard.html" class="btn-primary hidden sm:flex items-center gap-2 text-base font-bold px-5 py-2.5 rounded-full transition-all">
         <i data-lucide="log-in" class="w-4 h-4"></i> Masuk Portal Staf
       </a>
       <button onclick="document.getElementById('mobile-menu').classList.toggle('hidden')" class="lg:hidden w-10 h-10 flex items-center justify-center rounded-full hover:bg-mist text-ink">
@@ -143,13 +144,14 @@
       </button>
     </div>
   </nav>
-  <div id="mobile-menu" class="hidden lg:hidden border-t border-line px-5 py-4 flex flex-col gap-1 text-sm font-semibold text-ink-soft">
+  <div id="mobile-menu" class="hidden lg:hidden border-t border-line px-5 py-4 flex flex-col gap-1 text-base font-semibold text-ink-soft">
     <a href="#utama" class="py-2">Utama</a>
     <a href="#profil" class="py-2">Profil Sekolah</a>
-    <a href="#carta" class="py-2 pl-4 text-xs text-ink-faint">&rarr; Carta Organisasi</a>
+    <a href="#carta" class="py-2 pl-4 text-sm text-ink-faint">&rarr; Carta Organisasi</a>
     <a href="#unit" class="py-2">Unit</a>
     <div id="mobile-unit-dropdown" class="pl-4 flex flex-col"></div>
     <a href="#kalendar" class="py-2">Takwim Sekolah</a>
+    <a href="#galeri" class="py-2">Galeri Sekolah</a>
     <a href="dashboard.html" class="py-2.5 mt-2 text-center bg-navy text-white rounded-full font-bold">Masuk Portal Staf</a>
   </div>
 
@@ -157,7 +159,7 @@
   <div id="search-panel" class="hidden absolute inset-x-0 top-full bg-white border-b border-line shadow-lg p-5">
     <div class="max-w-2xl mx-auto relative">
       <i data-lucide="search" class="w-4 h-4 text-ink-faint absolute left-4 top-1/2 -translate-y-1/2"></i>
-      <input id="search-input" oninput="runSearch(this.value)" type="text" placeholder="Cari 'guru', 'kalendar', 'kokurikulum', 'hubungi'..." class="w-full bg-mist border border-line rounded-xl pl-11 pr-4 py-3 text-sm text-ink placeholder-ink-faint focus:outline-none focus:border-navy">
+      <input id="search-input" oninput="runSearch(this.value)" type="text" placeholder="Cari 'guru', 'kalendar', 'kokurikulum', 'hubungi'..." class="w-full bg-mist border border-line rounded-xl pl-11 pr-4 py-3 text-base text-ink placeholder-ink-faint focus:outline-none focus:border-navy">
       <div id="search-results" class="mt-3 space-y-1"></div>
     </div>
   </div>
@@ -165,7 +167,7 @@
 
 <!-- ============ COUNTDOWN PEPERIKSAAN ============ -->
 <div class="bg-navy border-b border-navy-deep py-2.5">
-  <div id="ticker-events-wrap" class="flex flex-wrap items-center justify-center gap-x-4 gap-y-1.5 text-xs sm:text-sm font-semibold text-white/90 px-4 text-center">
+  <div id="ticker-events-wrap" class="flex flex-wrap items-center justify-center gap-x-4 gap-y-1.5 text-sm sm:text-base font-semibold text-white/90 px-4 text-center">
     <span class="inline-flex items-center gap-2"><i data-lucide="alarm-clock" class="w-4 h-4 text-gold shrink-0"></i><span>Memuatkan takwim...</span></span>
   </div>
 </div>
@@ -174,11 +176,11 @@
 <section id="utama" class="relative px-5 sm:px-8 pt-16 pb-20 overflow-hidden">
   <div class="max-w-6xl mx-auto grid lg:grid-cols-[1.05fr_1fr] gap-14 items-center">
     <div class="reveal">
-      <span class="inline-flex items-center gap-2 text-gold text-xs font-bold uppercase tracking-widest mb-6">
+      <span class="inline-flex items-center gap-2 text-gold text-sm font-bold uppercase tracking-widest mb-6">
         <svg class="pennant-mark" viewBox="0 0 14 16" fill="none"><path d="M1 1H13V11.5L7 15L1 11.5V1Z" fill="currentColor"/></svg>
         Selamat Datang
       </span>
-      <h1 class="font-display font-semibold text-5xl sm:text-6xl md:text-[4.5rem] leading-[1.03] text-ink mb-10">
+      <h1 class="font-display font-semibold text-6xl sm:text-7xl md:text-[5.5rem] leading-[1.03] text-ink mb-10">
         Mendidik generasi<br>Krangan.
       </h1>
       <div class="flex flex-wrap items-center gap-4">
@@ -204,8 +206,8 @@
       </div>
       <div class="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5" id="hero-slide-dots"></div>
       <div class="absolute -bottom-6 -left-6 bg-white rounded-2xl shadow-xl border border-line px-5 py-4 hidden sm:block">
-        <p class="text-[10px] font-bold uppercase tracking-wider text-ink-faint mb-0.5">Kod Sekolah</p>
-        <p class="font-display font-semibold text-navy text-lg">YBB8240</p>
+        <p class="text-[11px] font-bold uppercase tracking-wider text-ink-faint mb-0.5">Kod Sekolah</p>
+        <p class="font-display font-semibold text-navy text-xl">YBB8240</p>
       </div>
     </div>
   </div>
@@ -215,20 +217,20 @@
 <section class="max-w-6xl mx-auto px-5 sm:px-8 pb-24">
   <div class="grid grid-cols-2 md:grid-cols-4 gap-5 reveal-stagger">
     <div class="soft-card rounded-2xl p-7 text-center">
-      <div id="stat-murid" class="counter font-display font-semibold text-4xl text-navy mb-1" data-target="76">0</div>
-      <div class="text-xs font-bold uppercase tracking-wider text-ink-faint">Murid</div>
+      <div id="stat-murid" class="counter font-display font-semibold text-5xl text-navy mb-1" data-target="76">0</div>
+      <div class="text-sm font-bold uppercase tracking-wider text-ink-faint">Murid</div>
     </div>
     <div class="soft-card rounded-2xl p-7 text-center">
-      <div id="stat-guru" class="counter font-display font-semibold text-4xl text-navy mb-1" data-target="13">0</div>
-      <div class="text-xs font-bold uppercase tracking-wider text-ink-faint">Guru</div>
+      <div id="stat-guru" class="counter font-display font-semibold text-5xl text-navy mb-1" data-target="13">0</div>
+      <div class="text-sm font-bold uppercase tracking-wider text-ink-faint">Guru</div>
     </div>
     <div class="soft-card rounded-2xl p-7 text-center">
-      <div id="stat-staf" class="counter font-display font-semibold text-4xl text-navy mb-1" data-target="2">0</div>
-      <div class="text-xs font-bold uppercase tracking-wider text-ink-faint">Staf</div>
+      <div id="stat-staf" class="counter font-display font-semibold text-5xl text-navy mb-1" data-target="2">0</div>
+      <div class="text-sm font-bold uppercase tracking-wider text-ink-faint">Staf</div>
     </div>
     <div class="soft-card rounded-2xl p-7 text-center">
-      <div id="stat-kelas" class="counter font-display font-semibold text-4xl text-navy mb-1" data-target="6">0</div>
-      <div class="text-xs font-bold uppercase tracking-wider text-ink-faint">Kelas</div>
+      <div id="stat-kelas" class="counter font-display font-semibold text-5xl text-navy mb-1" data-target="6">0</div>
+      <div class="text-sm font-bold uppercase tracking-wider text-ink-faint">Kelas</div>
     </div>
   </div>
 </section>
@@ -236,29 +238,29 @@
 <!-- ============ PROFIL SEKOLAH ============ -->
 <section id="profil" class="max-w-6xl mx-auto px-5 sm:px-8 pb-24">
   <div class="text-center max-w-xl mx-auto mb-14 reveal">
-    <span class="text-xs font-bold uppercase tracking-widest text-gold">Identiti</span>
-    <h2 class="font-display font-semibold text-3xl sm:text-4xl text-ink mt-2">Profil Sekolah</h2>
+    <span class="text-sm font-bold uppercase tracking-widest text-gold">Identiti</span>
+    <h2 class="font-display font-semibold text-4xl sm:text-5xl text-ink mt-2">Profil Sekolah</h2>
   </div>
   <div class="grid sm:grid-cols-2 gap-6 reveal-stagger">
     <div class="soft-card rounded-2xl p-9">
       <i data-lucide="compass" class="w-7 h-7 text-navy mb-4"></i>
-      <h3 class="font-display font-semibold text-xl mb-2 text-ink">Visi</h3>
+      <h3 class="font-display font-semibold text-2xl mb-2 text-ink">Visi</h3>
       <p id="profil-visi" class="text-ink-soft leading-relaxed">Memartabatkan pendidikan menjulang kejayaan ke arah kemenjadian murid.</p>
     </div>
     <div class="soft-card rounded-2xl p-9">
       <i data-lucide="target" class="w-7 h-7 text-gold mb-4"></i>
-      <h3 class="font-display font-semibold text-xl mb-2 text-ink">Misi</h3>
+      <h3 class="font-display font-semibold text-2xl mb-2 text-ink">Misi</h3>
       <p id="profil-misi" class="text-ink-soft leading-relaxed">SK Krangan cemerlang dalam pendidikan, menggilap potensi individu, memperkasakan modal insan, memantapkan pengurusan.</p>
     </div>
     <div class="soft-card rounded-2xl p-9">
       <i data-lucide="flag" class="w-7 h-7 text-crimson mb-4"></i>
-      <h3 class="font-display font-semibold text-xl mb-2 text-ink">Moto Sekolah</h3>
+      <h3 class="font-display font-semibold text-2xl mb-2 text-ink">Moto Sekolah</h3>
       <p id="profil-moto" class="text-ink-soft leading-relaxed">Ke Arah Masyarakat Berilmu</p>
     </div>
     <div class="soft-card rounded-2xl p-9">
       <i data-lucide="info" class="w-7 h-7 text-navy mb-4"></i>
-      <h3 class="font-display font-semibold text-xl mb-3 text-ink">Maklumat Asas</h3>
-      <dl class="text-sm text-ink-soft space-y-1.5">
+      <h3 class="font-display font-semibold text-2xl mb-3 text-ink">Maklumat Asas</h3>
+      <dl class="text-base text-ink-soft space-y-1.5">
         <div class="flex gap-2"><dt class="font-semibold text-ink shrink-0">Nama:</dt><dd id="profil-nama">Sekolah Kebangsaan Krangan</dd></div>
         <div class="flex gap-2"><dt class="font-semibold text-ink shrink-0">Kod Sekolah:</dt><dd id="profil-kod">YBB8240</dd></div>
         <div class="flex gap-2"><dt class="font-semibold text-ink shrink-0">Alamat:</dt><dd id="profil-alamat">Jalan Krangan-Balai Ringin, 94700 Serian, Sarawak</dd></div>
@@ -270,8 +272,8 @@
   <!-- Carta Organisasi - kini sebahagian daripada Profil Sekolah -->
   <div class="mt-16 pt-16 border-t border-line" id="carta">
     <div class="text-center max-w-xl mx-auto mb-12 reveal">
-      <span class="text-xs font-bold uppercase tracking-widest text-gold">Kepimpinan</span>
-      <h3 class="font-display font-semibold text-2xl sm:text-3xl text-ink mt-2">Carta Organisasi</h3>
+      <span class="text-sm font-bold uppercase tracking-widest text-gold">Kepimpinan</span>
+      <h3 class="font-display font-semibold text-3xl sm:text-4xl text-ink mt-2">Carta Organisasi</h3>
     </div>
     <div class="reveal" id="org-grid"></div>
   </div>
@@ -281,8 +283,8 @@
 <section id="unit" class="bg-mist py-24">
   <div class="max-w-6xl mx-auto px-5 sm:px-8">
     <div class="text-center max-w-xl mx-auto mb-14 reveal">
-      <span class="text-xs font-bold uppercase tracking-widest text-gold">Struktur Pentadbiran</span>
-      <h2 class="font-display font-semibold text-3xl sm:text-4xl text-ink mt-2">Unit Sekolah</h2>
+      <span class="text-sm font-bold uppercase tracking-widest text-gold">Struktur Pentadbiran</span>
+      <h2 class="font-display font-semibold text-4xl sm:text-5xl text-ink mt-2">Unit Sekolah</h2>
     </div>
     <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 reveal-stagger" id="unit-grid"></div>
   </div>
@@ -293,50 +295,71 @@
   <div class="bg-white rounded-3xl max-w-sm w-full p-8 text-center relative shadow-2xl">
     <button onclick="closeOrgModal()" class="absolute top-4 right-4 w-8 h-8 rounded-full hover:bg-mist flex items-center justify-center"><i data-lucide="x" class="w-4 h-4 text-ink-soft"></i></button>
     <div id="org-modal-avatar" class="w-20 h-20 rounded-full bg-navy-50 mx-auto mb-4 flex items-center justify-center overflow-hidden"><i data-lucide="user" class="w-9 h-9 text-navy"></i></div>
-    <h3 id="org-modal-name" class="font-display font-semibold text-xl text-ink mb-1">Nama</h3>
-    <p id="org-modal-role" class="text-gold text-sm font-bold mb-4">Jawatan</p>
+    <h3 id="org-modal-name" class="font-display font-semibold text-2xl text-ink mb-1">Nama</h3>
+    <p id="org-modal-role" class="text-gold text-base font-bold mb-4">Jawatan</p>
   </div>
 </div>
 
 <!-- ============ KALENDAR ============ -->
 <section id="kalendar" class="max-w-6xl mx-auto px-5 sm:px-8 py-24">
   <div class="text-center max-w-xl mx-auto mb-14 reveal">
-    <span class="text-xs font-bold uppercase tracking-widest text-gold">Agenda</span>
-    <h2 class="font-display font-semibold text-3xl sm:text-4xl text-ink mt-2">Takwim Sekolah</h2>
+    <span class="text-sm font-bold uppercase tracking-widest text-gold">Agenda</span>
+    <h2 class="font-display font-semibold text-4xl sm:text-5xl text-ink mt-2">Takwim Sekolah</h2>
   </div>
   <div class="grid md:grid-cols-2 gap-5 reveal-stagger">
     <div id="takwim-dynamic-cards" class="contents">
-      <div class="soft-card rounded-2xl p-5 flex items-center gap-4 col-span-full"><p class="text-sm text-ink-faint">Memuatkan takwim...</p></div>
+      <div class="soft-card rounded-2xl p-5 flex items-center gap-4 col-span-full"><p class="text-base text-ink-faint">Memuatkan takwim...</p></div>
     </div>
     <div class="soft-card rounded-2xl p-5 flex items-center gap-4">
       <div class="w-12 h-12 rounded-xl bg-navy-50 flex items-center justify-center shrink-0"><i data-lucide="palmtree" class="text-navy w-5 h-5"></i></div>
-      <div><p class="font-bold text-ink">Cuti Sekolah</p><p class="text-sm text-ink-soft">Rujuk Takwim Rasmi</p></div>
+      <div><p class="font-bold text-ink">Cuti Sekolah</p><p class="text-base text-ink-soft">Rujuk Takwim Rasmi</p></div>
     </div>
   </div>
 </section>
+
+<!-- ============ GALERI SEKOLAH ============ -->
+<section id="galeri" class="max-w-6xl mx-auto px-5 sm:px-8 pb-24">
+  <div class="text-center max-w-xl mx-auto mb-14 reveal">
+    <span class="text-sm font-bold uppercase tracking-widest text-gold">Kenangan</span>
+    <h2 class="font-display font-semibold text-4xl sm:text-5xl text-ink mt-2">Galeri Sekolah</h2>
+    <p class="text-ink-soft mt-3">Detik dan kenangan sepanjang aktiviti serta program di SK Krangan.</p>
+  </div>
+  <div id="galeri-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 reveal-stagger">
+    <div class="col-span-full text-center text-ink-faint text-base py-10">Memuatkan galeri...</div>
+  </div>
+</section>
+
+<!-- Lightbox Galeri -->
+<div id="galeri-lightbox" class="hidden fixed inset-0 bg-navy-deep/95 backdrop-blur-sm z-[100] items-center justify-center p-6" onclick="closeGaleriLightbox(event)">
+  <button onclick="closeGaleriLightbox()" class="absolute top-5 right-5 w-11 h-11 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
+  <div class="max-w-4xl w-full">
+    <img id="galeri-lightbox-img" src="" alt="Galeri" class="w-full max-h-[80vh] object-contain rounded-2xl">
+    <p id="galeri-lightbox-caption" class="text-white/80 text-center mt-4 text-base"></p>
+  </div>
+</div>
 
 <!-- ============ FOOTER ============ -->
 <footer class="bg-navy-deep pt-16 pb-10">
   <div class="max-w-6xl mx-auto px-5 sm:px-8 grid md:grid-cols-3 gap-10 mb-12 reveal-stagger">
     <div>
-      <p class="font-display font-semibold text-white text-xl mb-3">SK Krangan</p>
-      <p class="text-sm text-white/60 leading-relaxed">Jalan Krangan-Balai Ringin, 94700 Serian, Sarawak.</p>
-      <p class="text-sm text-white/60 mt-2">Kod Sekolah: YBB8240</p>
+      <p class="font-display font-semibold text-white text-2xl mb-3">SK Krangan</p>
+      <p class="text-base text-white/60 leading-relaxed">Jalan Krangan-Balai Ringin, 94700 Serian, Sarawak.</p>
+      <p class="text-base text-white/60 mt-2">Kod Sekolah: YBB8240</p>
       <div class="flex gap-3 mt-5">
         <a href="https://www.facebook.com/profile.php?id=61578234767177" target="_blank" rel="noopener" class="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20"><i data-lucide="facebook" class="w-4 h-4 text-white"></i></a>
         <a href="#" class="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20"><i data-lucide="instagram" class="w-4 h-4 text-white"></i></a>
       </div>
     </div>
     <div>
-      <p class="font-bold text-white text-sm uppercase tracking-wider mb-3">Hubungi</p>
-      <p class="text-sm text-white/60 flex items-center gap-2 mb-2"><i data-lucide="mail" class="w-4 h-4"></i> ybb8240@moe.edu.my</p>
+      <p class="font-bold text-white text-base uppercase tracking-wider mb-3">Hubungi</p>
+      <p class="text-base text-white/60 flex items-center gap-2 mb-2"><i data-lucide="mail" class="w-4 h-4"></i> ybb8240@moe.edu.my</p>
     </div>
     <div>
-      <p class="font-bold text-white text-sm uppercase tracking-wider mb-3">Pautan</p>
-      <a href="dashboard.html" class="text-sm text-white/60 flex items-center gap-2 hover:text-white"><i data-lucide="log-in" class="w-4 h-4"></i> Masuk Portal Staf (DELIMA)</a>
+      <p class="font-bold text-white text-base uppercase tracking-wider mb-3">Pautan</p>
+      <a href="dashboard.html" class="text-base text-white/60 flex items-center gap-2 hover:text-white"><i data-lucide="log-in" class="w-4 h-4"></i> Masuk Portal Staf (DELIMA)</a>
     </div>
   </div>
-  <p class="text-center text-xs text-white/30 border-t border-white/10 pt-6">&copy; 2026 Portal Digital SK Krangan (YBB8240).</p>
+  <p class="text-center text-sm text-white/30 border-t border-white/10 pt-6">&copy; 2026 Portal Digital SK Krangan (YBB8240).</p>
 </footer>
 
 <!-- ============ BUTANG APUNG PANTAS ============ -->
@@ -356,26 +379,26 @@
 
   <div class="sticky top-0 z-10 bg-white/95 backdrop-blur-md border-b border-line">
     <div class="max-w-4xl mx-auto px-5 sm:px-8 py-5 flex items-center justify-between gap-4">
-      <button onclick="closeUnitPage()" class="flex items-center gap-2 text-ink-soft hover:text-ink font-bold text-sm shrink-0">
+      <button onclick="closeUnitPage()" class="flex items-center gap-2 text-ink-soft hover:text-ink font-bold text-base shrink-0">
         <i data-lucide="arrow-left" class="w-4 h-4"></i> Kembali
       </button>
       <div class="text-center min-w-0">
-        <span class="text-[10px] font-bold uppercase tracking-widest text-gold">Unit Sekolah</span>
-        <h1 id="unit-page-title" class="font-display font-semibold text-lg sm:text-xl text-ink truncate">-</h1>
+        <span class="text-[11px] font-bold uppercase tracking-widest text-gold">Unit Sekolah</span>
+        <h1 id="unit-page-title" class="font-display font-semibold text-xl sm:text-2xl text-ink truncate">-</h1>
       </div>
       <div class="w-16 shrink-0"></div>
     </div>
     <div class="max-w-4xl mx-auto px-5 sm:px-8 pb-1 flex gap-1.5 sm:gap-2 overflow-x-auto">
-      <button onclick="switchUnitPageTab('content')" id="unit-tab-btn-content" class="unit-page-tab-btn shrink-0 flex items-center gap-1.5 px-3.5 py-2.5 rounded-t-xl text-xs sm:text-sm font-bold border-b-2 transition-all">
+      <button onclick="switchUnitPageTab('content')" id="unit-tab-btn-content" class="unit-page-tab-btn shrink-0 flex items-center gap-1.5 px-3.5 py-2.5 rounded-t-xl text-sm sm:text-base font-bold border-b-2 transition-all">
         <i data-lucide="file-text" class="w-3.5 h-3.5"></i> Maklumat Umum
       </button>
-      <button onclick="switchUnitPageTab('carta')" id="unit-tab-btn-carta" class="unit-page-tab-btn shrink-0 flex items-center gap-1.5 px-3.5 py-2.5 rounded-t-xl text-xs sm:text-sm font-bold border-b-2 transition-all">
+      <button onclick="switchUnitPageTab('carta')" id="unit-tab-btn-carta" class="unit-page-tab-btn shrink-0 flex items-center gap-1.5 px-3.5 py-2.5 rounded-t-xl text-sm sm:text-base font-bold border-b-2 transition-all">
         <i data-lucide="users" class="w-3.5 h-3.5"></i> Carta Organisasi
       </button>
-      <button onclick="switchUnitPageTab('minit')" id="unit-tab-btn-minit" class="unit-page-tab-btn shrink-0 flex items-center gap-1.5 px-3.5 py-2.5 rounded-t-xl text-xs sm:text-sm font-bold border-b-2 transition-all">
+      <button onclick="switchUnitPageTab('minit')" id="unit-tab-btn-minit" class="unit-page-tab-btn shrink-0 flex items-center gap-1.5 px-3.5 py-2.5 rounded-t-xl text-sm sm:text-base font-bold border-b-2 transition-all">
         <i data-lucide="file-text" class="w-3.5 h-3.5"></i> Minit Mesyuarat
       </button>
-      <button onclick="switchUnitPageTab('reports')" id="unit-tab-btn-reports" class="unit-page-tab-btn shrink-0 flex items-center gap-1.5 px-3.5 py-2.5 rounded-t-xl text-xs sm:text-sm font-bold border-b-2 transition-all">
+      <button onclick="switchUnitPageTab('reports')" id="unit-tab-btn-reports" class="unit-page-tab-btn shrink-0 flex items-center gap-1.5 px-3.5 py-2.5 rounded-t-xl text-sm sm:text-base font-bold border-b-2 transition-all">
         <i data-lucide="image" class="w-3.5 h-3.5"></i> Laporan Aktiviti
       </button>
     </div>
@@ -454,9 +477,9 @@
     const hits = searchIndex.filter(i => i.label.toLowerCase().includes(q) || i.hint.toLowerCase().includes(q));
     box.innerHTML = hits.length ? hits.map(h => `
       <a href="${h.target}" onclick="toggleSearch()" class="flex items-center justify-between px-4 py-3 rounded-xl hover:bg-mist text-left">
-        <span><span class="text-ink font-semibold text-sm block">${h.label}</span><span class="text-ink-soft text-xs">${h.hint}</span></span>
+        <span><span class="text-ink font-semibold text-base block">${h.label}</span><span class="text-ink-soft text-sm">${h.hint}</span></span>
         <i data-lucide="arrow-right" class="w-4 h-4 text-ink-faint"></i>
-      </a>`).join('') : `<p class="text-ink-soft text-sm px-4 py-3">Tiada hasil untuk "${q}"</p>`;
+      </a>`).join('') : `<p class="text-ink-soft text-base px-4 py-3">Tiada hasil untuk "${q}"</p>`;
     lucide.createIcons();
   }
 
@@ -482,13 +505,13 @@
 
   function orgCard(p, size){
     const sz = size === 'lg' ? 'w-16 h-16' : 'w-12 h-12';
-    const nameSz = size === 'lg' ? 'text-base' : 'text-sm';
+    const nameSz = size === 'lg' ? 'text-lg' : 'text-base';
     return `
       <button onclick="openOrgModal('${p.name}','${p.role}','${p.photo || ''}')" class="soft-card rounded-2xl p-5 text-left inline-flex items-center gap-3.5 w-full h-full">
         <div class="${sz} rounded-full bg-navy-50 flex items-center justify-center shrink-0 overflow-hidden">
           ${p.photo ? `<img src="${p.photo}" alt="${p.name}" class="w-full h-full object-cover">` : `<i data-lucide="user" class="w-5 h-5 text-navy"></i>`}
         </div>
-        <div class="min-w-0"><p class="font-display font-semibold text-ink ${nameSz} leading-snug">${p.name}</p><p class="text-xs text-gold font-bold mt-0.5">${p.role}</p></div>
+        <div class="min-w-0"><p class="font-display font-semibold text-ink ${nameSz} leading-snug">${p.name}</p><p class="text-sm text-gold font-bold mt-0.5">${p.role}</p></div>
       </button>`;
   }
 
@@ -522,7 +545,7 @@
 
       <!-- Penyambung GPK -> Staf -->
       <div class="w-px h-8 bg-line mx-auto"></div>
-      <p class="text-center text-xs font-bold uppercase tracking-widest text-ink-faint mb-6">Guru &amp; Kakitangan</p>
+      <p class="text-center text-sm font-bold uppercase tracking-widest text-ink-faint mb-6">Guru &amp; Kakitangan</p>
 
       <!-- Tahap 3: Guru & Kakitangan -->
       <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -577,7 +600,7 @@
   ]);
 
   // ---- Kandungan Unit (tarik daripada storan DIKONGSI, sandaran localStorage/lalai) ----
-  const CMS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycby23oWraKfCNUD8tIecHwnEARPTFnu3H0Cy18NIpmxyazzlUKLsAH4TxAgrztH4WWQu/exec";
+  const CMS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxAd0OPE1d12Qp7_Z0epI8CoxsxibmNtc6Bnm-exq80AKPKh1eK-Y0Nu_UkLoomS6Mq/exec";
 
   const defaultDb = {
     'Pentadbiran':      { icon:'briefcase',    desc:'Carta organisasi, dasar & peraturan sekolah.',       content:'Sila rujuk pihak pentadbiran sekolah untuk maklumat lanjut mengenai carta organisasi dan dasar sekolah.' },
@@ -605,7 +628,7 @@
     while((match = re.exec(text)) !== null){
       found = true;
       const body = match[2].trim().replace(/\n/g, '<br>');
-      html += `<div class="mb-5 last:mb-0"><p class="text-xs font-bold uppercase tracking-wider text-gold mb-1.5">${match[1]}</p><p>${body}</p></div>`;
+      html += `<div class="mb-5 last:mb-0"><p class="text-sm font-bold uppercase tracking-wider text-gold mb-1.5">${match[1]}</p><p>${body}</p></div>`;
     }
     return found ? html : text.replace(/\n/g, '<br>');
   }
@@ -681,10 +704,10 @@
         return `
           <div class="soft-card rounded-2xl p-5 flex items-center gap-4">
             <div class="w-12 h-12 rounded-xl bg-navy-50 flex items-center justify-center shrink-0"><i data-lucide="calendar-days" class="text-navy w-5 h-5"></i></div>
-            <div class="flex-1"><p class="font-bold text-ink">${ev.nama}</p><p class="text-sm text-ink-soft">${dateRangeText}</p></div>
+            <div class="flex-1"><p class="font-bold text-ink">${ev.nama}</p><p class="text-base text-ink-soft">${dateRangeText}</p></div>
             <div class="text-right shrink-0 pl-2">
-              <p class="font-display font-semibold text-2xl text-navy leading-none">${dayLabel}</p>
-              <p class="text-[9px] font-bold uppercase tracking-wider text-ink-faint mt-0.5">hari lagi</p>
+              <p class="font-display font-semibold text-3xl text-navy leading-none">${dayLabel}</p>
+              <p class="text-[10px] font-bold uppercase tracking-wider text-ink-faint mt-0.5">hari lagi</p>
             </div>
           </div>`;
       }).join('');
@@ -698,12 +721,13 @@
   async function syncHomepageFromBackend(){
     if(!CMS_SCRIPT_URL || CMS_SCRIPT_URL.includes('PLACEHOLDER')) return;
     try{
-      const [statRes, profilRes, takwimRes, cartaUtamaRes, heroRes] = await Promise.all([
+      const [statRes, profilRes, takwimRes, cartaUtamaRes, heroRes, galeriRes] = await Promise.all([
         fetch(CMS_SCRIPT_URL + '?action=statistik'),
         fetch(CMS_SCRIPT_URL + '?action=profil'),
         fetch(CMS_SCRIPT_URL + '?action=takwim'),
         fetch(CMS_SCRIPT_URL + '?action=cartautama'),
-        fetch(CMS_SCRIPT_URL + '?action=fotohero')
+        fetch(CMS_SCRIPT_URL + '?action=fotohero'),
+        fetch(CMS_SCRIPT_URL + '?action=galeri')
       ]);
 
       if(statRes.ok){
@@ -747,7 +771,44 @@
         const photos = await heroRes.json();
         if(Array.isArray(photos) && photos.length) initHeroSlideshow(photos.map(p => p.urlFoto));
       }
+
+      if(galeriRes.ok){
+        const photos = await galeriRes.json();
+        renderGaleriGrid(Array.isArray(photos) ? photos : []);
+      }
     }catch(e){ /* senyap - kekal guna nilai lalai (hardcoded) jika rangkaian gagal */ }
+  }
+
+  let galeriPhotosCache = [];
+  function renderGaleriGrid(photos){
+    galeriPhotosCache = photos;
+    const grid = document.getElementById('galeri-grid');
+    if(!grid) return;
+    if(!photos.length){
+      grid.innerHTML = `<div class="col-span-full text-center text-ink-faint text-base py-10">Tiada foto galeri lagi.</div>`;
+      return;
+    }
+    grid.innerHTML = photos.map((p, i) => `
+      <button onclick="openGaleriLightbox(${i})" class="aspect-square rounded-2xl overflow-hidden relative group" style="background-image:url('${p.urlFoto}'); background-size:cover; background-position:center;">
+        <div class="absolute inset-0 bg-navy-deep/0 group-hover:bg-navy-deep/30 transition-all flex items-center justify-center">
+          <i data-lucide="search" class="w-6 h-6 text-white opacity-0 group-hover:opacity-100 transition-all"></i>
+        </div>
+      </button>
+    `).join('');
+    lucide.createIcons();
+  }
+  function openGaleriLightbox(index){
+    const p = galeriPhotosCache[index];
+    if(!p) return;
+    document.getElementById('galeri-lightbox-img').src = p.urlFoto;
+    document.getElementById('galeri-lightbox-caption').innerText = p.kapsyen || '';
+    const lb = document.getElementById('galeri-lightbox');
+    lb.classList.remove('hidden'); lb.classList.add('flex');
+  }
+  function closeGaleriLightbox(event){
+    if(event && event.target.closest('img')) return; // klik pada gambar sendiri tak tutup
+    const lb = document.getElementById('galeri-lightbox');
+    lb.classList.add('hidden'); lb.classList.remove('flex');
   }
 
   function renderUnitGrid(){
@@ -756,13 +817,13 @@
       return `
         <button onclick="openUnitPage('${name}')" class="soft-card rounded-2xl p-7 text-left relative overflow-hidden">
           <div class="w-12 h-12 rounded-xl bg-navy-50 flex items-center justify-center mb-5"><i data-lucide="${meta.icon}" class="w-6 h-6 text-navy"></i></div>
-          <h3 class="font-display font-semibold text-lg text-ink mb-1.5">${name}</h3>
-          <span class="inline-flex items-center gap-1 text-xs font-bold text-gold mt-3">Baca lagi <i data-lucide="arrow-right" class="w-3 h-3"></i></span>
+          <h3 class="font-display font-semibold text-xl text-ink mb-1.5">${name}</h3>
+          <span class="inline-flex items-center gap-1 text-sm font-bold text-gold mt-3">Baca lagi <i data-lucide="arrow-right" class="w-3 h-3"></i></span>
         </button>`;
     }).join('');
 
     const navDropdownHtml = Object.keys(defaultDb).map(name => `
-      <button onclick="openUnitPage('${name}')" class="w-full flex items-center gap-2.5 px-4 py-2.5 rounded-xl text-ink-soft hover:bg-mist hover:text-ink text-sm font-semibold text-left">
+      <button onclick="openUnitPage('${name}')" class="w-full flex items-center gap-2.5 px-4 py-2.5 rounded-xl text-ink-soft hover:bg-mist hover:text-ink text-base font-semibold text-left">
         <i data-lucide="${defaultDb[name].icon}" class="w-4 h-4 text-navy shrink-0"></i> ${name}
       </button>`).join('');
     const navUnitDropdown = document.getElementById('nav-unit-dropdown');
@@ -770,7 +831,7 @@
     const mobileUnitDropdown = document.getElementById('mobile-unit-dropdown');
     if(mobileUnitDropdown){
       mobileUnitDropdown.innerHTML = Object.keys(defaultDb).map(name => `
-        <button onclick="document.getElementById('mobile-menu').classList.add('hidden'); openUnitPage('${name}')" class="py-2 text-left text-xs text-ink-faint">&rarr; ${name}</button>`).join('');
+        <button onclick="document.getElementById('mobile-menu').classList.add('hidden'); openUnitPage('${name}')" class="py-2 text-left text-sm text-ink-faint">&rarr; ${name}</button>`).join('');
     }
 
     lucide.createIcons();
@@ -785,13 +846,13 @@
   function renderUnitPageContent(name){
     const images = unitImagesCache.filter(i => unitMatches(i.unit, name));
     document.getElementById('unit-tab-content').innerHTML = `
-      <div class="text-ink-soft leading-relaxed text-base">${renderStructuredContent(getUnitContent(name))}</div>
+      <div class="text-ink-soft leading-relaxed text-lg">${renderStructuredContent(getUnitContent(name))}</div>
       ${images.length ? `
         <div class="grid grid-cols-2 sm:grid-cols-3 gap-4 mt-6">
           ${images.map(i => `
             <a href="${i.imageUrl}" target="_blank" rel="noopener" class="group block">
               <div class="aspect-square rounded-xl overflow-hidden border border-line group-hover:border-gold transition-all" style="background-image:url('${i.imageUrl}'); background-size:cover; background-position:center;"></div>
-              ${i.caption ? `<p class="text-xs text-ink-soft mt-1.5 truncate">${i.caption}</p>` : ''}
+              ${i.caption ? `<p class="text-sm text-ink-soft mt-1.5 truncate">${i.caption}</p>` : ''}
             </a>`).join('')}
         </div>` : ''}
     `;
@@ -802,9 +863,9 @@
         ${carta.map(m => `
           <div class="flex items-center gap-3 bg-mist rounded-2xl px-5 py-4 border border-line">
             <div class="w-11 h-11 rounded-full bg-navy-50 flex items-center justify-center shrink-0"><i data-lucide="user" class="w-4.5 h-4.5 text-navy"></i></div>
-            <div class="min-w-0"><p class="text-base text-ink font-bold truncate">${m.nama}</p><p class="text-xs text-ink-soft truncate mt-0.5">${m.jawatan || ''}</p></div>
+            <div class="min-w-0"><p class="text-lg text-ink font-bold truncate">${m.nama}</p><p class="text-sm text-ink-soft truncate mt-0.5">${m.jawatan || ''}</p></div>
           </div>`).join('')}
-      </div>` : `<p class="text-center text-ink-faint text-sm py-16">Carta organisasi bagi unit ini belum tersedia.</p>`;
+      </div>` : `<p class="text-center text-ink-faint text-base py-16">Carta organisasi bagi unit ini belum tersedia.</p>`;
 
     const minit = unitMinitCache.filter(m => unitMatches(m.unit, name));
     document.getElementById('unit-tab-minit').innerHTML = minit.length ? `
@@ -812,11 +873,11 @@
         ${minit.map(m => `
           <a href="${m.fileUrl}" target="_blank" rel="noopener" class="flex items-center gap-3 bg-mist hover:bg-navy-50 border border-line rounded-2xl px-5 py-4 transition-all">
             <div class="w-10 h-10 rounded-xl bg-navy-50 flex items-center justify-center shrink-0"><i data-lucide="file-text" class="w-4.5 h-4.5 text-navy"></i></div>
-            <span class="flex-1 text-sm text-ink font-bold truncate">${m.title || 'Minit Mesyuarat'}</span>
-            <span class="text-xs text-ink-soft shrink-0">${m.meetingDate || ''}</span>
+            <span class="flex-1 text-base text-ink font-bold truncate">${m.title || 'Minit Mesyuarat'}</span>
+            <span class="text-sm text-ink-soft shrink-0">${m.meetingDate || ''}</span>
             <i data-lucide="external-link" class="w-3.5 h-3.5 text-ink-faint shrink-0"></i>
           </a>`).join('')}
-      </div>` : `<p class="text-center text-ink-faint text-sm py-16">Tiada minit mesyuarat dimuat naik bagi unit ini.</p>`;
+      </div>` : `<p class="text-center text-ink-faint text-base py-16">Tiada minit mesyuarat dimuat naik bagi unit ini.</p>`;
 
     const reports = unitReportsCache.filter(r => unitMatches(r.unit, name));
     document.getElementById('unit-tab-reports').innerHTML = reports.length ? `
@@ -824,9 +885,9 @@
         ${reports.map(r => `
           <a href="${r.imageUrl}" target="_blank" rel="noopener" class="group block">
             <div class="aspect-[210/297] rounded-xl overflow-hidden border border-line group-hover:border-gold transition-all shadow-md" style="background-image:url('${r.imageUrl}'); background-size:cover; background-position:top;"></div>
-            <p class="text-xs text-ink-soft mt-2 truncate font-semibold">${r.title || 'Laporan'}</p>
+            <p class="text-sm text-ink-soft mt-2 truncate font-semibold">${r.title || 'Laporan'}</p>
           </a>`).join('')}
-      </div>` : `<p class="text-center text-ink-faint text-sm py-16">Tiada laporan aktiviti disimpan bagi unit ini.</p>`;
+      </div>` : `<p class="text-center text-ink-faint text-base py-16">Tiada laporan aktiviti disimpan bagi unit ini.</p>`;
 
     lucide.createIcons();
   }
