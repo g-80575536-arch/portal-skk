@@ -928,17 +928,6 @@
             </select>
           </label>
           <textarea id="input-kra" oninput="updatePreview()" rows="3" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none" placeholder="Pilih KRA dari menu dropdown atau taip manual..."></textarea>
-          <div class="mt-2">
-            <button id="ai-btn-input-kra" onclick="aiAssist('input-kra','KRA (Kawasan Hasil Utama) bagi program sekolah')" class="text-[11px] font-bold text-indigo-600 hover:text-indigo-800 bg-indigo-50 hover:bg-indigo-100 px-3 py-1.5 rounded-full transition-all inline-flex items-center gap-1.5"><i data-lucide="sparkles" class="w-3 h-3"></i> Bantu Tulis dengan AI</button>
-            <div id="ai-suggestion-input-kra" class="hidden mt-2 bg-indigo-50 border border-indigo-100 rounded-xl p-3">
-              <p class="text-[10px] font-bold uppercase tracking-wider text-indigo-700 mb-1">Cadangan AI</p>
-              <p class="ai-suggestion-text text-xs text-slate-700 leading-relaxed whitespace-pre-line"></p>
-              <div class="flex gap-2 mt-2">
-                <button onclick="acceptAiSuggestion('input-kra')" class="text-[11px] font-bold text-white bg-indigo-600 hover:bg-indigo-700 px-3 py-1.5 rounded-full">Guna Cadangan Ini</button>
-                <button onclick="dismissAiSuggestion('input-kra')" class="text-[11px] font-bold text-slate-500 hover:text-slate-700 px-3 py-1.5">Buang</button>
-              </div>
-            </div>
-          </div>
         </div>
 
         <div>
@@ -1568,8 +1557,7 @@ function acceptAiSuggestion(fieldId){
   if(!box || !el) return;
   el.value = box.dataset.suggestion || '';
   box.classList.add('hidden');
-  if(typeof updateCmsContentPreview === 'function') updateCmsContentPreview();
-  if(typeof updatePreview === 'function') updatePreview();
+  el.dispatchEvent(new Event('input', { bubbles: true }));
 }
 function dismissAiSuggestion(fieldId){
   const box = document.getElementById('ai-suggestion-' + fieldId);
@@ -3456,11 +3444,25 @@ window.onload = function(){
       
       container.innerHTML = '';
       state.objectives.forEach((obj, idx) => {
+        const fieldId = 'objective-input-' + idx;
         container.innerHTML += `
-          <div class="flex items-center gap-2">
-            <span class="text-xs font-bold text-slate-400">${idx + 1}.</span>
-            <input type="text" value="${obj.replace(/"/g, '&quot;')}" oninput="updateObjective(${idx}, this.value)" class="flex-1 border border-slate-300 rounded-lg px-3 py-1.5 text-xs focus:ring-2 focus:ring-indigo-500 focus:outline-none" placeholder="Objektif ${idx + 1}">
-            <button onclick="removeObjectiveField(${idx})" class="text-red-500 p-1 hover:bg-red-50 rounded"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+          <div class="bg-slate-50 rounded-lg p-2">
+            <div class="flex items-center gap-2">
+              <span class="text-xs font-bold text-slate-400">${idx + 1}.</span>
+              <input type="text" id="${fieldId}" value="${obj.replace(/"/g, '&quot;')}" oninput="updateObjective(${idx}, this.value)" class="flex-1 border border-slate-300 rounded-lg px-3 py-1.5 text-xs focus:ring-2 focus:ring-indigo-500 focus:outline-none bg-white" placeholder="Objektif ${idx + 1}">
+              <button onclick="removeObjectiveField(${idx})" class="text-red-500 p-1 hover:bg-red-50 rounded"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+            </div>
+            <div class="pl-5 mt-1.5">
+              <button id="ai-btn-${fieldId}" onclick="aiAssist('${fieldId}','satu Objektif program sekolah, ayat ringkas dan spesifik')" class="text-[10px] font-bold text-indigo-600 hover:text-indigo-800 bg-indigo-50 hover:bg-indigo-100 px-2.5 py-1 rounded-full transition-all inline-flex items-center gap-1"><i data-lucide="sparkles" class="w-2.5 h-2.5"></i> Bantu Tulis dengan AI</button>
+              <div id="ai-suggestion-${fieldId}" class="hidden mt-1.5 bg-indigo-50 border border-indigo-100 rounded-xl p-2.5">
+                <p class="text-[9px] font-bold uppercase tracking-wider text-indigo-700 mb-1">Cadangan AI</p>
+                <p class="ai-suggestion-text text-xs text-slate-700 leading-relaxed whitespace-pre-line"></p>
+                <div class="flex gap-2 mt-1.5">
+                  <button onclick="acceptAiSuggestion('${fieldId}')" class="text-[10px] font-bold text-white bg-indigo-600 hover:bg-indigo-700 px-2.5 py-1 rounded-full">Guna Cadangan Ini</button>
+                  <button onclick="dismissAiSuggestion('${fieldId}')" class="text-[10px] font-bold text-slate-500 hover:text-slate-700 px-2.5 py-1">Buang</button>
+                </div>
+              </div>
+            </div>
           </div>
         `;
       });
