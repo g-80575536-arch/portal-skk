@@ -346,13 +346,17 @@
       <p class="text-base text-white/60 leading-relaxed">Jalan Krangan-Balai Ringin, 94700 Serian, Sarawak.</p>
       <p class="text-base text-white/60 mt-2">Kod Sekolah: YBB8240</p>
       <div class="flex gap-3 mt-5">
-        <a href="https://www.facebook.com/profile.php?id=61578234767177" target="_blank" rel="noopener" class="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20"><i data-lucide="facebook" class="w-4 h-4 text-white"></i></a>
-        <a href="#" class="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20"><i data-lucide="instagram" class="w-4 h-4 text-white"></i></a>
+        <a href="https://www.facebook.com/profile.php?id=61578234767177" target="_blank" rel="noopener" class="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20" title="Facebook SK Krangan">
+          <svg viewBox="0 0 24 24" class="w-4 h-4 text-white" fill="currentColor"><path d="M22 12c0-5.52-4.48-10-10-10S2 6.48 2 12c0 4.84 3.44 8.87 8 9.8V15H8v-3h2V9.5C10 7.57 11.57 6 13.5 6H16v3h-2c-.55 0-1 .45-1 1v2h3v3h-3v6.95c5.05-.5 9-4.76 9-9.95z"/></svg>
+        </a>
       </div>
     </div>
     <div>
       <p class="font-bold text-white text-base uppercase tracking-wider mb-3">Hubungi</p>
       <p class="text-base text-white/60 flex items-center gap-2 mb-2"><i data-lucide="mail" class="w-4 h-4"></i> ybb8240@moe.edu.my</p>
+      <p class="font-bold text-white text-base uppercase tracking-wider mb-3 mt-5">Waktu Operasi</p>
+      <p class="text-base text-white/60 flex items-center gap-2 mb-1"><i data-lucide="clock" class="w-4 h-4"></i> Isnin &ndash; Khamis: 7:00 pagi &ndash; 1:30 petang</p>
+      <p class="text-base text-white/60 flex items-center gap-2"><i data-lucide="clock" class="w-4 h-4"></i> Jumaat: 7:00 pagi &ndash; 11:30 pagi</p>
     </div>
     <div>
       <p class="font-bold text-white text-base uppercase tracking-wider mb-3">Pautan</p>
@@ -365,11 +369,13 @@
 <!-- ============ BUTANG APUNG PANTAS ============ -->
 <div class="fixed bottom-6 right-6 z-30 flex flex-col items-end gap-3">
   <div id="quick-actions" class="hidden flex-col gap-3">
-    <a href="https://www.facebook.com/profile.php?id=61578234767177" target="_blank" rel="noopener" class="w-12 h-12 rounded-full bg-[#1877F2] shadow-lg shadow-[#1877F2]/30 flex items-center justify-center hover:scale-110 transition-transform" title="Facebook SK Krangan"><i data-lucide="facebook" class="w-5 h-5 text-white"></i></a>
-    <a href="mailto:ybb8240@moe.edu.my" class="w-12 h-12 rounded-full bg-navy shadow-lg shadow-navy/30 flex items-center justify-center hover:scale-110 transition-transform" title="Emel SK Krangan"><i data-lucide="mail" class="w-5 h-5 text-white"></i></a>
-    <button onclick="window.scrollTo({top:0,behavior:'smooth'})" class="w-12 h-12 rounded-full bg-white shadow-lg border border-line flex items-center justify-center hover:scale-110 transition-transform"><i data-lucide="arrow-up" class="w-5 h-5 text-ink"></i></button>
+    <a href="https://www.facebook.com/profile.php?id=61578234767177" target="_blank" rel="noopener" class="w-12 h-12 rounded-full bg-[#1877F2] shadow-lg shadow-[#1877F2]/30 flex items-center justify-center hover:scale-110 transition-transform" title="Facebook SK Krangan">
+      <svg viewBox="0 0 24 24" class="w-5 h-5 text-white" fill="currentColor"><path d="M22 12c0-5.52-4.48-10-10-10S2 6.48 2 12c0 4.84 3.44 8.87 8 9.8V15H8v-3h2V9.5C10 7.57 11.57 6 13.5 6H16v3h-2c-.55 0-1 .45-1 1v2h3v3h-3v6.95c5.05-.5 9-4.76 9-9.95z"/></svg>
+    </a>
+    <a href="mailto:ybb8240@moe.edu.my" class="w-12 h-12 rounded-full bg-navy shadow-lg shadow-navy/30 flex items-center justify-center hover:scale-110 transition-transform" title="Hantar Emel kepada SK Krangan"><i data-lucide="mail" class="w-5 h-5 text-white"></i></a>
+    <button onclick="window.scrollTo({top:0,behavior:'smooth'})" class="w-12 h-12 rounded-full bg-white shadow-lg border border-line flex items-center justify-center hover:scale-110 transition-transform" title="Kembali ke Atas"><i data-lucide="arrow-up" class="w-5 h-5 text-ink"></i></button>
   </div>
-  <button onclick="document.getElementById('quick-actions').classList.toggle('hidden'); document.getElementById('quick-actions').classList.toggle('flex')" class="w-14 h-14 rounded-full bg-navy shadow-xl shadow-navy/30 flex items-center justify-center hover:scale-105 transition-transform">
+  <button onclick="document.getElementById('quick-actions').classList.toggle('hidden'); document.getElementById('quick-actions').classList.toggle('flex')" class="w-14 h-14 rounded-full bg-navy shadow-xl shadow-navy/30 flex items-center justify-center hover:scale-105 transition-transform" title="Lagi Pilihan Pantas">
     <i data-lucide="plus" class="w-6 h-6 text-white"></i>
   </button>
 </div>
@@ -788,13 +794,16 @@
       grid.innerHTML = `<div class="col-span-full text-center text-ink-faint text-base py-10">Tiada foto galeri lagi.</div>`;
       return;
     }
-    grid.innerHTML = photos.map((p, i) => `
+    grid.innerHTML = photos.map((p, i) => {
+      const label = [p.namaProgram, p.tempat].filter(Boolean).join(' &bull; ');
+      return `
       <button onclick="openGaleriLightbox(${i})" class="aspect-square rounded-2xl overflow-hidden relative group" style="background-image:url('${p.urlFoto}'); background-size:cover; background-position:center;">
         <div class="absolute inset-0 bg-navy-deep/0 group-hover:bg-navy-deep/30 transition-all flex items-center justify-center">
           <i data-lucide="search" class="w-6 h-6 text-white opacity-0 group-hover:opacity-100 transition-all"></i>
         </div>
-      </button>
-    `).join('');
+        ${label ? `<div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-navy-deep/90 to-transparent text-white text-sm font-semibold px-3 py-3 pt-8 text-left truncate">${label}</div>` : ''}
+      </button>`;
+    }).join('');
     lucide.createIcons();
   }
   function openGaleriLightbox(index){

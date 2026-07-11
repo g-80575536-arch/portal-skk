@@ -415,14 +415,15 @@
             <div id="hp-galeri-grid" class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-4"></div>
 
             <div class="bg-mist rounded-2xl p-4 space-y-3">
-              <p class="text-[10px] font-bold uppercase tracking-wider text-ink-faint">Maklumat Program (dikongsi untuk semua gambar yang dimuat naik sekali gus)</p>
+              <p class="text-[10px] font-bold uppercase tracking-wider text-ink-faint">Langkah 1: Isi Maklumat Program (dikongsi untuk semua gambar yang dimuat naik sekali gus)</p>
               <div class="grid sm:grid-cols-3 gap-2">
                 <input type="text" id="hp-galeri-program" placeholder="Nama Program" class="bg-white border border-line rounded-xl px-3 py-2.5 text-xs text-ink focus:ring-2 focus:ring-navy focus:outline-none">
                 <input type="date" id="hp-galeri-tarikh" class="bg-white border border-line rounded-xl px-3 py-2.5 text-xs text-ink focus:ring-2 focus:ring-navy focus:outline-none">
                 <input type="text" id="hp-galeri-tempat" placeholder="Tempat Diadakan" class="bg-white border border-line rounded-xl px-3 py-2.5 text-xs text-ink focus:ring-2 focus:ring-navy focus:outline-none">
               </div>
+              <p class="text-[10px] font-bold uppercase tracking-wider text-ink-faint pt-1">Langkah 2: Pilih Gambar &mdash; Terus Dimuat Naik Serta-merta (Tiada Butang Simpan Berasingan)</p>
               <label class="inline-flex items-center justify-center gap-2 text-xs font-bold bg-navy hover:bg-navy-deep text-white px-4 py-2.5 rounded-full cursor-pointer transition-all w-full sm:w-auto">
-                <i data-lucide="upload" class="w-3.5 h-3.5"></i> Pilih Gambar (Satu atau Banyak Sekali Gus)
+                <i data-lucide="upload" class="w-3.5 h-3.5"></i> Pilih &amp; Muat Naik Gambar (Satu atau Banyak Sekali Gus)
                 <input type="file" accept="image/*" multiple class="hidden" onchange="uploadHpGaleriPhotos(event)">
               </label>
               <p id="hp-galeri-progress" class="text-[11px] text-ink-faint hidden"></p>
