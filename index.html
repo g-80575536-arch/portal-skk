@@ -165,10 +165,8 @@
 
 <!-- ============ COUNTDOWN PEPERIKSAAN ============ -->
 <div class="bg-navy border-b border-navy-deep py-2.5">
-  <div class="flex flex-wrap items-center justify-center gap-x-4 gap-y-1.5 text-xs sm:text-sm font-semibold text-white/90 px-4 text-center">
-    <span class="inline-flex items-center gap-2"><i data-lucide="alarm-clock" class="w-4 h-4 text-gold shrink-0"></i><span id="ticker-countdown-matriks">Memuatkan...</span></span>
-    <span class="hidden sm:inline text-white/30">&bull;</span>
-    <span class="inline-flex items-center gap-2"><i data-lucide="alarm-clock" class="w-4 h-4 text-gold shrink-0"></i><span id="ticker-countdown-updlp">Memuatkan...</span></span>
+  <div id="ticker-events-wrap" class="flex flex-wrap items-center justify-center gap-x-4 gap-y-1.5 text-xs sm:text-sm font-semibold text-white/90 px-4 text-center">
+    <span class="inline-flex items-center gap-2"><i data-lucide="alarm-clock" class="w-4 h-4 text-gold shrink-0"></i><span>Memuatkan takwim...</span></span>
   </div>
 </div>
 
@@ -217,19 +215,19 @@
 <section class="max-w-6xl mx-auto px-5 sm:px-8 pb-24">
   <div class="grid grid-cols-2 md:grid-cols-4 gap-5 reveal-stagger">
     <div class="soft-card rounded-2xl p-7 text-center">
-      <div class="counter font-display font-semibold text-4xl text-navy mb-1" data-target="76">0</div>
+      <div id="stat-murid" class="counter font-display font-semibold text-4xl text-navy mb-1" data-target="76">0</div>
       <div class="text-xs font-bold uppercase tracking-wider text-ink-faint">Murid</div>
     </div>
     <div class="soft-card rounded-2xl p-7 text-center">
-      <div class="counter font-display font-semibold text-4xl text-navy mb-1" data-target="13">0</div>
+      <div id="stat-guru" class="counter font-display font-semibold text-4xl text-navy mb-1" data-target="13">0</div>
       <div class="text-xs font-bold uppercase tracking-wider text-ink-faint">Guru</div>
     </div>
     <div class="soft-card rounded-2xl p-7 text-center">
-      <div class="counter font-display font-semibold text-4xl text-navy mb-1" data-target="2">0</div>
+      <div id="stat-staf" class="counter font-display font-semibold text-4xl text-navy mb-1" data-target="2">0</div>
       <div class="text-xs font-bold uppercase tracking-wider text-ink-faint">Staf</div>
     </div>
     <div class="soft-card rounded-2xl p-7 text-center">
-      <div class="counter font-display font-semibold text-4xl text-navy mb-1" data-target="6">0</div>
+      <div id="stat-kelas" class="counter font-display font-semibold text-4xl text-navy mb-1" data-target="6">0</div>
       <div class="text-xs font-bold uppercase tracking-wider text-ink-faint">Kelas</div>
     </div>
   </div>
@@ -245,26 +243,26 @@
     <div class="soft-card rounded-2xl p-9">
       <i data-lucide="compass" class="w-7 h-7 text-navy mb-4"></i>
       <h3 class="font-display font-semibold text-xl mb-2 text-ink">Visi</h3>
-      <p class="text-ink-soft leading-relaxed">Memartabatkan pendidikan menjulang kejayaan ke arah kemenjadian murid.</p>
+      <p id="profil-visi" class="text-ink-soft leading-relaxed">Memartabatkan pendidikan menjulang kejayaan ke arah kemenjadian murid.</p>
     </div>
     <div class="soft-card rounded-2xl p-9">
       <i data-lucide="target" class="w-7 h-7 text-gold mb-4"></i>
       <h3 class="font-display font-semibold text-xl mb-2 text-ink">Misi</h3>
-      <p class="text-ink-soft leading-relaxed">SK Krangan cemerlang dalam pendidikan, menggilap potensi individu, memperkasakan modal insan, memantapkan pengurusan.</p>
+      <p id="profil-misi" class="text-ink-soft leading-relaxed">SK Krangan cemerlang dalam pendidikan, menggilap potensi individu, memperkasakan modal insan, memantapkan pengurusan.</p>
     </div>
     <div class="soft-card rounded-2xl p-9">
       <i data-lucide="flag" class="w-7 h-7 text-crimson mb-4"></i>
       <h3 class="font-display font-semibold text-xl mb-2 text-ink">Moto Sekolah</h3>
-      <p class="text-ink-soft leading-relaxed">Ke Arah Masyarakat Berilmu</p>
+      <p id="profil-moto" class="text-ink-soft leading-relaxed">Ke Arah Masyarakat Berilmu</p>
     </div>
     <div class="soft-card rounded-2xl p-9">
       <i data-lucide="info" class="w-7 h-7 text-navy mb-4"></i>
       <h3 class="font-display font-semibold text-xl mb-3 text-ink">Maklumat Asas</h3>
       <dl class="text-sm text-ink-soft space-y-1.5">
-        <div class="flex gap-2"><dt class="font-semibold text-ink shrink-0">Nama:</dt><dd>Sekolah Kebangsaan Krangan</dd></div>
-        <div class="flex gap-2"><dt class="font-semibold text-ink shrink-0">Kod Sekolah:</dt><dd>YBB8240</dd></div>
-        <div class="flex gap-2"><dt class="font-semibold text-ink shrink-0">Alamat:</dt><dd>Jalan Krangan-Balai Ringin, 94700 Serian, Sarawak</dd></div>
-        <div class="flex gap-2"><dt class="font-semibold text-ink shrink-0">Emel:</dt><dd>ybb8240@moe.edu.my</dd></div>
+        <div class="flex gap-2"><dt class="font-semibold text-ink shrink-0">Nama:</dt><dd id="profil-nama">Sekolah Kebangsaan Krangan</dd></div>
+        <div class="flex gap-2"><dt class="font-semibold text-ink shrink-0">Kod Sekolah:</dt><dd id="profil-kod">YBB8240</dd></div>
+        <div class="flex gap-2"><dt class="font-semibold text-ink shrink-0">Alamat:</dt><dd id="profil-alamat">Jalan Krangan-Balai Ringin, 94700 Serian, Sarawak</dd></div>
+        <div class="flex gap-2"><dt class="font-semibold text-ink shrink-0">Emel:</dt><dd id="profil-emel">ybb8240@moe.edu.my</dd></div>
       </dl>
     </div>
   </div>
@@ -307,21 +305,8 @@
     <h2 class="font-display font-semibold text-3xl sm:text-4xl text-ink mt-2">Takwim Sekolah</h2>
   </div>
   <div class="grid md:grid-cols-2 gap-5 reveal-stagger">
-    <div class="soft-card rounded-2xl p-5 flex items-center gap-4">
-      <div class="w-12 h-12 rounded-xl bg-navy-50 flex items-center justify-center shrink-0"><i data-lucide="graduation-cap" class="text-navy w-5 h-5"></i></div>
-      <div class="flex-1"><p class="font-bold text-ink">Matriks Pembelajaran Tahun 4</p><p class="text-sm text-ink-soft">6 &ndash; 8 Oktober 2026</p></div>
-      <div class="text-right shrink-0 pl-2">
-        <p class="countdown-days font-display font-semibold text-2xl text-navy leading-none" data-countdown="2026-10-06">&ndash;</p>
-        <p class="text-[9px] font-bold uppercase tracking-wider text-ink-faint mt-0.5">hari lagi</p>
-      </div>
-    </div>
-    <div class="soft-card rounded-2xl p-5 flex items-center gap-4">
-      <div class="w-12 h-12 rounded-xl bg-gold-soft flex items-center justify-center shrink-0"><i data-lucide="pencil-line" class="text-gold w-5 h-5"></i></div>
-      <div class="flex-1"><p class="font-bold text-ink">Peperiksaan (UPDLP)</p><p class="text-sm text-ink-soft">12 &ndash; 16 Oktober 2026</p></div>
-      <div class="text-right shrink-0 pl-2">
-        <p class="countdown-days font-display font-semibold text-2xl text-navy leading-none" data-countdown="2026-10-12">&ndash;</p>
-        <p class="text-[9px] font-bold uppercase tracking-wider text-ink-faint mt-0.5">hari lagi</p>
-      </div>
+    <div id="takwim-dynamic-cards" class="contents">
+      <div class="soft-card rounded-2xl p-5 flex items-center gap-4 col-span-full"><p class="text-sm text-ink-faint">Memuatkan takwim...</p></div>
     </div>
     <div class="soft-card rounded-2xl p-5 flex items-center gap-4">
       <div class="w-12 h-12 rounded-xl bg-navy-50 flex items-center justify-center shrink-0"><i data-lucide="palmtree" class="text-navy w-5 h-5"></i></div>
@@ -409,11 +394,8 @@
 
   // ---- Slaid gambar sekolah (hero) ----
   let heroSlideIndex = 0;
-  const heroSlides = document.querySelectorAll('.hero-slide');
-  const heroDotsBox = document.getElementById('hero-slide-dots');
-  if(heroDotsBox && heroSlides.length){
-    heroDotsBox.innerHTML = Array.from(heroSlides).map((_,i) => `<span class="hero-dot w-1.5 h-1.5 rounded-full transition-all ${i===0 ? 'bg-white w-5' : 'bg-white/50'}"></span>`).join('');
-  }
+  let heroSlides = document.querySelectorAll('.hero-slide');
+  let heroSlideInterval = null;
   function goToHeroSlide(next){
     if(!heroSlides.length) return;
     heroSlides[heroSlideIndex].style.opacity = '0';
@@ -423,7 +405,22 @@
     heroSlides[heroSlideIndex].style.opacity = '1';
     if(dots[heroSlideIndex]) dots[heroSlideIndex].className = 'hero-dot w-1.5 h-1.5 rounded-full transition-all bg-white w-5';
   }
-  setInterval(() => { goToHeroSlide((heroSlideIndex + 1) % heroSlides.length); }, 4500);
+  // Boleh dipanggil semula selepas foto CMS dimuat, untuk bina semula slaid dgn foto baharu.
+  function initHeroSlideshow(photoUrls){
+    const stage = document.getElementById('hero-slideshow');
+    const heroDotsBox = document.getElementById('hero-slide-dots');
+    if(photoUrls && photoUrls.length && stage){
+      stage.innerHTML = photoUrls.map((url, i) => `<div class="hero-slide absolute inset-0 opacity-${i===0?'100':'0'} transition-opacity duration-1000" style="background-image:url('${url}'); background-size:cover; background-position:center;"></div>`).join('');
+    }
+    heroSlides = document.querySelectorAll('.hero-slide');
+    heroSlideIndex = 0;
+    if(heroDotsBox && heroSlides.length){
+      heroDotsBox.innerHTML = Array.from(heroSlides).map((_,i) => `<span class="hero-dot w-1.5 h-1.5 rounded-full transition-all ${i===0 ? 'bg-white w-5' : 'bg-white/50'}"></span>`).join('');
+    }
+    if(heroSlideInterval) clearInterval(heroSlideInterval);
+    heroSlideInterval = setInterval(() => { goToHeroSlide((heroSlideIndex + 1) % heroSlides.length); }, 4500);
+  }
+  initHeroSlideshow(); // guna foto lalai (hardcoded) dahulu; diganti bila CMS selesai dimuat
 
   // ---- Skrin pemuatan ----
   window.addEventListener('load', () => {
@@ -464,7 +461,7 @@
   }
 
   // ---- Carta organisasi ----
-  const orgChart = [
+  let orgChart = [
     { name:'Stanley anak Ngawah', role:'Guru Besar', photo:'staf-stanley.jpg', tier:1 },
     { name:'Dick Lester anak Bakir', role:'Guru Penolong Kanan Kurikulum', photo:'staf-dick.jpg', tier:2 },
     { name:'Amir bin Ngatiman', role:'Guru Penolong Kanan Hal Ehwal Murid', photo:'staf-amir.jpg', tier:2 },
@@ -573,24 +570,14 @@
     el.innerText = diffDays > 0 ? diffDays : (diffDays === 0 ? 'Hari ini' : 'Selesai');
   });
 
-  // ---- Countdown peperiksaan (bar atas) ----
-  (function(){
-    const today = new Date(); today.setHours(0,0,0,0);
-    function setCountdown(elId, targetDateStr, label, dateRangeLabel){
-      const el = document.getElementById(elId);
-      if(!el) return;
-      const target = new Date(targetDateStr + 'T00:00:00');
-      const diffDays = Math.ceil((target - today) / (1000*60*60*24));
-      if(diffDays > 0) el.innerText = `${diffDays} hari lagi ke ${label} (${dateRangeLabel})`;
-      else if(diffDays === 0) el.innerText = `${label} bermula hari ini!`;
-      else el.innerText = `${label} 2026 telah selesai`;
-    }
-    setCountdown('ticker-countdown-matriks', '2026-10-06', 'Matriks Tahun 4', '6–8 Oktober 2026');
-    setCountdown('ticker-countdown-updlp', '2026-10-12', 'Peperiksaan UPDLP', '12–16 Oktober 2026');
-  })();
+  // ---- Takwim/countdown lalai (dipaparkan serta-merta; digantikan oleh CMS bila selesai dimuat) ----
+  renderTakwimEvents([
+    { nama: 'Matriks Tahun 4', tarikhMula: '2026-10-06', tarikhTamat: '2026-10-08' },
+    { nama: 'Peperiksaan UPDLP', tarikhMula: '2026-10-12', tarikhTamat: '2026-10-16' }
+  ]);
 
   // ---- Kandungan Unit (tarik daripada storan DIKONGSI, sandaran localStorage/lalai) ----
-  const CMS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzY60s_hPRK4kRzfEsOkqcbqI15tyNjQ6FGMkRrSwkfjuawQw_mdb1MuuA8WWAmDtMc/exec";
+  const CMS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycby23oWraKfCNUD8tIecHwnEARPTFnu3H0Cy18NIpmxyazzlUKLsAH4TxAgrztH4WWQu/exec";
 
   const defaultDb = {
     'Pentadbiran':      { icon:'briefcase',    desc:'Carta organisasi, dasar & peraturan sekolah.',       content:'Sila rujuk pihak pentadbiran sekolah untuk maklumat lanjut mengenai carta organisasi dan dasar sekolah.' },
@@ -653,6 +640,114 @@
       if(minitRes.ok){ const d = await minitRes.json(); unitMinitCache = Array.isArray(d) ? d : []; }
       if(currentOpenUnit) renderUnitPageContent(currentOpenUnit);
     }catch(e){ /* senyap - galeri kekal kosong jika rangkaian gagal */ }
+  }
+
+  function formatTarikhMy(isoDate){
+    if(!isoDate) return '';
+    const bulanNames = ['Januari','Februari','Mac','April','Mei','Jun','Julai','Ogos','September','Oktober','November','Disember'];
+    const parts = String(isoDate).split('-');
+    if(parts.length !== 3) return isoDate;
+    const [y,m,d] = parts;
+    return `${parseInt(d,10)} ${bulanNames[parseInt(m,10)-1] || ''} ${y}`;
+  }
+
+  // Bina tiker atas + kad Takwim Sekolah daripada senarai acara CMS (sebarang bilangan acara).
+  function renderTakwimEvents(events){
+    const today = new Date(); today.setHours(0,0,0,0);
+
+    const tickerWrap = document.getElementById('ticker-events-wrap');
+    if(tickerWrap){
+      tickerWrap.innerHTML = events.map((ev, i) => {
+        const target = new Date(ev.tarikhMula + 'T00:00:00');
+        const diffDays = Math.ceil((target - today) / (1000*60*60*24));
+        let text;
+        if(diffDays > 0) text = `${diffDays} hari lagi ke ${ev.nama}`;
+        else if(diffDays === 0) text = `${ev.nama} bermula hari ini!`;
+        else text = `${ev.nama} telah selesai`;
+        const sep = i > 0 ? `<span class="hidden sm:inline text-white/30">&bull;</span>` : '';
+        return `${sep}<span class="inline-flex items-center gap-2"><i data-lucide="alarm-clock" class="w-4 h-4 text-gold shrink-0"></i><span>${text}</span></span>`;
+      }).join('');
+    }
+
+    const cardsWrap = document.getElementById('takwim-dynamic-cards');
+    if(cardsWrap){
+      cardsWrap.innerHTML = events.map(ev => {
+        const target = new Date(ev.tarikhMula + 'T00:00:00');
+        const diffDays = Math.ceil((target - today) / (1000*60*60*24));
+        const dayLabel = diffDays > 0 ? diffDays : (diffDays === 0 ? '0' : '&ndash;');
+        const dateRangeText = (ev.tarikhTamat && ev.tarikhTamat !== ev.tarikhMula)
+          ? `${formatTarikhMy(ev.tarikhMula)} &ndash; ${formatTarikhMy(ev.tarikhTamat)}`
+          : formatTarikhMy(ev.tarikhMula);
+        return `
+          <div class="soft-card rounded-2xl p-5 flex items-center gap-4">
+            <div class="w-12 h-12 rounded-xl bg-navy-50 flex items-center justify-center shrink-0"><i data-lucide="calendar-days" class="text-navy w-5 h-5"></i></div>
+            <div class="flex-1"><p class="font-bold text-ink">${ev.nama}</p><p class="text-sm text-ink-soft">${dateRangeText}</p></div>
+            <div class="text-right shrink-0 pl-2">
+              <p class="font-display font-semibold text-2xl text-navy leading-none">${dayLabel}</p>
+              <p class="text-[9px] font-bold uppercase tracking-wider text-ink-faint mt-0.5">hari lagi</p>
+            </div>
+          </div>`;
+      }).join('');
+    }
+    lucide.createIcons();
+  }
+
+  // Tarik SEMUA kandungan laman utama yang boleh diurus CMS: statistik, profil,
+  // takwim, carta organisasi utama & foto hero. Jika mana-mana gagal/kosong,
+  // nilai lalai (hardcoded) yang sedia ada dalam HTML kekal terpapar.
+  async function syncHomepageFromBackend(){
+    if(!CMS_SCRIPT_URL || CMS_SCRIPT_URL.includes('PLACEHOLDER')) return;
+    try{
+      const [statRes, profilRes, takwimRes, cartaUtamaRes, heroRes] = await Promise.all([
+        fetch(CMS_SCRIPT_URL + '?action=statistik'),
+        fetch(CMS_SCRIPT_URL + '?action=profil'),
+        fetch(CMS_SCRIPT_URL + '?action=takwim'),
+        fetch(CMS_SCRIPT_URL + '?action=cartautama'),
+        fetch(CMS_SCRIPT_URL + '?action=fotohero')
+      ]);
+
+      if(statRes.ok){
+        const d = await statRes.json();
+        if(d){
+          ['murid','guru','staf','kelas'].forEach(key => {
+            const el = document.getElementById('stat-' + key);
+            if(el && d[key] !== undefined && d[key] !== null && d[key] !== ''){
+              el.setAttribute('data-target', d[key]);
+              el.innerText = d[key];
+            }
+          });
+        }
+      }
+
+      if(profilRes.ok){
+        const d = await profilRes.json();
+        if(d){
+          const map = { visi:'profil-visi', misi:'profil-misi', moto:'profil-moto', namaSekolah:'profil-nama', kodSekolah:'profil-kod', alamat:'profil-alamat', emel:'profil-emel' };
+          Object.keys(map).forEach(key => {
+            const el = document.getElementById(map[key]);
+            if(el && d[key]) el.innerText = d[key];
+          });
+        }
+      }
+
+      if(takwimRes.ok){
+        const events = await takwimRes.json();
+        if(Array.isArray(events) && events.length) renderTakwimEvents(events);
+      }
+
+      if(cartaUtamaRes.ok){
+        const members = await cartaUtamaRes.json();
+        if(Array.isArray(members) && members.length){
+          orgChart = members.map(m => ({ name: m.nama, role: m.jawatan, photo: m.urlFoto || '', tier: m.tier || 3 }));
+          renderOrgChart();
+        }
+      }
+
+      if(heroRes.ok){
+        const photos = await heroRes.json();
+        if(Array.isArray(photos) && photos.length) initHeroSlideshow(photos.map(p => p.urlFoto));
+      }
+    }catch(e){ /* senyap - kekal guna nilai lalai (hardcoded) jika rangkaian gagal */ }
   }
 
   function renderUnitGrid(){
@@ -764,6 +859,7 @@
   renderOrgChart();
   syncCmsFromBackend();
   syncMediaFromBackend();
+  syncHomepageFromBackend();
 </script>
 </body>
 </html>

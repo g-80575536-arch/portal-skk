@@ -201,8 +201,14 @@
       <h2 class="font-display font-bold text-2xl text-ink mb-1">Kandungan Laman Web</h2>
       <p class="text-sm text-ink-soft mb-8">Kemas kini terus terbit ke laman awam sebaik sahaja disimpan.</p>
       <div class="grid md:grid-cols-4 gap-8">
-        <div class="md:col-span-1 flex md:flex-col gap-2 overflow-x-auto" id="cms-unit-tabs"></div>
-        <div class="md:col-span-3">
+        <div class="md:col-span-1 flex md:flex-col gap-2 overflow-x-auto">
+          <button onclick="selectCmsHomepage()" id="cms-tab-lamanutama" class="text-left px-4 py-3 rounded-xl text-sm font-bold whitespace-nowrap md:whitespace-normal transition-all bg-mist text-ink-soft hover:bg-navy-50 flex items-center gap-2">
+            <i data-lucide="home" class="w-4 h-4"></i> Laman Utama
+          </button>
+          <div class="hidden md:block border-t border-line my-1"></div>
+          <div class="flex md:flex-col gap-2" id="cms-unit-tabs"></div>
+        </div>
+        <div class="md:col-span-3" id="cms-unit-panel">
           <div class="space-y-5">
             <div>
               <label class="text-xs font-bold uppercase tracking-wider text-ink-soft block mb-1.5">Pengenalan</label>
@@ -290,6 +296,116 @@
               <i data-lucide="save" class="w-4 h-4"></i> Simpan &amp; Terbitkan
             </button>
           </div>
+        </div>
+
+        <!-- ===== PANEL LAMAN UTAMA (statistik, takwim, carta utama, profil, hero) ===== -->
+        <div class="md:col-span-3 hidden space-y-10" id="cms-homepage-panel">
+
+          <!-- Statistik -->
+          <div>
+            <h3 class="font-bold text-ink mb-1">Statistik Sekolah</h3>
+            <p class="text-[11px] text-ink-faint mb-3">Dipaparkan di bahagian "Statistik" laman utama.</p>
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+              <div>
+                <label class="text-[10px] font-bold uppercase text-ink-faint block mb-1">Murid</label>
+                <input type="number" id="hp-stat-murid" class="w-full bg-mist border border-line rounded-xl px-3 py-2.5 text-sm text-ink focus:ring-2 focus:ring-navy focus:outline-none">
+              </div>
+              <div>
+                <label class="text-[10px] font-bold uppercase text-ink-faint block mb-1">Guru</label>
+                <input type="number" id="hp-stat-guru" class="w-full bg-mist border border-line rounded-xl px-3 py-2.5 text-sm text-ink focus:ring-2 focus:ring-navy focus:outline-none">
+              </div>
+              <div>
+                <label class="text-[10px] font-bold uppercase text-ink-faint block mb-1">Staf</label>
+                <input type="number" id="hp-stat-staf" class="w-full bg-mist border border-line rounded-xl px-3 py-2.5 text-sm text-ink focus:ring-2 focus:ring-navy focus:outline-none">
+              </div>
+              <div>
+                <label class="text-[10px] font-bold uppercase text-ink-faint block mb-1">Kelas</label>
+                <input type="number" id="hp-stat-kelas" class="w-full bg-mist border border-line rounded-xl px-3 py-2.5 text-sm text-ink focus:ring-2 focus:ring-navy focus:outline-none">
+              </div>
+            </div>
+            <button onclick="saveHpStatistik()" class="mt-3 text-xs font-bold bg-navy text-white px-4 py-2 rounded-full hover:bg-navy-deep transition-all">Simpan Statistik</button>
+          </div>
+
+          <div class="border-t border-line"></div>
+
+          <!-- Profil Sekolah -->
+          <div>
+            <h3 class="font-bold text-ink mb-1">Profil Sekolah</h3>
+            <p class="text-[11px] text-ink-faint mb-3">Visi, Misi, Moto &amp; maklumat asas di bahagian "Profil Sekolah".</p>
+            <div class="space-y-3">
+              <div>
+                <label class="text-[10px] font-bold uppercase text-ink-faint block mb-1">Visi</label>
+                <textarea id="hp-profil-visi" rows="2" class="w-full bg-mist border border-line rounded-xl p-3 text-sm text-ink focus:ring-2 focus:ring-navy focus:outline-none"></textarea>
+              </div>
+              <div>
+                <label class="text-[10px] font-bold uppercase text-ink-faint block mb-1">Misi</label>
+                <textarea id="hp-profil-misi" rows="2" class="w-full bg-mist border border-line rounded-xl p-3 text-sm text-ink focus:ring-2 focus:ring-navy focus:outline-none"></textarea>
+              </div>
+              <div class="grid grid-cols-2 gap-3">
+                <div>
+                  <label class="text-[10px] font-bold uppercase text-ink-faint block mb-1">Moto</label>
+                  <input type="text" id="hp-profil-moto" class="w-full bg-mist border border-line rounded-xl px-3 py-2.5 text-sm text-ink focus:ring-2 focus:ring-navy focus:outline-none">
+                </div>
+                <div>
+                  <label class="text-[10px] font-bold uppercase text-ink-faint block mb-1">Nama Sekolah</label>
+                  <input type="text" id="hp-profil-nama" class="w-full bg-mist border border-line rounded-xl px-3 py-2.5 text-sm text-ink focus:ring-2 focus:ring-navy focus:outline-none">
+                </div>
+                <div>
+                  <label class="text-[10px] font-bold uppercase text-ink-faint block mb-1">Kod Sekolah</label>
+                  <input type="text" id="hp-profil-kod" class="w-full bg-mist border border-line rounded-xl px-3 py-2.5 text-sm text-ink focus:ring-2 focus:ring-navy focus:outline-none">
+                </div>
+                <div>
+                  <label class="text-[10px] font-bold uppercase text-ink-faint block mb-1">Emel</label>
+                  <input type="text" id="hp-profil-emel" class="w-full bg-mist border border-line rounded-xl px-3 py-2.5 text-sm text-ink focus:ring-2 focus:ring-navy focus:outline-none">
+                </div>
+                <div class="col-span-2">
+                  <label class="text-[10px] font-bold uppercase text-ink-faint block mb-1">Alamat</label>
+                  <input type="text" id="hp-profil-alamat" class="w-full bg-mist border border-line rounded-xl px-3 py-2.5 text-sm text-ink focus:ring-2 focus:ring-navy focus:outline-none">
+                </div>
+                <div class="col-span-2">
+                  <label class="text-[10px] font-bold uppercase text-ink-faint block mb-1">Pautan Facebook</label>
+                  <input type="text" id="hp-profil-fb" class="w-full bg-mist border border-line rounded-xl px-3 py-2.5 text-sm text-ink focus:ring-2 focus:ring-navy focus:outline-none">
+                </div>
+              </div>
+            </div>
+            <button onclick="saveHpProfil()" class="mt-3 text-xs font-bold bg-navy text-white px-4 py-2 rounded-full hover:bg-navy-deep transition-all">Simpan Profil</button>
+          </div>
+
+          <div class="border-t border-line"></div>
+
+          <!-- Takwim Sekolah -->
+          <div>
+            <h3 class="font-bold text-ink mb-1">Takwim Sekolah / Countdown</h3>
+            <p class="text-[11px] text-ink-faint mb-3">Senarai acara dengan kiraan detik automatik di laman utama.</p>
+            <div id="hp-takwim-list" class="space-y-3"></div>
+            <button onclick="addHpTakwimRow()" class="mt-2 text-xs font-bold text-navy hover:text-gold flex items-center gap-1.5"><i data-lucide="plus-circle" class="w-3.5 h-3.5"></i> Tambah Acara</button>
+            <div><button onclick="saveHpTakwim()" class="mt-3 text-xs font-bold bg-navy text-white px-4 py-2 rounded-full hover:bg-navy-deep transition-all">Simpan Takwim</button></div>
+          </div>
+
+          <div class="border-t border-line"></div>
+
+          <!-- Carta Organisasi Utama -->
+          <div>
+            <h3 class="font-bold text-ink mb-1">Carta Organisasi Utama</h3>
+            <p class="text-[11px] text-ink-faint mb-3">Hierarki penuh staf sekolah (Guru Besar / GPK / Guru &amp; Kakitangan) di laman utama.</p>
+            <div id="hp-carta-list" class="space-y-3"></div>
+            <button onclick="addHpCartaRow()" class="mt-2 text-xs font-bold text-navy hover:text-gold flex items-center gap-1.5"><i data-lucide="plus-circle" class="w-3.5 h-3.5"></i> Tambah Ahli</button>
+            <div><button onclick="saveHpCartaUtama()" class="mt-3 text-xs font-bold bg-navy text-white px-4 py-2 rounded-full hover:bg-navy-deep transition-all">Simpan Carta Organisasi</button></div>
+          </div>
+
+          <div class="border-t border-line"></div>
+
+          <!-- Foto Hero -->
+          <div>
+            <h3 class="font-bold text-ink mb-1">Foto Hero (Slaid Halaman Utama)</h3>
+            <p class="text-[11px] text-ink-faint mb-3">Foto yang beralih automatik di bahagian atas laman utama.</p>
+            <div id="hp-hero-grid" class="grid grid-cols-3 sm:grid-cols-4 gap-3 mb-3"></div>
+            <label class="inline-flex items-center gap-2 text-xs font-bold bg-mist hover:bg-navy-50 text-ink px-4 py-2.5 rounded-full cursor-pointer transition-all">
+              <i data-lucide="upload" class="w-3.5 h-3.5"></i> Muat Naik Foto Hero
+              <input type="file" accept="image/*" class="hidden" onchange="uploadHpHeroPhoto(event)">
+            </label>
+          </div>
+
         </div>
       </div>
     </div>
@@ -1152,7 +1268,7 @@ function showModule(id){
    atau rangkaian gagal - sistem tetap berfungsi (macam sebelum ini) dalam
    keadaan tersebut, cuma tidak berkongsi merentasi peranti.
    ===================================================================== */
-const CMS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzY60s_hPRK4kRzfEsOkqcbqI15tyNjQ6FGMkRrSwkfjuawQw_mdb1MuuA8WWAmDtMc/exec";
+const CMS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycby23oWraKfCNUD8tIecHwnEARPTFnu3H0Cy18NIpmxyazzlUKLsAH4TxAgrztH4WWQu/exec";
 
 const cmsUnitMeta = {
   'Pentadbiran':      'Sila edit kandungan carta organisasi, dasar dan peraturan sekolah di sini.',
@@ -1229,6 +1345,11 @@ function fillCmsFields(text){
 
 async function selectCmsUnit(unit){
   cmsActiveUnit = unit;
+  document.getElementById('cms-unit-panel').classList.remove('hidden');
+  document.getElementById('cms-homepage-panel').classList.add('hidden');
+  const lamanUtamaTab = document.getElementById('cms-tab-lamanutama');
+  if(lamanUtamaTab) lamanUtamaTab.className = 'text-left px-4 py-3 rounded-xl text-sm font-bold whitespace-nowrap md:whitespace-normal transition-all bg-mist text-ink-soft hover:bg-navy-50 flex items-center gap-2';
+
   currentUser.cmsUnits.forEach(u => {
     const tab = document.getElementById('cms-tab-' + u.replace(/\s+/g,''));
     if(!tab) return;
@@ -1393,6 +1514,283 @@ async function deleteCmsReport(imageUrl){
     showToast('Gagal padam laporan.', 'error');
   }
 }
+
+/* ============================================================
+   PANEL LAMAN UTAMA - Statistik, Profil, Takwim, Carta Utama, Foto Hero
+   ============================================================ */
+let hpTakwimData = [];
+let hpCartaData = [];
+
+async function selectCmsHomepage(){
+  document.getElementById('cms-unit-panel').classList.add('hidden');
+  document.getElementById('cms-homepage-panel').classList.remove('hidden');
+  document.getElementById('cms-tab-lamanutama').className = 'text-left px-4 py-3 rounded-xl text-sm font-bold whitespace-nowrap md:whitespace-normal transition-all bg-gradient-to-r from-blue to-cyan text-white flex items-center gap-2';
+  currentUser.cmsUnits.forEach(u => {
+    const tab = document.getElementById('cms-tab-' + u.replace(/\s+/g,''));
+    if(tab) tab.className = 'text-left px-4 py-3 rounded-xl text-sm font-bold whitespace-nowrap md:whitespace-normal transition-all bg-mist text-ink-soft hover:bg-navy-50';
+  });
+
+  loadHpStatistik();
+  loadHpProfil();
+  loadHpTakwim();
+  loadHpCartaUtama();
+  loadHpHeroPhotos();
+}
+
+/* ---- Statistik ---- */
+async function loadHpStatistik(){
+  try{
+    const res = await fetch(CMS_SCRIPT_URL + '?action=statistik');
+    if(!res.ok) return;
+    const d = await res.json();
+    if(!d) return;
+    document.getElementById('hp-stat-murid').value = d.murid || '';
+    document.getElementById('hp-stat-guru').value = d.guru || '';
+    document.getElementById('hp-stat-staf').value = d.staf || '';
+    document.getElementById('hp-stat-kelas').value = d.kelas || '';
+  }catch(e){ /* senyap - kekal kosong jika gagal */ }
+}
+async function saveHpStatistik(){
+  showToast('Menyimpan statistik...', 'info');
+  try{
+    await fetch(CMS_SCRIPT_URL, {
+      method: 'POST', mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        action: 'saveStatistik',
+        murid: Number(document.getElementById('hp-stat-murid').value) || 0,
+        guru: Number(document.getElementById('hp-stat-guru').value) || 0,
+        staf: Number(document.getElementById('hp-stat-staf').value) || 0,
+        kelas: Number(document.getElementById('hp-stat-kelas').value) || 0,
+        editor: currentUser.name
+      })
+    });
+    showToast('Statistik berjaya disimpan.', 'success');
+  }catch(e){ showToast('Gagal simpan statistik.', 'error'); }
+}
+
+/* ---- Profil Sekolah ---- */
+async function loadHpProfil(){
+  try{
+    const res = await fetch(CMS_SCRIPT_URL + '?action=profil');
+    if(!res.ok) return;
+    const d = await res.json();
+    if(!d) return;
+    document.getElementById('hp-profil-visi').value = d.visi || '';
+    document.getElementById('hp-profil-misi').value = d.misi || '';
+    document.getElementById('hp-profil-moto').value = d.moto || '';
+    document.getElementById('hp-profil-nama').value = d.namaSekolah || '';
+    document.getElementById('hp-profil-kod').value = d.kodSekolah || '';
+    document.getElementById('hp-profil-alamat').value = d.alamat || '';
+    document.getElementById('hp-profil-emel').value = d.emel || '';
+    document.getElementById('hp-profil-fb').value = d.facebookUrl || '';
+  }catch(e){ /* senyap */ }
+}
+async function saveHpProfil(){
+  showToast('Menyimpan profil sekolah...', 'info');
+  try{
+    await fetch(CMS_SCRIPT_URL, {
+      method: 'POST', mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        action: 'saveProfil',
+        visi: document.getElementById('hp-profil-visi').value,
+        misi: document.getElementById('hp-profil-misi').value,
+        moto: document.getElementById('hp-profil-moto').value,
+        namaSekolah: document.getElementById('hp-profil-nama').value,
+        kodSekolah: document.getElementById('hp-profil-kod').value,
+        alamat: document.getElementById('hp-profil-alamat').value,
+        emel: document.getElementById('hp-profil-emel').value,
+        facebookUrl: document.getElementById('hp-profil-fb').value,
+        editor: currentUser.name
+      })
+    });
+    showToast('Profil sekolah berjaya disimpan.', 'success');
+  }catch(e){ showToast('Gagal simpan profil.', 'error'); }
+}
+
+/* ---- Takwim Sekolah ---- */
+async function loadHpTakwim(){
+  try{
+    const res = await fetch(CMS_SCRIPT_URL + '?action=takwim');
+    if(!res.ok) return;
+    const d = await res.json();
+    hpTakwimData = Array.isArray(d) ? d : [];
+    renderHpTakwimList();
+  }catch(e){ /* senyap */ }
+}
+function renderHpTakwimList(){
+  const container = document.getElementById('hp-takwim-list');
+  if(!hpTakwimData.length){
+    container.innerHTML = `<p class="text-xs text-ink-faint italic">Tiada acara lagi. Klik "Tambah Acara".</p>`;
+    return;
+  }
+  container.innerHTML = hpTakwimData.map((ev, idx) => `
+    <div class="bg-mist rounded-xl p-3 grid grid-cols-1 sm:grid-cols-[1fr_auto_auto_auto] gap-2 items-center">
+      <input type="text" value="${(ev.nama||'').replace(/"/g,'&quot;')}" placeholder="Nama acara" oninput="hpTakwimData[${idx}].nama=this.value" class="bg-white border border-line rounded-lg px-3 py-2 text-xs text-ink focus:ring-2 focus:ring-navy focus:outline-none">
+      <input type="date" value="${ev.tarikhMula||''}" oninput="hpTakwimData[${idx}].tarikhMula=this.value" class="bg-white border border-line rounded-lg px-2 py-2 text-xs text-ink focus:ring-2 focus:ring-navy focus:outline-none">
+      <input type="date" value="${ev.tarikhTamat||''}" oninput="hpTakwimData[${idx}].tarikhTamat=this.value" class="bg-white border border-line rounded-lg px-2 py-2 text-xs text-ink focus:ring-2 focus:ring-navy focus:outline-none">
+      <button onclick="removeHpTakwimRow(${idx})" class="text-rose-500 hover:text-rose-700 p-2"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i></button>
+    </div>
+  `).join('');
+  lucide.createIcons();
+}
+function addHpTakwimRow(){
+  hpTakwimData.push({ nama: '', tarikhMula: '', tarikhTamat: '' });
+  renderHpTakwimList();
+}
+function removeHpTakwimRow(idx){
+  hpTakwimData.splice(idx, 1);
+  renderHpTakwimList();
+}
+async function saveHpTakwim(){
+  showToast('Menyimpan takwim...', 'info');
+  try{
+    await fetch(CMS_SCRIPT_URL, {
+      method: 'POST', mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'saveTakwim', events: hpTakwimData, editor: currentUser.name })
+    });
+    showToast('Takwim berjaya disimpan.', 'success');
+  }catch(e){ showToast('Gagal simpan takwim.', 'error'); }
+}
+
+/* ---- Carta Organisasi Utama ---- */
+async function loadHpCartaUtama(){
+  try{
+    const res = await fetch(CMS_SCRIPT_URL + '?action=cartautama');
+    if(!res.ok) return;
+    const d = await res.json();
+    hpCartaData = Array.isArray(d) ? d : [];
+    renderHpCartaList();
+  }catch(e){ /* senyap */ }
+}
+function renderHpCartaList(){
+  const container = document.getElementById('hp-carta-list');
+  if(!hpCartaData.length){
+    container.innerHTML = `<p class="text-xs text-ink-faint italic">Tiada ahli lagi. Klik "Tambah Ahli".</p>`;
+    return;
+  }
+  container.innerHTML = hpCartaData.map((m, idx) => `
+    <div class="bg-mist rounded-xl p-3 flex flex-col sm:flex-row gap-2 sm:items-center">
+      <div class="relative w-14 h-14 rounded-full overflow-hidden bg-white border border-line shrink-0 mx-auto sm:mx-0" style="background-image:url('${m.urlFoto||''}'); background-size:cover; background-position:center;">
+        ${!m.urlFoto ? '<div class="w-full h-full flex items-center justify-center text-ink-faint"><i data-lucide="user" class="w-5 h-5"></i></div>' : ''}
+        <label class="absolute inset-0 bg-black/40 opacity-0 hover:opacity-100 flex items-center justify-center cursor-pointer transition-all">
+          <i data-lucide="camera" class="w-3.5 h-3.5 text-white"></i>
+          <input type="file" accept="image/*" class="hidden" onchange="uploadHpCartaPhoto(${idx}, event)">
+        </label>
+      </div>
+      <div class="flex-1 grid grid-cols-1 sm:grid-cols-[1fr_1fr_auto] gap-2">
+        <input type="text" value="${(m.nama||'').replace(/"/g,'&quot;')}" placeholder="Nama" oninput="hpCartaData[${idx}].nama=this.value" class="bg-white border border-line rounded-lg px-3 py-2 text-xs text-ink focus:ring-2 focus:ring-navy focus:outline-none">
+        <input type="text" value="${(m.jawatan||'').replace(/"/g,'&quot;')}" placeholder="Jawatan" oninput="hpCartaData[${idx}].jawatan=this.value" class="bg-white border border-line rounded-lg px-3 py-2 text-xs text-ink focus:ring-2 focus:ring-navy focus:outline-none">
+        <select onchange="hpCartaData[${idx}].tier=Number(this.value)" class="bg-white border border-line rounded-lg px-2 py-2 text-xs text-ink focus:ring-2 focus:ring-navy focus:outline-none">
+          <option value="1" ${m.tier==1?'selected':''}>Tier 1 (GB)</option>
+          <option value="2" ${m.tier==2?'selected':''}>Tier 2 (GPK)</option>
+          <option value="3" ${(!m.tier||m.tier==3)?'selected':''}>Tier 3 (Guru/Staf)</option>
+        </select>
+      </div>
+      <button onclick="removeHpCartaRow(${idx})" class="text-rose-500 hover:text-rose-700 p-2 self-center"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i></button>
+    </div>
+  `).join('');
+  lucide.createIcons();
+}
+function addHpCartaRow(){
+  hpCartaData.push({ nama: '', jawatan: '', tier: 3, urlFoto: '' });
+  renderHpCartaList();
+}
+function removeHpCartaRow(idx){
+  hpCartaData.splice(idx, 1);
+  renderHpCartaList();
+}
+function uploadHpCartaPhoto(idx, event){
+  const file = event.target.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = async function(e){
+    showToast('Memuat naik foto...', 'info');
+    try{
+      const res = await fetch(CMS_SCRIPT_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify({ action: 'uploadCartaUtamaFoto', imageBase64: e.target.result })
+      });
+      const data = await res.json();
+      if(data && data.imageUrl){
+        hpCartaData[idx].urlFoto = data.imageUrl;
+        renderHpCartaList();
+        showToast('Foto berjaya dimuat naik. Jangan lupa klik Simpan.', 'success');
+      }
+    }catch(err){ showToast('Gagal muat naik foto.', 'error'); }
+  };
+  reader.readAsDataURL(file);
+}
+async function saveHpCartaUtama(){
+  showToast('Menyimpan carta organisasi...', 'info');
+  try{
+    await fetch(CMS_SCRIPT_URL, {
+      method: 'POST', mode: 'no-cors',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify({ action: 'saveCartaUtama', members: hpCartaData, editor: currentUser.name })
+    });
+    showToast('Carta organisasi berjaya disimpan.', 'success');
+  }catch(e){ showToast('Gagal simpan carta organisasi.', 'error'); }
+}
+
+/* ---- Foto Hero ---- */
+async function loadHpHeroPhotos(){
+  try{
+    const res = await fetch(CMS_SCRIPT_URL + '?action=fotohero');
+    if(!res.ok) return;
+    const d = await res.json();
+    renderHpHeroGrid(Array.isArray(d) ? d : []);
+  }catch(e){ /* senyap */ }
+}
+function renderHpHeroGrid(photos){
+  const grid = document.getElementById('hp-hero-grid');
+  if(!photos.length){
+    grid.innerHTML = `<p class="col-span-full text-xs text-ink-faint italic">Tiada foto hero dimuat naik lagi.</p>`;
+    return;
+  }
+  grid.innerHTML = photos.map(p => `
+    <div class="relative group aspect-square rounded-xl overflow-hidden border border-line" style="background-image:url('${p.urlFoto}'); background-size:cover; background-position:center;">
+      <button onclick="deleteHpHeroPhoto('${p.urlFoto}')" class="absolute top-1 right-1 w-6 h-6 rounded-full bg-slate-900/80 hover:bg-rose-600 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all">
+        <i data-lucide="trash-2" class="w-3 h-3"></i>
+      </button>
+    </div>
+  `).join('');
+  lucide.createIcons();
+}
+function uploadHpHeroPhoto(event){
+  const file = event.target.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = async function(e){
+    showToast('Memuat naik foto hero...', 'info');
+    try{
+      await fetch(CMS_SCRIPT_URL, {
+        method: 'POST', mode: 'no-cors',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify({ action: 'uploadFotoHero', imageBase64: e.target.result, editor: currentUser.name })
+      });
+      showToast('Foto hero berjaya dimuat naik.', 'success');
+      setTimeout(loadHpHeroPhotos, 1200);
+    }catch(err){ showToast('Gagal muat naik foto hero.', 'error'); }
+  };
+  reader.readAsDataURL(file);
+}
+async function deleteHpHeroPhoto(urlFoto){
+  if(!confirm('Padam foto hero ini?')) return;
+  try{
+    await fetch(CMS_SCRIPT_URL, {
+      method: 'POST', mode: 'no-cors',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify({ action: 'deleteFotoHero', urlFoto: urlFoto })
+    });
+    showToast('Foto hero dipadam.', 'success');
+    setTimeout(loadHpHeroPhotos, 1000);
+  }catch(e){ showToast('Gagal padam foto hero.', 'error'); }
+}
+
 
 /* ===== Carta Organisasi Unit ===== */
 let cartaState = [];
