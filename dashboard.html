@@ -896,7 +896,7 @@
       <p class="text-xs text-slate-500 mb-3">Ini foto PENUH anda. Guna gelangsar di bawah untuk pilih bahagian yang akan dipaparkan &mdash; bahagian gelap akan dipotong.</p>
       <div id="crop-stage" class="relative bg-slate-900 rounded-xl overflow-hidden mx-auto select-none" style="max-height:320px;">
         <img id="crop-source-img" class="block w-full h-auto select-none pointer-events-none" draggable="false" alt="Foto penuh">
-        <div id="crop-frame-overlay" class="absolute border-2 border-white rounded-md pointer-events-none" style="box-shadow:0 0 0 2000px rgba(15,23,42,0.65);">
+        <div id="crop-frame-overlay" class="absolute border-2 border-white rounded-md touch-none" style="box-shadow:0 0 0 2000px rgba(15,23,42,0.65); cursor:grab;">
           <div class="absolute -top-1 -left-1 w-2.5 h-2.5 border-t-2 border-l-2 border-white"></div>
           <div class="absolute -top-1 -right-1 w-2.5 h-2.5 border-t-2 border-r-2 border-white"></div>
           <div class="absolute -bottom-1 -left-1 w-2.5 h-2.5 border-b-2 border-l-2 border-white"></div>
@@ -2745,6 +2745,43 @@ window.onload = function(){
       frame.style.width = size + 'px';
       frame.style.height = size + 'px';
     }
+
+    // Seret bingkai (pilihan TAMBAHAN - slider di atas kekal cara utama yang dijamin berfungsi).
+    // Bila diseret, slider turut dikemaskini supaya kedua-dua cara sentiasa selari.
+    let cropDragActive = null; // { startClientX, startClientY, startPosX, startPosY }
+    document.addEventListener('pointerdown', function(e){
+      const frame = e.target.closest('#crop-frame-overlay');
+      if(!frame) return;
+      cropDragActive = { startClientX: e.clientX, startClientY: e.clientY, startPosX: cropDragPos.x, startPosY: cropDragPos.y };
+      try { frame.setPointerCapture(e.pointerId); } catch(err) {}
+      frame.style.cursor = 'grabbing';
+    });
+    document.addEventListener('pointermove', function(e){
+      if(!cropDragActive) return;
+      const stage = document.getElementById('crop-stage');
+      if(!stage) return;
+      const stageW = stage.clientWidth, stageH = stage.clientHeight;
+      const dxPercent = ((e.clientX - cropDragActive.startClientX) / stageW) * 100;
+      const dyPercent = ((e.clientY - cropDragActive.startClientY) / stageH) * 100;
+      cropDragPos = {
+        x: Math.max(0, Math.min(100, cropDragActive.startPosX + dxPercent)),
+        y: Math.max(0, Math.min(100, cropDragActive.startPosY + dyPercent))
+      };
+      document.getElementById('crop-slider-x').value = cropDragPos.x;
+      document.getElementById('crop-slider-y').value = cropDragPos.y;
+      applyCropFrameBox_();
+    });
+    function endCropFrameDrag_(e) {
+      if(!cropDragActive) return;
+      cropDragActive = null;
+      const frame = document.getElementById('crop-frame-overlay');
+      if(frame){
+        frame.style.cursor = 'grab';
+        if(e && e.pointerId !== undefined){ try { frame.releasePointerCapture(e.pointerId); } catch(err) {} }
+      }
+    }
+    document.addEventListener('pointerup', endCropFrameDrag_);
+    document.addEventListener('pointercancel', endCropFrameDrag_);
 
     function closeCropAdjuster() {
       const modal = document.getElementById('crop-adjust-modal');
