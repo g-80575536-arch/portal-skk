@@ -200,46 +200,46 @@
     <div class="glass rounded-3xl p-8 shadow-sm">
       <h2 class="font-display font-bold text-2xl text-ink mb-1">Kandungan Laman Web</h2>
       <p class="text-sm text-ink-soft mb-8">Kemas kini terus terbit ke laman awam sebaik sahaja disimpan.</p>
-      <div class="grid md:grid-cols-4 gap-8">
-        <div class="md:col-span-1 flex md:flex-col gap-2 overflow-x-auto">
-          <button onclick="selectCmsHomepage()" id="cms-tab-lamanutama" class="text-left px-4 py-3 rounded-xl text-base font-bold whitespace-nowrap md:whitespace-normal transition-all bg-mist text-ink-soft hover:bg-navy-50 flex items-center gap-2">
+      <div class="flex flex-col gap-6">
+        <div class="flex gap-2 overflow-x-auto pb-1 border-b border-line">
+          <button onclick="selectCmsHomepage()" id="cms-tab-lamanutama" class="text-left px-4 py-3 rounded-xl text-sm font-bold whitespace-nowrap transition-all bg-mist text-ink-soft hover:bg-navy-50 flex items-center gap-2 shrink-0">
             <i data-lucide="home" class="w-4 h-4"></i> Laman Utama
           </button>
-          <div class="hidden md:block border-t border-line my-1"></div>
-          <div class="flex md:flex-col gap-2" id="cms-unit-tabs"></div>
+          <div class="flex gap-2" id="cms-unit-tabs"></div>
         </div>
-        <div class="md:col-span-3" id="cms-unit-panel">
+        <div id="cms-unit-panel">
           <div id="cms-content-status-note" class="hidden mb-5 flex items-start gap-3 bg-amber-50 border border-amber-200 rounded-2xl p-4 text-sm text-amber-800">
             <i data-lucide="alert-triangle" class="w-4.5 h-4.5 shrink-0 mt-0.5"></i>
             <span><strong>Unit ini belum ada kandungan sebenar.</strong> Kotak di bawah kosong dengan panduan kelabu (contoh) — sila isi dengan maklumat sebenar unit ini, bukan biarkan kosong.</span>
           </div>
-          <div class="space-y-5">
-            <div>
-              <label class="text-xs font-bold uppercase tracking-wider text-ink-soft block mb-1.5">Pengenalan</label>
-              <p class="text-[11px] text-ink-faint mb-2">Apa unit ini, siapa ketuai.</p>
-              <textarea id="cms-field-pengenalan" oninput="updateCmsContentPreview()" rows="3" class="w-full bg-mist border border-line rounded-2xl p-4 text-sm leading-relaxed text-ink focus:ring-2 focus:ring-navy focus:outline-none"></textarea>
+          <div class="grid lg:grid-cols-2 gap-6">
+            <div class="space-y-5">
+              <div>
+                <label class="text-xs font-bold uppercase tracking-wider text-ink-soft block mb-1.5">Pengenalan</label>
+                <p class="text-[11px] text-ink-faint mb-2">Apa unit ini, siapa ketuai.</p>
+                <textarea id="cms-field-pengenalan" oninput="updateCmsContentPreview()" rows="3" class="w-full bg-mist border border-line rounded-2xl p-4 text-sm leading-relaxed text-ink focus:ring-2 focus:ring-navy focus:outline-none"></textarea>
+              </div>
+              <div>
+                <label class="text-xs font-bold uppercase tracking-wider text-ink-soft block mb-1.5">Objektif Utama</label>
+                <p class="text-[11px] text-ink-faint mb-2">2&ndash;4 matlamat utama unit tahun ini.</p>
+                <textarea id="cms-field-objektif" oninput="updateCmsContentPreview()" rows="3" class="w-full bg-mist border border-line rounded-2xl p-4 text-sm leading-relaxed text-ink focus:ring-2 focus:ring-navy focus:outline-none"></textarea>
+              </div>
+              <div>
+                <label class="text-xs font-bold uppercase tracking-wider text-ink-soft block mb-1.5">Program &amp; Aktiviti Sepanjang Tahun</label>
+                <p class="text-[11px] text-ink-faint mb-2">Apa yang dijalankan secara berkala.</p>
+                <textarea id="cms-field-program" oninput="updateCmsContentPreview()" rows="3" class="w-full bg-mist border border-line rounded-2xl p-4 text-sm leading-relaxed text-ink focus:ring-2 focus:ring-navy focus:outline-none"></textarea>
+              </div>
+              <div>
+                <label class="text-xs font-bold uppercase tracking-wider text-ink-soft block mb-1.5">Fokus Semasa <span class="text-ink-faint normal-case font-normal">(pilihan)</span></label>
+                <p class="text-[11px] text-ink-faint mb-2">Inisiatif/tumpuan istimewa tahun ini, jika ada.</p>
+                <textarea id="cms-field-fokus" oninput="updateCmsContentPreview()" rows="2" class="w-full bg-mist border border-line rounded-2xl p-4 text-sm leading-relaxed text-ink focus:ring-2 focus:ring-navy focus:outline-none"></textarea>
+              </div>
             </div>
-            <div>
-              <label class="text-xs font-bold uppercase tracking-wider text-ink-soft block mb-1.5">Objektif Utama</label>
-              <p class="text-[11px] text-ink-faint mb-2">2&ndash;4 matlamat utama unit tahun ini.</p>
-              <textarea id="cms-field-objektif" oninput="updateCmsContentPreview()" rows="3" class="w-full bg-mist border border-line rounded-2xl p-4 text-sm leading-relaxed text-ink focus:ring-2 focus:ring-navy focus:outline-none"></textarea>
-            </div>
-            <div>
-              <label class="text-xs font-bold uppercase tracking-wider text-ink-soft block mb-1.5">Program &amp; Aktiviti Sepanjang Tahun</label>
-              <p class="text-[11px] text-ink-faint mb-2">Apa yang dijalankan secara berkala.</p>
-              <textarea id="cms-field-program" oninput="updateCmsContentPreview()" rows="3" class="w-full bg-mist border border-line rounded-2xl p-4 text-sm leading-relaxed text-ink focus:ring-2 focus:ring-navy focus:outline-none"></textarea>
-            </div>
-            <div>
-              <label class="text-xs font-bold uppercase tracking-wider text-ink-soft block mb-1.5">Fokus Semasa <span class="text-ink-faint normal-case font-normal">(pilihan)</span></label>
-              <p class="text-[11px] text-ink-faint mb-2">Inisiatif/tumpuan istimewa tahun ini, jika ada.</p>
-              <textarea id="cms-field-fokus" oninput="updateCmsContentPreview()" rows="2" class="w-full bg-mist border border-line rounded-2xl p-4 text-sm leading-relaxed text-ink focus:ring-2 focus:ring-navy focus:outline-none"></textarea>
-            </div>
-          </div>
-
-          <div class="mt-6">
-            <p class="text-xs font-bold uppercase tracking-wider text-ink-soft mb-3 flex items-center gap-1.5"><i data-lucide="eye" class="w-3.5 h-3.5"></i> Previu Laman Awam</p>
-            <div id="cms-content-preview" class="bg-mist rounded-2xl p-6 text-sm text-ink-soft leading-relaxed">
-              <p class="text-ink-faint italic">Previu akan terpapar di sini bila anda mula menaip...</p>
+            <div class="lg:sticky lg:top-6 lg:self-start">
+              <p class="text-xs font-bold uppercase tracking-wider text-ink-soft mb-3 flex items-center gap-1.5"><i data-lucide="eye" class="w-3.5 h-3.5"></i> Previu Laman Awam</p>
+              <div id="cms-content-preview" class="bg-mist rounded-2xl p-6 text-sm text-ink-soft leading-relaxed max-h-[70vh] overflow-y-auto">
+                <p class="text-ink-faint italic">Previu akan terpapar di sini bila anda mula menaip...</p>
+              </div>
             </div>
           </div>
 
@@ -266,15 +266,21 @@
                 <i data-lucide="user-plus" class="w-3.5 h-3.5"></i> Tambah Ahli
               </button>
             </div>
-            <div id="cms-carta-rows" class="space-y-2 mb-3"></div>
-            <p class="text-xs font-bold uppercase tracking-wider text-ink-soft mb-2 flex items-center gap-1.5"><i data-lucide="eye" class="w-3.5 h-3.5"></i> Previu Laman Awam</p>
-            <div id="cms-carta-preview" class="grid sm:grid-cols-2 gap-2 mb-3">
-              <p class="text-xs text-ink-faint italic col-span-full">Previu senarai ahli akan terpapar di sini...</p>
+            <div class="grid lg:grid-cols-2 gap-6">
+              <div>
+                <div id="cms-carta-rows" class="space-y-2 mb-3"></div>
+                <button onclick="saveCartaUnit()" class="text-xs font-bold text-navy hover:text-navy-deep bg-mist hover:bg-navy-50 px-4 py-2 rounded-lg transition-all inline-flex items-center gap-1.5">
+                  <i data-lucide="save" class="w-3.5 h-3.5"></i> Simpan Carta Organisasi
+                </button>
+                <span id="cms-carta-status" class="text-xs text-ink-faint ml-2"></span>
+              </div>
+              <div class="lg:sticky lg:top-6 lg:self-start">
+                <p class="text-xs font-bold uppercase tracking-wider text-ink-soft mb-2 flex items-center gap-1.5"><i data-lucide="eye" class="w-3.5 h-3.5"></i> Previu Laman Awam</p>
+                <div id="cms-carta-preview" class="grid sm:grid-cols-2 gap-2">
+                  <p class="text-xs text-ink-faint italic col-span-full">Previu senarai ahli akan terpapar di sini...</p>
+                </div>
+              </div>
             </div>
-            <button onclick="saveCartaUnit()" class="text-xs font-bold text-navy hover:text-navy-deep bg-mist hover:bg-navy-50 px-4 py-2 rounded-lg transition-all inline-flex items-center gap-1.5">
-              <i data-lucide="save" class="w-3.5 h-3.5"></i> Simpan Carta Organisasi
-            </button>
-            <span id="cms-carta-status" class="text-xs text-ink-faint ml-2"></span>
           </div>
 
           <!-- ===== Minit Mesyuarat ===== -->
@@ -314,33 +320,39 @@
         </div>
 
         <!-- ===== PANEL LAMAN UTAMA (statistik, takwim, carta utama, profil, hero) ===== -->
-        <div class="md:col-span-3 hidden space-y-10" id="cms-homepage-panel">
+        <div class="hidden space-y-10" id="cms-homepage-panel">
 
           <!-- Statistik -->
           <div>
             <h3 class="font-bold text-ink mb-1">Statistik Sekolah</h3>
             <p class="text-[11px] text-ink-faint mb-3">Dipaparkan di bahagian "Statistik" laman utama.</p>
-            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+            <div class="grid lg:grid-cols-2 gap-6">
               <div>
-                <label class="text-[10px] font-bold uppercase text-ink-faint block mb-1">Murid</label>
-                <input type="number" id="hp-stat-murid" oninput="updateHpStatistikPreview()" class="w-full bg-mist border border-line rounded-xl px-3 py-2.5 text-sm text-ink focus:ring-2 focus:ring-navy focus:outline-none">
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                  <div>
+                    <label class="text-[10px] font-bold uppercase text-ink-faint block mb-1">Murid</label>
+                    <input type="number" id="hp-stat-murid" oninput="updateHpStatistikPreview()" class="w-full bg-mist border border-line rounded-xl px-3 py-2.5 text-sm text-ink focus:ring-2 focus:ring-navy focus:outline-none">
+                  </div>
+                  <div>
+                    <label class="text-[10px] font-bold uppercase text-ink-faint block mb-1">Guru</label>
+                    <input type="number" id="hp-stat-guru" oninput="updateHpStatistikPreview()" class="w-full bg-mist border border-line rounded-xl px-3 py-2.5 text-sm text-ink focus:ring-2 focus:ring-navy focus:outline-none">
+                  </div>
+                  <div>
+                    <label class="text-[10px] font-bold uppercase text-ink-faint block mb-1">Staf</label>
+                    <input type="number" id="hp-stat-staf" oninput="updateHpStatistikPreview()" class="w-full bg-mist border border-line rounded-xl px-3 py-2.5 text-sm text-ink focus:ring-2 focus:ring-navy focus:outline-none">
+                  </div>
+                  <div>
+                    <label class="text-[10px] font-bold uppercase text-ink-faint block mb-1">Kelas</label>
+                    <input type="number" id="hp-stat-kelas" oninput="updateHpStatistikPreview()" class="w-full bg-mist border border-line rounded-xl px-3 py-2.5 text-sm text-ink focus:ring-2 focus:ring-navy focus:outline-none">
+                  </div>
+                </div>
+                <button onclick="saveHpStatistik()" class="mt-3 text-xs font-bold bg-navy text-white px-4 py-2 rounded-full hover:bg-navy-deep transition-all">Simpan Statistik</button>
               </div>
-              <div>
-                <label class="text-[10px] font-bold uppercase text-ink-faint block mb-1">Guru</label>
-                <input type="number" id="hp-stat-guru" oninput="updateHpStatistikPreview()" class="w-full bg-mist border border-line rounded-xl px-3 py-2.5 text-sm text-ink focus:ring-2 focus:ring-navy focus:outline-none">
-              </div>
-              <div>
-                <label class="text-[10px] font-bold uppercase text-ink-faint block mb-1">Staf</label>
-                <input type="number" id="hp-stat-staf" oninput="updateHpStatistikPreview()" class="w-full bg-mist border border-line rounded-xl px-3 py-2.5 text-sm text-ink focus:ring-2 focus:ring-navy focus:outline-none">
-              </div>
-              <div>
-                <label class="text-[10px] font-bold uppercase text-ink-faint block mb-1">Kelas</label>
-                <input type="number" id="hp-stat-kelas" oninput="updateHpStatistikPreview()" class="w-full bg-mist border border-line rounded-xl px-3 py-2.5 text-sm text-ink focus:ring-2 focus:ring-navy focus:outline-none">
+              <div class="lg:sticky lg:top-6 lg:self-start">
+                <p class="text-[10px] font-bold uppercase tracking-wider text-ink-faint mb-2 flex items-center gap-1.5"><i data-lucide="eye" class="w-3 h-3"></i> Previu Laman Awam</p>
+                <div id="hp-statistik-preview" class="grid grid-cols-2 sm:grid-cols-4 gap-3"></div>
               </div>
             </div>
-            <p class="text-[10px] font-bold uppercase tracking-wider text-ink-faint mt-4 mb-2 flex items-center gap-1.5"><i data-lucide="eye" class="w-3 h-3"></i> Previu Laman Awam</p>
-            <div id="hp-statistik-preview" class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-2"></div>
-            <button onclick="saveHpStatistik()" class="mt-3 text-xs font-bold bg-navy text-white px-4 py-2 rounded-full hover:bg-navy-deep transition-all">Simpan Statistik</button>
           </div>
 
           <div class="border-t border-line"></div>
@@ -349,45 +361,51 @@
           <div>
             <h3 class="font-bold text-ink mb-1">Profil Sekolah</h3>
             <p class="text-[11px] text-ink-faint mb-3">Visi, Misi, Moto &amp; maklumat asas di bahagian "Profil Sekolah".</p>
-            <div class="space-y-3">
+            <div class="grid lg:grid-cols-2 gap-6">
               <div>
-                <label class="text-[10px] font-bold uppercase text-ink-faint block mb-1">Visi</label>
-                <textarea id="hp-profil-visi" oninput="updateHpProfilPreview()" rows="2" class="w-full bg-mist border border-line rounded-xl p-3 text-sm text-ink focus:ring-2 focus:ring-navy focus:outline-none"></textarea>
+                <div class="space-y-3">
+                  <div>
+                    <label class="text-[10px] font-bold uppercase text-ink-faint block mb-1">Visi</label>
+                    <textarea id="hp-profil-visi" oninput="updateHpProfilPreview()" rows="2" class="w-full bg-mist border border-line rounded-xl p-3 text-sm text-ink focus:ring-2 focus:ring-navy focus:outline-none"></textarea>
+                  </div>
+                  <div>
+                    <label class="text-[10px] font-bold uppercase text-ink-faint block mb-1">Misi</label>
+                    <textarea id="hp-profil-misi" oninput="updateHpProfilPreview()" rows="2" class="w-full bg-mist border border-line rounded-xl p-3 text-sm text-ink focus:ring-2 focus:ring-navy focus:outline-none"></textarea>
+                  </div>
+                  <div class="grid grid-cols-2 gap-3">
+                    <div>
+                      <label class="text-[10px] font-bold uppercase text-ink-faint block mb-1">Moto</label>
+                      <input type="text" id="hp-profil-moto" oninput="updateHpProfilPreview()" class="w-full bg-mist border border-line rounded-xl px-3 py-2.5 text-sm text-ink focus:ring-2 focus:ring-navy focus:outline-none">
+                    </div>
+                    <div>
+                      <label class="text-[10px] font-bold uppercase text-ink-faint block mb-1">Nama Sekolah</label>
+                      <input type="text" id="hp-profil-nama" oninput="updateHpProfilPreview()" class="w-full bg-mist border border-line rounded-xl px-3 py-2.5 text-sm text-ink focus:ring-2 focus:ring-navy focus:outline-none">
+                    </div>
+                    <div>
+                      <label class="text-[10px] font-bold uppercase text-ink-faint block mb-1">Kod Sekolah</label>
+                      <input type="text" id="hp-profil-kod" oninput="updateHpProfilPreview()" class="w-full bg-mist border border-line rounded-xl px-3 py-2.5 text-sm text-ink focus:ring-2 focus:ring-navy focus:outline-none">
+                    </div>
+                    <div>
+                      <label class="text-[10px] font-bold uppercase text-ink-faint block mb-1">Emel</label>
+                      <input type="text" id="hp-profil-emel" oninput="updateHpProfilPreview()" class="w-full bg-mist border border-line rounded-xl px-3 py-2.5 text-sm text-ink focus:ring-2 focus:ring-navy focus:outline-none">
+                    </div>
+                    <div class="col-span-2">
+                      <label class="text-[10px] font-bold uppercase text-ink-faint block mb-1">Alamat</label>
+                      <input type="text" id="hp-profil-alamat" oninput="updateHpProfilPreview()" class="w-full bg-mist border border-line rounded-xl px-3 py-2.5 text-sm text-ink focus:ring-2 focus:ring-navy focus:outline-none">
+                    </div>
+                    <div class="col-span-2">
+                      <label class="text-[10px] font-bold uppercase text-ink-faint block mb-1">Pautan Facebook</label>
+                      <input type="text" id="hp-profil-fb" oninput="updateHpProfilPreview()" class="w-full bg-mist border border-line rounded-xl px-3 py-2.5 text-sm text-ink focus:ring-2 focus:ring-navy focus:outline-none">
+                    </div>
+                  </div>
+                </div>
+                <button onclick="saveHpProfil()" class="mt-3 text-xs font-bold bg-navy text-white px-4 py-2 rounded-full hover:bg-navy-deep transition-all">Simpan Profil</button>
               </div>
-              <div>
-                <label class="text-[10px] font-bold uppercase text-ink-faint block mb-1">Misi</label>
-                <textarea id="hp-profil-misi" oninput="updateHpProfilPreview()" rows="2" class="w-full bg-mist border border-line rounded-xl p-3 text-sm text-ink focus:ring-2 focus:ring-navy focus:outline-none"></textarea>
-              </div>
-              <div class="grid grid-cols-2 gap-3">
-                <div>
-                  <label class="text-[10px] font-bold uppercase text-ink-faint block mb-1">Moto</label>
-                  <input type="text" id="hp-profil-moto" oninput="updateHpProfilPreview()" class="w-full bg-mist border border-line rounded-xl px-3 py-2.5 text-sm text-ink focus:ring-2 focus:ring-navy focus:outline-none">
-                </div>
-                <div>
-                  <label class="text-[10px] font-bold uppercase text-ink-faint block mb-1">Nama Sekolah</label>
-                  <input type="text" id="hp-profil-nama" oninput="updateHpProfilPreview()" class="w-full bg-mist border border-line rounded-xl px-3 py-2.5 text-sm text-ink focus:ring-2 focus:ring-navy focus:outline-none">
-                </div>
-                <div>
-                  <label class="text-[10px] font-bold uppercase text-ink-faint block mb-1">Kod Sekolah</label>
-                  <input type="text" id="hp-profil-kod" oninput="updateHpProfilPreview()" class="w-full bg-mist border border-line rounded-xl px-3 py-2.5 text-sm text-ink focus:ring-2 focus:ring-navy focus:outline-none">
-                </div>
-                <div>
-                  <label class="text-[10px] font-bold uppercase text-ink-faint block mb-1">Emel</label>
-                  <input type="text" id="hp-profil-emel" oninput="updateHpProfilPreview()" class="w-full bg-mist border border-line rounded-xl px-3 py-2.5 text-sm text-ink focus:ring-2 focus:ring-navy focus:outline-none">
-                </div>
-                <div class="col-span-2">
-                  <label class="text-[10px] font-bold uppercase text-ink-faint block mb-1">Alamat</label>
-                  <input type="text" id="hp-profil-alamat" oninput="updateHpProfilPreview()" class="w-full bg-mist border border-line rounded-xl px-3 py-2.5 text-sm text-ink focus:ring-2 focus:ring-navy focus:outline-none">
-                </div>
-                <div class="col-span-2">
-                  <label class="text-[10px] font-bold uppercase text-ink-faint block mb-1">Pautan Facebook</label>
-                  <input type="text" id="hp-profil-fb" oninput="updateHpProfilPreview()" class="w-full bg-mist border border-line rounded-xl px-3 py-2.5 text-sm text-ink focus:ring-2 focus:ring-navy focus:outline-none">
-                </div>
+              <div class="lg:sticky lg:top-6 lg:self-start">
+                <p class="text-[10px] font-bold uppercase tracking-wider text-ink-faint mb-2 flex items-center gap-1.5"><i data-lucide="eye" class="w-3 h-3"></i> Previu Laman Awam</p>
+                <div id="hp-profil-preview" class="bg-mist rounded-2xl p-5 text-sm text-ink-soft leading-relaxed space-y-2 max-h-[70vh] overflow-y-auto"></div>
               </div>
             </div>
-            <p class="text-[10px] font-bold uppercase tracking-wider text-ink-faint mt-4 mb-2 flex items-center gap-1.5"><i data-lucide="eye" class="w-3 h-3"></i> Previu Laman Awam</p>
-            <div id="hp-profil-preview" class="bg-mist rounded-2xl p-5 text-sm text-ink-soft leading-relaxed space-y-2"></div>
-            <button onclick="saveHpProfil()" class="mt-3 text-xs font-bold bg-navy text-white px-4 py-2 rounded-full hover:bg-navy-deep transition-all">Simpan Profil</button>
           </div>
 
           <div class="border-t border-line"></div>
@@ -396,11 +414,17 @@
           <div>
             <h3 class="font-bold text-ink mb-1">Takwim Sekolah / Countdown</h3>
             <p class="text-[11px] text-ink-faint mb-3">Senarai acara dengan kiraan detik automatik di laman utama.</p>
-            <div id="hp-takwim-list" class="space-y-3"></div>
-            <button onclick="addHpTakwimRow()" class="mt-2 text-xs font-bold text-navy hover:text-gold flex items-center gap-1.5"><i data-lucide="plus-circle" class="w-3.5 h-3.5"></i> Tambah Acara</button>
-            <p class="text-[10px] font-bold uppercase tracking-wider text-ink-faint mt-4 mb-2 flex items-center gap-1.5"><i data-lucide="eye" class="w-3 h-3"></i> Previu Laman Awam</p>
-            <div id="hp-takwim-preview" class="space-y-2 mb-2"></div>
-            <div><button onclick="saveHpTakwim()" class="mt-3 text-xs font-bold bg-navy text-white px-4 py-2 rounded-full hover:bg-navy-deep transition-all">Simpan Takwim</button></div>
+            <div class="grid lg:grid-cols-2 gap-6">
+              <div>
+                <div id="hp-takwim-list" class="space-y-3"></div>
+                <button onclick="addHpTakwimRow()" class="mt-2 text-xs font-bold text-navy hover:text-gold flex items-center gap-1.5"><i data-lucide="plus-circle" class="w-3.5 h-3.5"></i> Tambah Acara</button>
+                <div><button onclick="saveHpTakwim()" class="mt-3 text-xs font-bold bg-navy text-white px-4 py-2 rounded-full hover:bg-navy-deep transition-all">Simpan Takwim</button></div>
+              </div>
+              <div class="lg:sticky lg:top-6 lg:self-start">
+                <p class="text-[10px] font-bold uppercase tracking-wider text-ink-faint mb-2 flex items-center gap-1.5"><i data-lucide="eye" class="w-3 h-3"></i> Previu Laman Awam</p>
+                <div id="hp-takwim-preview" class="space-y-2"></div>
+              </div>
+            </div>
           </div>
 
           <div class="border-t border-line"></div>
@@ -409,11 +433,17 @@
           <div>
             <h3 class="font-bold text-ink mb-1">Carta Organisasi Utama</h3>
             <p class="text-[11px] text-ink-faint mb-3">Hierarki penuh staf sekolah (Guru Besar / GPK / Guru &amp; Kakitangan) di laman utama.</p>
-            <div id="hp-carta-list" class="space-y-3"></div>
-            <button onclick="addHpCartaRow()" class="mt-2 text-xs font-bold text-navy hover:text-gold flex items-center gap-1.5"><i data-lucide="plus-circle" class="w-3.5 h-3.5"></i> Tambah Ahli</button>
-            <p class="text-[10px] font-bold uppercase tracking-wider text-ink-faint mt-4 mb-2 flex items-center gap-1.5"><i data-lucide="eye" class="w-3 h-3"></i> Previu Laman Awam</p>
-            <div id="hp-cartautama-preview" class="grid sm:grid-cols-2 gap-2 mb-2"></div>
-            <div><button onclick="saveHpCartaUtama()" class="mt-3 text-xs font-bold bg-navy text-white px-4 py-2 rounded-full hover:bg-navy-deep transition-all">Simpan Carta Organisasi</button></div>
+            <div class="grid lg:grid-cols-2 gap-6">
+              <div>
+                <div id="hp-carta-list" class="space-y-3"></div>
+                <button onclick="addHpCartaRow()" class="mt-2 text-xs font-bold text-navy hover:text-gold flex items-center gap-1.5"><i data-lucide="plus-circle" class="w-3.5 h-3.5"></i> Tambah Ahli</button>
+                <div><button onclick="saveHpCartaUtama()" class="mt-3 text-xs font-bold bg-navy text-white px-4 py-2 rounded-full hover:bg-navy-deep transition-all">Simpan Carta Organisasi</button></div>
+              </div>
+              <div class="lg:sticky lg:top-6 lg:self-start">
+                <p class="text-[10px] font-bold uppercase tracking-wider text-ink-faint mb-2 flex items-center gap-1.5"><i data-lucide="eye" class="w-3 h-3"></i> Previu Laman Awam</p>
+                <div id="hp-cartautama-preview" class="grid sm:grid-cols-2 gap-2"></div>
+              </div>
+            </div>
           </div>
 
           <div class="border-t border-line"></div>
@@ -1387,7 +1417,7 @@ async function fetchCmsDbRemote(){
 function renderCmsTabs(){
   const tabs = document.getElementById('cms-unit-tabs');
   tabs.innerHTML = currentUser.cmsUnits.map(unit => `
-    <button onclick="selectCmsUnit('${unit}')" id="cms-tab-${unit.replace(/\s+/g,'')}" class="text-left px-4 py-3 rounded-xl text-sm font-bold whitespace-nowrap md:whitespace-normal transition-all">${unit}</button>
+    <button onclick="selectCmsUnit('${unit}')" id="cms-tab-${unit.replace(/\s+/g,'')}" class="text-left px-4 py-3 rounded-xl text-sm font-bold whitespace-nowrap transition-all shrink-0">${unit}</button>
   `).join('');
   if(currentUser.cmsUnits.length) selectCmsUnit(currentUser.cmsUnits[0]);
 }
@@ -1467,12 +1497,12 @@ async function selectCmsUnit(unit){
   document.getElementById('cms-unit-panel').classList.remove('hidden');
   document.getElementById('cms-homepage-panel').classList.add('hidden');
   const lamanUtamaTab = document.getElementById('cms-tab-lamanutama');
-  if(lamanUtamaTab) lamanUtamaTab.className = 'text-left px-4 py-3 rounded-xl text-base font-bold whitespace-nowrap md:whitespace-normal transition-all bg-mist text-ink-soft hover:bg-navy-50 flex items-center gap-2';
+  if(lamanUtamaTab) lamanUtamaTab.className = 'text-left px-4 py-3 rounded-xl text-sm font-bold whitespace-nowrap transition-all bg-mist text-ink-soft hover:bg-navy-50 flex items-center gap-2 shrink-0';
 
   currentUser.cmsUnits.forEach(u => {
     const tab = document.getElementById('cms-tab-' + u.replace(/\s+/g,''));
     if(!tab) return;
-    tab.className = 'text-left px-4 py-3 rounded-xl text-sm font-bold whitespace-nowrap md:whitespace-normal transition-all ' + (u===unit ? 'bg-gradient-to-r from-blue to-cyan text-white' : 'bg-mist text-ink-soft hover:bg-navy-50');
+    tab.className = 'text-left px-4 py-3 rounded-xl text-sm font-bold whitespace-nowrap transition-all shrink-0 ' + (u===unit ? 'bg-gradient-to-r from-blue to-cyan text-white' : 'bg-mist text-ink-soft hover:bg-navy-50');
   });
   const statusEl = document.getElementById('cms-save-status');
 
@@ -1645,10 +1675,10 @@ let hpCartaData = [];
 async function selectCmsHomepage(){
   document.getElementById('cms-unit-panel').classList.add('hidden');
   document.getElementById('cms-homepage-panel').classList.remove('hidden');
-  document.getElementById('cms-tab-lamanutama').className = 'text-left px-4 py-3 rounded-xl text-base font-bold whitespace-nowrap md:whitespace-normal transition-all bg-gradient-to-r from-blue to-cyan text-white flex items-center gap-2';
+  document.getElementById('cms-tab-lamanutama').className = 'text-left px-4 py-3 rounded-xl text-sm font-bold whitespace-nowrap transition-all bg-gradient-to-r from-blue to-cyan text-white flex items-center gap-2 shrink-0';
   currentUser.cmsUnits.forEach(u => {
     const tab = document.getElementById('cms-tab-' + u.replace(/\s+/g,''));
-    if(tab) tab.className = 'text-left px-4 py-3 rounded-xl text-sm font-bold whitespace-nowrap md:whitespace-normal transition-all bg-mist text-ink-soft hover:bg-navy-50';
+    if(tab) tab.className = 'text-left px-4 py-3 rounded-xl text-sm font-bold whitespace-nowrap transition-all bg-mist text-ink-soft hover:bg-navy-50 shrink-0';
   });
 
   loadHpStatistik();
