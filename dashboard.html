@@ -212,8 +212,8 @@
             <i data-lucide="alert-triangle" class="w-4.5 h-4.5 shrink-0 mt-0.5"></i>
             <span><strong>Unit ini belum ada kandungan sebenar.</strong> Kotak di bawah kosong dengan panduan kelabu (contoh) — sila isi dengan maklumat sebenar unit ini, bukan biarkan kosong.</span>
           </div>
-          <div class="grid lg:grid-cols-2 gap-6">
-            <div class="space-y-5">
+          <div class="grid lg:grid-cols-2 gap-6 lg:items-start">
+            <div class="space-y-5 min-w-0">
               <div>
                 <label class="text-xs font-bold uppercase tracking-wider text-ink-soft block mb-1.5">Pengenalan</label>
                 <p class="text-[11px] text-ink-faint mb-2">Apa unit ini, siapa ketuai.</p>
@@ -266,8 +266,8 @@
                 <i data-lucide="user-plus" class="w-3.5 h-3.5"></i> Tambah Ahli
               </button>
             </div>
-            <div class="grid lg:grid-cols-2 gap-6">
-              <div>
+            <div class="grid lg:grid-cols-2 gap-6 lg:items-start">
+              <div class="min-w-0">
                 <div id="cms-carta-rows" class="space-y-2 mb-3"></div>
                 <button onclick="saveCartaUnit()" class="text-xs font-bold text-navy hover:text-navy-deep bg-mist hover:bg-navy-50 px-4 py-2 rounded-lg transition-all inline-flex items-center gap-1.5">
                   <i data-lucide="save" class="w-3.5 h-3.5"></i> Simpan Carta Organisasi
@@ -326,8 +326,8 @@
           <div>
             <h3 class="font-bold text-ink mb-1">Statistik Sekolah</h3>
             <p class="text-[11px] text-ink-faint mb-3">Dipaparkan di bahagian "Statistik" laman utama.</p>
-            <div class="grid lg:grid-cols-2 gap-6">
-              <div>
+            <div class="grid lg:grid-cols-2 gap-6 lg:items-start">
+              <div class="min-w-0">
                 <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
                   <div>
                     <label class="text-[10px] font-bold uppercase text-ink-faint block mb-1">Murid</label>
@@ -361,8 +361,8 @@
           <div>
             <h3 class="font-bold text-ink mb-1">Profil Sekolah</h3>
             <p class="text-[11px] text-ink-faint mb-3">Visi, Misi, Moto &amp; maklumat asas di bahagian "Profil Sekolah".</p>
-            <div class="grid lg:grid-cols-2 gap-6">
-              <div>
+            <div class="grid lg:grid-cols-2 gap-6 lg:items-start">
+              <div class="min-w-0">
                 <div class="space-y-3">
                   <div>
                     <label class="text-[10px] font-bold uppercase text-ink-faint block mb-1">Visi</label>
@@ -414,8 +414,8 @@
           <div>
             <h3 class="font-bold text-ink mb-1">Takwim Sekolah / Countdown</h3>
             <p class="text-[11px] text-ink-faint mb-3">Senarai acara dengan kiraan detik automatik di laman utama.</p>
-            <div class="grid lg:grid-cols-2 gap-6">
-              <div>
+            <div class="grid lg:grid-cols-2 gap-6 lg:items-start">
+              <div class="min-w-0">
                 <div id="hp-takwim-list" class="space-y-3"></div>
                 <button onclick="addHpTakwimRow()" class="mt-2 text-xs font-bold text-navy hover:text-gold flex items-center gap-1.5"><i data-lucide="plus-circle" class="w-3.5 h-3.5"></i> Tambah Acara</button>
                 <div><button onclick="saveHpTakwim()" class="mt-3 text-xs font-bold bg-navy text-white px-4 py-2 rounded-full hover:bg-navy-deep transition-all">Simpan Takwim</button></div>
@@ -433,8 +433,8 @@
           <div>
             <h3 class="font-bold text-ink mb-1">Carta Organisasi Utama</h3>
             <p class="text-[11px] text-ink-faint mb-3">Hierarki penuh staf sekolah (Guru Besar / GPK / Guru &amp; Kakitangan) di laman utama.</p>
-            <div class="grid lg:grid-cols-2 gap-6">
-              <div>
+            <div class="grid lg:grid-cols-2 gap-6 lg:items-start">
+              <div class="min-w-0">
                 <div id="hp-carta-list" class="space-y-3"></div>
                 <button onclick="addHpCartaRow()" class="mt-2 text-xs font-bold text-navy hover:text-gold flex items-center gap-1.5"><i data-lucide="plus-circle" class="w-3.5 h-3.5"></i> Tambah Ahli</button>
                 <div><button onclick="saveHpCartaUtama()" class="mt-3 text-xs font-bold bg-navy text-white px-4 py-2 rounded-full hover:bg-navy-deep transition-all">Simpan Carta Organisasi</button></div>
@@ -1539,16 +1539,16 @@ function renderCmsImageGrid(images){
   const grid = document.getElementById('cms-image-grid');
   if(!grid) return;
   if(!images.length){
-    grid.innerHTML = `<p class="col-span-full text-xs text-white/30 italic">Tiada gambar dimuat naik lagi untuk unit ini.</p>`;
+    grid.innerHTML = `<p class="col-span-full text-xs text-ink-faint italic">Tiada gambar dimuat naik lagi untuk unit ini.</p>`;
     return;
   }
   grid.innerHTML = images.map(img => `
     <div class="relative group">
-      <a href="${img.imageUrl}" target="_blank" rel="noopener" class="block aspect-square rounded-xl overflow-hidden border border-white/10 hover:border-sky transition-all bg-white/5" style="background-image:url('${img.imageUrl}'); background-size:cover; background-position:center;" title="Buka saiz penuh"></a>
+      <a href="${img.imageUrl}" target="_blank" rel="noopener" class="block aspect-square rounded-xl overflow-hidden border border-line hover:border-sky transition-all bg-mist" style="background-image:url('${img.imageUrl}'); background-size:cover; background-position:center;" title="Buka saiz penuh"></a>
       <button onclick="deleteCmsImage('${img.imageUrl}')" title="Padam gambar" class="absolute top-1.5 right-1.5 w-6 h-6 rounded-full bg-slate-900/80 hover:bg-rose-600 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all">
         <i data-lucide="trash-2" class="w-3 h-3"></i>
       </button>
-      ${img.caption ? `<p class="text-[10px] text-white/60 mt-1 truncate" title="${img.caption.replace(/"/g,'&quot;')}">${img.caption}</p>` : ''}
+      ${img.caption ? `<p class="text-[10px] text-ink-faint mt-1 truncate" title="${img.caption.replace(/"/g,'&quot;')}">${img.caption}</p>` : ''}
     </div>
   `).join('');
   lucide.createIcons();
@@ -1819,7 +1819,7 @@ function renderHpTakwimList(){
     return;
   }
   container.innerHTML = hpTakwimData.map((ev, idx) => `
-    <div class="bg-mist rounded-xl p-3 grid grid-cols-1 sm:grid-cols-[1fr_auto_auto_auto] gap-2 items-center">
+    <div class="bg-mist rounded-xl p-3 grid grid-cols-1 xl:grid-cols-[1fr_auto_auto_auto] gap-2 items-center">
       <input type="text" value="${(ev.nama||'').replace(/"/g,'&quot;')}" placeholder="Nama acara" oninput="hpTakwimData[${idx}].nama=this.value; updateHpTakwimPreview()" class="bg-white border border-line rounded-lg px-3 py-2 text-xs text-ink focus:ring-2 focus:ring-navy focus:outline-none">
       <input type="date" value="${ev.tarikhMula||''}" oninput="hpTakwimData[${idx}].tarikhMula=this.value; updateHpTakwimPreview()" class="bg-white border border-line rounded-lg px-2 py-2 text-xs text-ink focus:ring-2 focus:ring-navy focus:outline-none">
       <input type="date" value="${ev.tarikhTamat||''}" oninput="hpTakwimData[${idx}].tarikhTamat=this.value; updateHpTakwimPreview()" class="bg-white border border-line rounded-lg px-2 py-2 text-xs text-ink focus:ring-2 focus:ring-navy focus:outline-none">
@@ -1888,7 +1888,7 @@ function renderHpCartaList(){
     return;
   }
   container.innerHTML = hpCartaData.map((m, idx) => `
-    <div class="bg-mist rounded-xl p-3 flex flex-col sm:flex-row gap-2 sm:items-center">
+    <div class="bg-mist rounded-xl p-3 flex flex-col xl:flex-row gap-2 xl:items-center">
       <div class="relative w-14 h-14 rounded-full overflow-hidden bg-white border border-line shrink-0 mx-auto sm:mx-0" style="background-image:url('${m.urlFoto||''}'); background-size:cover; background-position:center;">
         ${!m.urlFoto ? '<div class="w-full h-full flex items-center justify-center text-ink-faint"><i data-lucide="user" class="w-5 h-5"></i></div>' : ''}
         <label class="absolute inset-0 bg-black/40 opacity-0 hover:opacity-100 flex items-center justify-center cursor-pointer transition-all">
@@ -1896,7 +1896,7 @@ function renderHpCartaList(){
           <input type="file" accept="image/*" class="hidden" onchange="uploadHpCartaPhoto(${idx}, event)">
         </label>
       </div>
-      <div class="flex-1 grid grid-cols-1 sm:grid-cols-[1fr_1fr_auto] gap-2">
+      <div class="flex-1 grid grid-cols-1 xl:grid-cols-[1fr_1fr_auto] gap-2">
         <input type="text" value="${(m.nama||'').replace(/"/g,'&quot;')}" placeholder="Nama" oninput="hpCartaData[${idx}].nama=this.value; updateHpCartaUtamaPreview()" class="bg-white border border-line rounded-lg px-3 py-2 text-xs text-ink focus:ring-2 focus:ring-navy focus:outline-none">
         <input type="text" value="${(m.jawatan||'').replace(/"/g,'&quot;')}" placeholder="Jawatan" oninput="hpCartaData[${idx}].jawatan=this.value; updateHpCartaUtamaPreview()" class="bg-white border border-line rounded-lg px-3 py-2 text-xs text-ink focus:ring-2 focus:ring-navy focus:outline-none">
         <select onchange="hpCartaData[${idx}].tier=Number(this.value); updateHpCartaUtamaPreview()" class="bg-white border border-line rounded-lg px-2 py-2 text-xs text-ink focus:ring-2 focus:ring-navy focus:outline-none">
@@ -2124,15 +2124,15 @@ function renderCartaRows(){
   const box = document.getElementById('cms-carta-rows');
   if(!box) return;
   if(!cartaState.length){
-    box.innerHTML = `<p class="text-xs text-white/30 italic">Tiada ahli lagi. Klik "Tambah Ahli" untuk mula.</p>`;
+    box.innerHTML = `<p class="text-xs text-ink-faint italic">Tiada ahli lagi. Klik "Tambah Ahli" untuk mula.</p>`;
     updateCartaUnitPreview();
     return;
   }
   box.innerHTML = cartaState.map((m, idx) => `
-    <div class="flex gap-2 items-center">
-      <input type="text" value="${(m.nama||'').replace(/"/g,'&quot;')}" oninput="cartaState[${idx}].nama=this.value; updateCartaUnitPreview()" placeholder="Nama" class="flex-1 bg-white/5 border border-white/15 rounded-lg px-3 py-2 text-xs text-white placeholder-white/30 focus:ring-2 focus:ring-sky focus:outline-none">
-      <input type="text" value="${(m.jawatan||'').replace(/"/g,'&quot;')}" oninput="cartaState[${idx}].jawatan=this.value; updateCartaUnitPreview()" placeholder="Jawatan" class="flex-1 bg-white/5 border border-white/15 rounded-lg px-3 py-2 text-xs text-white placeholder-white/30 focus:ring-2 focus:ring-sky focus:outline-none">
-      <button onclick="removeCartaRow(${idx})" class="text-rose-400 hover:text-rose-300 p-1.5"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i></button>
+    <div class="flex flex-wrap gap-2 items-center">
+      <input type="text" value="${(m.nama||'').replace(/"/g,'&quot;')}" oninput="cartaState[${idx}].nama=this.value; updateCartaUnitPreview()" placeholder="Nama" class="flex-1 min-w-[120px] bg-white border border-line rounded-lg px-3 py-2 text-xs text-ink placeholder-ink-faint focus:ring-2 focus:ring-navy focus:outline-none">
+      <input type="text" value="${(m.jawatan||'').replace(/"/g,'&quot;')}" oninput="cartaState[${idx}].jawatan=this.value; updateCartaUnitPreview()" placeholder="Jawatan" class="flex-1 min-w-[120px] bg-white border border-line rounded-lg px-3 py-2 text-xs text-ink placeholder-ink-faint focus:ring-2 focus:ring-navy focus:outline-none">
+      <button onclick="removeCartaRow(${idx})" class="text-rose-500 hover:text-rose-700 p-1.5 shrink-0"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i></button>
     </div>
   `).join('');
   lucide.createIcons();
@@ -2205,17 +2205,17 @@ function renderMinitList(items){
   const box = document.getElementById('cms-minit-list');
   if(!box) return;
   if(!items.length){
-    box.innerHTML = `<p class="text-xs text-white/30 italic">Tiada minit mesyuarat dimuat naik lagi untuk unit ini.</p>`;
+    box.innerHTML = `<p class="text-xs text-ink-faint italic">Tiada minit mesyuarat dimuat naik lagi untuk unit ini.</p>`;
     return;
   }
   box.innerHTML = items.map(m => `
-    <div class="flex items-center gap-3 bg-white/5 hover:bg-white/10 rounded-xl px-4 py-3 transition-all group">
+    <div class="flex items-center gap-3 bg-mist hover:bg-navy-50 rounded-xl px-4 py-3 transition-all group">
       <a href="${m.fileUrl}" target="_blank" rel="noopener" class="flex items-center gap-3 flex-1 min-w-0">
-        <i data-lucide="file-text" class="w-4 h-4 text-sky shrink-0"></i>
-        <span class="flex-1 text-sm text-white font-semibold truncate">${m.title || 'Minit Mesyuarat'}</span>
-        <span class="text-xs text-white/40 shrink-0">${m.meetingDate || ''}</span>
+        <i data-lucide="file-text" class="w-4 h-4 text-navy shrink-0"></i>
+        <span class="flex-1 text-sm text-ink font-semibold truncate">${m.title || 'Minit Mesyuarat'}</span>
+        <span class="text-xs text-ink-faint shrink-0">${m.meetingDate || ''}</span>
       </a>
-      <button onclick="deleteCmsMinit('${m.fileUrl}')" title="Padam" class="shrink-0 w-7 h-7 rounded-full hover:bg-rose-600 text-white/40 hover:text-white flex items-center justify-center transition-all opacity-0 group-hover:opacity-100">
+      <button onclick="deleteCmsMinit('${m.fileUrl}')" title="Padam" class="shrink-0 w-7 h-7 rounded-full hover:bg-rose-600 text-ink-faint hover:text-white flex items-center justify-center transition-all opacity-0 group-hover:opacity-100">
         <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
       </button>
     </div>
